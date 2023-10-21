@@ -1,11 +1,30 @@
-// Récupération des travaux depuis l'API
+// Récupération des travaux et categories depuis l'API
 const reponse = await fetch("http://localhost:5678/api/works");
 const works = await reponse.json();
+
+const second_reponse = await fetch("http://localhost:5678/api/categories");
+const categories = await second_reponse.json();
+
 
 // Création de la balise galerie qui accueillera les figures
 const divGallery = document.createElement("div");
 divGallery.classList.add("gallery")
 
+function loadCategories(categories){
+  for (let i = 0; i < categories.length; i++) {
+
+  const category = categories[i];
+
+// Création des balises invisibles
+  const idElement = document.createElement("p");
+  idElement.innerHTML = categories[i].id;
+  //idElement.innerHTML = "";
+
+  const nameElement = document.createElement("p");
+  nameElement.innerHTML = categories[i].name;
+  //nameElement.innerHTML = "";
+  }
+}
 
 // Création d'une fonction qui charge la galerie
 function loadWorks(works){
@@ -28,25 +47,36 @@ function loadWorks(works){
   figcaptionElement.innerHTML = works[i].title;
   
   // Création des balises invisibles
-  const id = works[i].id;
-  const userId = works[i].userId;
-  //const category = works[i].category[i].id;
+  const idElement = document.createElement("p");
+  idElement.innerHTML = works[i].id;
+  idElement.innerHTML = "";
+
+  const userIdElement = document.createElement("p");
+  userIdElement.innerHTML = works[i].userId;
+  userIdElement.innerHTML = "";
+
+  const categoryId = categories[i].id;
 
   // On rattache les balises enfants à leurs parents
   document.querySelector("#portfolio").appendChild(divGallery);
   divGallery.appendChild(galleryElement);
   galleryElement.appendChild(imageElement);
   galleryElement.appendChild(figcaptionElement);
+
+  galleryElement.appendChild(idElement);
+
+  loadCategories(categories);
   }
 }
 
 loadWorks(works);
+loadCategories(categoryId);
 
 // --- Show me what im doing --- // 
 console.log(works)
-console.log(id)
-console.log(userId)
-console.log(category)
+console.log(idElement)
+//console.log(userId)
+//console.log(category)
 
 
 
