@@ -10,19 +10,10 @@ const categories = await second_reponse.json();
 const divGallery = document.createElement("div");
 divGallery.classList.add("gallery")
 
+// Création d'une fonction qui charge les categories
 function loadCategories(categories){
   for (let i = 0; i < categories.length; i++) {
-
   const category = categories[i];
-
-// Création des balises invisibles
-  const idElement = document.createElement("p");
-  idElement.innerHTML = categories[i].id;
-  //idElement.innerHTML = "";
-
-  const nameElement = document.createElement("p");
-  nameElement.innerHTML = categories[i].name;
-  //nameElement.innerHTML = "";
   }
 }
 
@@ -46,16 +37,27 @@ function loadWorks(works){
   const figcaptionElement = document.createElement("figcaption");
   figcaptionElement.innerHTML = works[i].title;
   
-  // Création des balises invisibles
-  const idElement = document.createElement("p");
-  idElement.innerHTML = works[i].id;
-  idElement.innerHTML = "";
+  // Création des balises invisibles (works)
+  const workId = document.createElement("p");
+  workId.classList.add("work_id");
+  workId.innerHTML = works[i].id;
+  workId.innerHTML = "";
 
-  const userIdElement = document.createElement("p");
-  userIdElement.innerHTML = works[i].userId;
-  userIdElement.innerHTML = "";
+ const userId = document.createElement("p");
+  userId.classList.add("user_id");
+  userId.innerHTML = works[i].userId;
+  userId.innerHTML = "";
 
-  const categoryId = categories[i].id;
+  // Création des balises invisibles (categories)
+  const categoryId = document.createElement("p");
+  categoryId.classList.add("category_id");
+  categoryId.innerHTML = categories[i].id;
+  //categoryId.innerHTML = "";
+
+  const categoryName = document.createElement("p");
+  categoryName.classList.add("category_name");
+  categoryName.innerHTML = categories[i].name;
+  //categoryName.innerHTML = "";
 
   // On rattache les balises enfants à leurs parents
   document.querySelector("#portfolio").appendChild(divGallery);
@@ -63,21 +65,27 @@ function loadWorks(works){
   galleryElement.appendChild(imageElement);
   galleryElement.appendChild(figcaptionElement);
 
-  galleryElement.appendChild(idElement);
+  galleryElement.appendChild(workId);
+  galleryElement.appendChild(userId);
 
-  loadCategories(categories);
+  // On rattache les balises enfants à leurs parents
+  galleryElement.appendChild(categoryId);
+  galleryElement.appendChild(categoryName);
   }
+  loadCategories(categories)
 }
 
+
+
+
+
 loadWorks(works);
-loadCategories(categoryId);
+loadCategories(categories);
 
-// --- Show me what im doing --- // 
+
+// --- Show me --- // 
 console.log(works)
-console.log(idElement)
-//console.log(userId)
-//console.log(category)
-
+console.log(categories)
 
 
 //fetch("http://localhost:5678/works/${id}");console.log(sectionPortfolio)
@@ -103,7 +111,32 @@ console.log(idElement)
 // sectionPortfolio.appendChild(divGallery);
 
 
-
+//function loadCategories(categories){
+  //     for (let i = 0; i < categories.length; i++) {
+    
+  //     const category = categories[i];
+    
+  //     // Récupération de l'élément du DOM qui accueillera les categories
+  //   const galleryElement = document.querySelectorAll(".gallery figure");
+      
+  //     // Création des balises invisibles
+  //     const idElement = document.createElement("p");
+  //     idElement.classList.add("category_id");
+  //     idElement.innerHTML = categories[i].id;
+  //     //idElement.innerHTML = "";
+    
+  //     const nameElement = document.createElement("p");
+  //     nameElement.classList.add("category_name");
+  //     nameElement.innerHTML = categories[i].name;
+  //     //nameElement.innerHTML = "";
+    
+  //     // On rattache les balises enfants à leurs parents
+  //     document.querySelector("#portfolio").appendChild(divGallery);
+  //     divGallery.appendChild(galleryElement);
+  //     galleryElement.appendChild(idElement);
+  //     galleryElement.appendChild(nameElement);
+  //     }
+  //   }
 
 
 
