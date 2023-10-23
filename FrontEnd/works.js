@@ -11,7 +11,7 @@ const divGallery = document.createElement("div");
 divGallery.classList.add("gallery")
 
 // Création d'une fonction qui charge la galerie
-function loadWorks(categories){
+async function loadWorks(){
   works.forEach((works) => {
   // Récupération de l'élément du DOM qui accueillera les figures
   const gallery = document.querySelector(".gallery");
@@ -38,6 +38,17 @@ function loadWorks(categories){
   userId.innerHTML = works.userId;
   //userId.innerHTML = "";
 
+  //Création des balises invisibles (categories)
+  const categoryId = document.createElement("p");
+  categoryId.classList.add("category_id");
+  categoryId.innerHTML = works.category.id;
+  //categoryId.innerHTML = "";
+
+  const categoryName = document.createElement("p");
+  categoryName.classList.add("category_name");
+  categoryName.innerHTML = works.category.name;
+  //categoryName.innerHTML = "";
+
   // On rattache les balises enfants à leurs parents
   document.querySelector("#portfolio").appendChild(divGallery);
   divGallery.appendChild(galleryElement);
@@ -46,38 +57,44 @@ function loadWorks(categories){
 
   galleryElement.appendChild(workId);
   galleryElement.appendChild(userId);
-  })
 
-  for (let i = 0; i < categories.length; i++) {
-  
-    const category = categories[i];
-    
-    //Récupération des éléments du DOM qui accueillerons les categories
-    const figures = document.querySelectorAll("#portfolio .gallery figure");
-  
-    //Création des balises invisibles (categories)
-    const categoryId = document.createElement("p");
-    categoryId.classList.add("category_id");
-    categoryId.innerHTML = categories[i].id;
-    //categoryId.innerHTML = "";
-  
-    const categoryName = document.createElement("p");
-    categoryName.classList.add("category_name");
-    categoryName.innerHTML = categories[i].name;
-    //categoryName.innerHTML = "";
-  
-    //On rattache les balises enfants à leurs parents
-    figures[i].appendChild(categoryId);
-    figures[i].appendChild(categoryName);
-  }
+  galleryElement.appendChild(categoryId);
+  galleryElement.appendChild(categoryName);
+  })
 }
 
+loadWorks(works);
+//loadCategories(categories);
 
+
+// --- Show me --- // 
+console.log(works)
+console.log(categories)
 
 
 //--------------------------------------------
 
+// for (let i = 0; i < categories.length; i++) {
+  
+//   const category = categories[i];
+  
+//   //Récupération des éléments du DOM qui accueillerons les categories
+//   const figures = document.querySelectorAll("#portfolio .gallery figure");
 
+//   //Création des balises invisibles (categories)
+//   const categoryId = document.createElement("p");
+//   categoryId.classList.add("category_id");
+//   categoryId.innerHTML = figure.id.category.id;
+//   //categoryId.innerHTML = "";
+
+//   const categoryName = document.createElement("p");
+//   categoryName.classList.add("category_name");
+//   categoryName.innerHTML = category.name;
+//   //categoryName.innerHTML = "";
+
+//   //On rattache les balises enfants à leurs parents
+//   figures[i].appendChild(categoryId);
+//   figures[i].appendChild(categoryName);
 
 // Création d'une fonction qui charge les categories
 // function loadCategories(categories){
@@ -108,13 +125,7 @@ function loadWorks(categories){
 
 
 
-loadWorks(works);
-//loadCategories(categories);
 
-
-// --- Show me --- // 
-console.log(works)
-console.log(categories)
 
 
 //fetch("http://localhost:5678/works/${id}");console.log(sectionPortfolio)
