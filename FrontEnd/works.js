@@ -10,54 +10,33 @@ const categories = await second_reponse.json();
 const divGallery = document.createElement("div");
 divGallery.classList.add("gallery")
 
-// Création d'une fonction qui charge les categories
-function loadCategories(categories){
-  for (let i = 0; i < categories.length; i++) {
-  const category = categories[i];
-  }
-}
-
 // Création d'une fonction qui charge la galerie
-function loadWorks(works){
-  for (let i = 0; i < works.length; i++) {
-
-  const figure = works[i];
-
- // Récupération de l'élément du DOM qui accueillera les figures
+function loadWorks(categories){
+  works.forEach((works) => {
+  // Récupération de l'élément du DOM qui accueillera les figures
   const gallery = document.querySelector(".gallery");
-  
-  // Création d’une balise dédiée à un travail de la galerie
+
+	// Création d’une balise dédiée à un travail de la galerie
   const galleryElement = document.createElement("figure");
 
   // Création des balises visibles
   const imageElement = document.createElement("img");
-  imageElement.src = works[i].imageUrl;
-  imageElement.alt = works[i].title;
+  imageElement.src = works.imageUrl;
+  imageElement.alt = works.title;
   
   const figcaptionElement = document.createElement("figcaption");
-  figcaptionElement.innerHTML = works[i].title;
+  figcaptionElement.innerHTML = works.title;
   
   // Création des balises invisibles (works)
   const workId = document.createElement("p");
   workId.classList.add("work_id");
-  workId.innerHTML = works[i].id;
-  workId.innerHTML = "";
+  workId.innerHTML = works.id;
+  //workId.innerHTML = "";
 
- const userId = document.createElement("p");
+  const userId = document.createElement("p");
   userId.classList.add("user_id");
-  userId.innerHTML = works[i].userId;
-  userId.innerHTML = "";
-
-  // Création des balises invisibles (categories)
-  const categoryId = document.createElement("p");
-  categoryId.classList.add("category_id");
-  categoryId.innerHTML = categories[i].id;
-  //categoryId.innerHTML = "";
-
-  const categoryName = document.createElement("p");
-  categoryName.classList.add("category_name");
-  categoryName.innerHTML = categories[i].name;
-  //categoryName.innerHTML = "";
+  userId.innerHTML = works.userId;
+  //userId.innerHTML = "";
 
   // On rattache les balises enfants à leurs parents
   document.querySelector("#portfolio").appendChild(divGallery);
@@ -67,20 +46,70 @@ function loadWorks(works){
 
   galleryElement.appendChild(workId);
   galleryElement.appendChild(userId);
+  })
 
-  // On rattache les balises enfants à leurs parents
-  galleryElement.appendChild(categoryId);
-  galleryElement.appendChild(categoryName);
+  for (let i = 0; i < categories.length; i++) {
+  
+    const category = categories[i];
+    
+    //Récupération des éléments du DOM qui accueillerons les categories
+    const figures = document.querySelectorAll("#portfolio .gallery figure");
+  
+    //Création des balises invisibles (categories)
+    const categoryId = document.createElement("p");
+    categoryId.classList.add("category_id");
+    categoryId.innerHTML = categories[i].id;
+    //categoryId.innerHTML = "";
+  
+    const categoryName = document.createElement("p");
+    categoryName.classList.add("category_name");
+    categoryName.innerHTML = categories[i].name;
+    //categoryName.innerHTML = "";
+  
+    //On rattache les balises enfants à leurs parents
+    figures[i].appendChild(categoryId);
+    figures[i].appendChild(categoryName);
   }
-  loadCategories(categories)
 }
 
 
 
 
+//--------------------------------------------
+
+
+
+// Création d'une fonction qui charge les categories
+// function loadCategories(categories){
+//   for (let i = 0; i < categories.length; i++) {
+  
+//     const category = categories[i];
+
+//   // Récupération des éléments du DOM qui accueillerons les categories
+//   const figures = document.querySelectorAll("#portfolio .gallery figure");
+
+//   // Création des balises invisibles (categories)
+//   const categoryId = document.createElement("p");
+//   categoryId.classList.add("category_id");
+//   categoryId.innerHTML = categories[i].id;
+//   //categoryId.innerHTML = "";
+
+//   const categoryName = document.createElement("p");
+//   categoryName.classList.add("category_name");
+//   categoryName.innerHTML = categories[i].name;
+//   //categoryName.innerHTML = "";
+
+//   // On rattache les balises enfants à leurs parents
+//   figures[i].appendChild(categoryId);
+//   figures[i].appendChild(categoryName);
+//   }
+//   //loadWorks(works);
+// }
+
+
 
 loadWorks(works);
-loadCategories(categories);
+//loadCategories(categories);
 
 
 // --- Show me --- // 
@@ -95,7 +124,8 @@ console.log(categories)
 // console.log(imageElement)
 // console.log(figcaptionElement)
 //console.log (imageElement.src);
-
+// document.querySelector("#portfolio").appendChild(".gallery");
+// document.querySelector(".gallery").appendChild(figureElement);
 
 //  AUTRES 
  // Création d’une balise dédiée au titre de la galerie
@@ -194,3 +224,45 @@ console.log(categories)
       //     <figcaption>Hotel First Arte - New Delhi</figcaption>
       //   </figure>
       // </div> -->  
+
+      // function loadWorks(works){
+//   for (let i = 0; i < works.length; i++) {
+    
+//     const figure = works[i];
+
+//     // Récupération de l'élément du DOM qui accueillera les figures
+//     const gallery = document.querySelector(".gallery");
+    
+//     // Création d’une balise dédiée à un travail de la galerie
+//     const galleryElement = document.createElement("figure");
+
+//     // Création des balises visibles
+//     const imageElement = document.createElement("img");
+//     imageElement.src = works[i].imageUrl;
+//     imageElement.alt = works[i].title;
+    
+//     const figcaptionElement = document.createElement("figcaption");
+//     figcaptionElement.innerHTML = works[i].title;
+    
+//     // Création des balises invisibles (works)
+//     const workId = document.createElement("p");
+//     workId.classList.add("work_id");
+//     workId.innerHTML = works[i].id;
+//     workId.innerHTML = "";
+
+//     const userId = document.createElement("p");
+//     userId.classList.add("user_id");
+//     userId.innerHTML = works[i].userId;
+//     userId.innerHTML = "";
+
+
+//     // On rattache les balises enfants à leurs parents
+//     document.querySelector("#portfolio").appendChild(divGallery);
+//     divGallery.appendChild(galleryElement);
+//     galleryElement.appendChild(imageElement);
+//     galleryElement.appendChild(figcaptionElement);
+
+//     galleryElement.appendChild(workId);
+//     galleryElement.appendChild(userId);
+//   }
+// }
