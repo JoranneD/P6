@@ -125,6 +125,32 @@ li:hover {
 	text-align: center;
 	margin-bottom: 1em;
 }
+
+/* AJOUT BOUTONS DE FILTRE */
+.filters {
+	display: flex;
+	align-items: center;
+	list-style-type: none;
+	width: 100%;
+	display: grid;
+	grid-template-columns: 1fr 1fr 1fr;
+	grid-column-gap: 20px;
+	grid-row-gap: 20px;
+	background-color: #1D6154;
+
+}
+
+.btn_all {
+	padding: 0 10px;
+	font-size: 1.2em;
+}
+
+li:hover {
+	color: #B1663C;
+}
+
+/*--------------------------*/
+
 .gallery {
 	width: 100%;
 	display: grid;

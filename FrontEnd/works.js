@@ -64,15 +64,48 @@ async function loadWorks(){
   })
 }
 
+// Création d'une fonction filtre les travaux
+async function loadFilters(){
+
+  // Création d’une balise dédiée à un travail de la galerie
+  const divFilters = document.createElement("div");
+  divFilters.classList.add("filters")
+
+  const allBtn = document.createElement("button");
+  allBtn.classList.add("btn","all")
+
+  categories.forEach((categories) => {
+    // Création des balises visibles
+    const filterBtn = document.createElement("button");
+    filterBtn.classList.add("btn")
+    //filterBtn.classList.add(categories.name)
+    //filterBtn.textContent = categories.name;
+
+    // On rattache les balises enfants à leurs parents
+    document.querySelector("#portfolio").appendChild(divFilters);
+    divFilters.appendChild(allBtn);
+    divFilters.appendChild(filterBtn);
+  })
+}
+
+// Création d'une fonction qui repositionne les nodes
+ async function swapNodes(){
+  const divFilters = document.querySelector(".filters").lastElementChild;
+  const divGallery = document.querySelector(".gallery");
+
+  divGallery.insertBefore(divFilters, divGallery.children[0]);
+}
+
 
 
 // Lance les fonctions suivantes :
-loadWorks(works);
-
+loadWorks(); // (works)
+loadFilters();
+swapNodes();
 
 // --- Show me --- // 
 console.log(works)
 console.log(categories)
 
-
 //--------------------------------------------
+//const portfolio = document.querySelector("#portfolio");
