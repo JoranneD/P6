@@ -126,30 +126,48 @@ li:hover {
 	margin-bottom: 1em;
 }
 
-/* AJOUT BOUTONS DE FILTRE */
+/* AJOUT BOUTONS */
+#portfolio {
+	display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
 .filters {
 	display: flex;
-	align-items: center;
-	list-style-type: none;
-	width: 100%;
-	display: grid;
-	grid-template-columns: 1fr 1fr 1fr;
-	grid-column-gap: 20px;
-	grid-row-gap: 20px;
-	background-color: #1D6154;
-
+    align-items: center;
+    width: 65%;
+    height: 37px;
+    margin: 30px 0px 30px 0px;
+    gap: 30px;
+    justify-content: center;
+	
 }
 
-.btn_all {
-	padding: 0 10px;
-	font-size: 1.2em;
+.btn {
+	font-family: 'Syne';
+    font-weight: bold;
+	font-size: 16px;
+    color: #1D6154;
+    background-color: white;
+    border-radius: 60px;
+    padding: 10px 25px 10px 25px;
+    border: #1D6154 solid 2px;
 }
 
-li:hover {
-	color: #B1663C;
+.all {
+	color: white;
+    background-color: #1D6154;
+    border: #1D6154 solid 2px;
 }
 
-/*--------------------------*/
+/* Interpretation de la maquette ? */
+.btn:focus {
+	color: white;
+    background-color: #1D6154;
+    border: #1D6154 solid 2px;
+}
+/* FIN AJOUT BOUTONS --------------------------*/
 
 .gallery {
 	width: 100%;
