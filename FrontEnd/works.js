@@ -103,19 +103,22 @@ async function loadFilters(){
   divFilters.insertBefore(allBtn, divFilters.children[0]);
 }
 
-async function filterButtons(categories) {
+// Retourne une liste des figures dont la category.id est 1
+async function filterButtons() {
 
-  //au click de objets, afficher les works dont la category name = objet
-  const objectsButton = document.querySelector("Objects");
-
+const objectsButton = document.querySelector(".Objets");
   objectsButton.addEventListener("click", function () {
-      const filteredWorks = works.filter(function (works) {
-          return works.category.id;
-      });
-      document.querySelector(".gallery").innerHTML = "";
-      loadWorks(filteredWorks);
-  });
+    const lookObjects = works.filter(function (work) {
+        return works.categoryId === 1;
+    });
+    document.querySelector(".gallery").innerHTML = "";
+    loadWorks(lookObjects);
+});
 }
+
+
+
+
 
 
 // Lance les fonctions suivantes :
@@ -128,8 +131,7 @@ filterButtons();
 // --- Show me --- // 
 console.log(works)
 console.log(categories)
-console.log(categories[0].id)
-console.log(objectsButton)
+
 
 
 //--------------------------------------------
@@ -157,3 +159,32 @@ console.log(objectsButton)
 // const classes = new Set();
 //     const hotels = { name : "Hotels & restaurants"};
 //     classes.add(hotels)
+
+// objectsButton.addEventListener("click", () => {
+//   // Je parcours les figures dans mon Works
+//     const lookObjects = works.filter(function (works) {
+//   // J' affiche les figures dont le nom la categories est égale à Objets
+//         return category.name === works[1].category.name;
+//     });
+//     // 
+//     document.querySelector(".gallery").innerHTML = "";
+//     loadWorks(lookObjects);
+// });
+// }
+//document.querySelector(".gallery").innerHTML = "";
+  //loadWorks(lookObjects);
+  
+
+  // window.addEventListener("DOMContentLoaded", (event) => {
+  //   objectsButton.addEventListener("click", () => {
+  //       return works[categories.name];
+  //     });
+  //     //document.querySelector(".gallery").innerHTML = "";
+  //     //loadWorks(lookObjects);
+  //     });
+    //au click de objets, afficher les works dont la category name = objet
+  
+  // 1- Je definie mon bouton Objets
+  // 2- Au click du bouton Objets
+  // Je parcours les figures dans mon Works
+  // J' affiche les figures dont le nom la categories est égale à Objets
