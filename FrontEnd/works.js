@@ -74,14 +74,16 @@ async function loadFilters(){
   // Création du bouton "Tous"
   const allBtn = document.createElement("button");
   allBtn.classList.add("btn","all");
-  allBtn.innerText = "Tous";
+  allBtn.innerHTML = "Tous";
 
   // Création des boutons "Categories"
-  categories.forEach((categories) => {
-    const filterBtn = document.createElement("button");
-    filterBtn.classList.add("btn","filter_btn")
-    filterBtn.innerHTML = categories.name;
+   categories.forEach((categories) => {
 
+    const filterBtn = document.createElement("button");
+    filterBtn.innerHTML = categories.name;
+    filterBtn.className = categories.name;
+    filterBtn.classList.add("btn","filter_btn");
+  
     // On rattache les balises enfants à leurs parents
     document.querySelector("#portfolio").appendChild(divFilters);
     divFilters.appendChild(allBtn);
@@ -91,6 +93,7 @@ async function loadFilters(){
 
 // Création d'une fonction qui repositionne les nodes
  async function swapNodes(){
+
   const portfolio = document.querySelector("#portfolio");
   const divFilters = document.querySelector(".filters");
   const allBtn = document.querySelector(".all");
@@ -100,18 +103,57 @@ async function loadFilters(){
   divFilters.insertBefore(allBtn, divFilters.children[0]);
 }
 
+async function filterButtons(categories) {
+
+  //au click de objets, afficher les works dont la category name = objet
+  const objectsButton = document.querySelector("Objects");
+
+  objectsButton.addEventListener("click", function () {
+      const filteredWorks = works.filter(function (works) {
+          return works.category.id;
+      });
+      document.querySelector(".gallery").innerHTML = "";
+      loadWorks(filteredWorks);
+  });
+}
 
 
 // Lance les fonctions suivantes :
 loadWorks(); // (works)
 loadFilters();
 swapNodes();
+filterButtons();
+
 
 // --- Show me --- // 
 console.log(works)
 console.log(categories)
+console.log(categories[0].id)
+console.log(objectsButton)
+
 
 //--------------------------------------------
 //const filterButton = document.querySelector(".filter_btn");
 //filterBtn = document.querySelector(".filter_btn");
 //filterBtn.classList.add(categories.name)
+//const setObjects = new Set([categories[0].name]);
+//setObjects.add(categories.name);
+// Création des boutons "Categories"
+// for (let i = 0; i < categories.length; i++) {
+
+//   const category = categories[i];
+
+//   const filterBtn = document.createElement("button");
+//   filterBtn.classList.add("btn","filter_btn");
+//   filterBtn.innerHTML = category.name;
+//   filterBtn.classList.add(category.id);
+  
+//   // On rattache les balises enfants à leurs parents
+//   document.querySelector("#portfolio").appendChild(divFilters);
+//   divFilters.appendChild(allBtn);
+//   divFilters.appendChild(filterBtn);
+
+// }
+// const classes = new Set();
+//     const hotels = { name : "Hotels & restaurants"};
+//     classes.add(hotels)
