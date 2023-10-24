@@ -69,17 +69,18 @@ async function loadFilters(){
 
   // Création d’une balise dédiée à un travail de la galerie
   const divFilters = document.createElement("div");
-  divFilters.classList.add("filters")
+  divFilters.classList.add("filters");
 
+  // Création du bouton "Tous"
   const allBtn = document.createElement("button");
-  allBtn.classList.add("btn","all")
+  allBtn.classList.add("btn","all");
+  allBtn.innerText = "Tous";
 
+  // Création des boutons "Categories"
   categories.forEach((categories) => {
-    // Création des balises visibles
     const filterBtn = document.createElement("button");
-    filterBtn.classList.add("btn")
-    //filterBtn.classList.add(categories.name)
-    //filterBtn.textContent = categories.name;
+    filterBtn.classList.add("btn","filter_btn")
+    filterBtn.innerHTML = categories.name;
 
     // On rattache les balises enfants à leurs parents
     document.querySelector("#portfolio").appendChild(divFilters);
@@ -90,10 +91,13 @@ async function loadFilters(){
 
 // Création d'une fonction qui repositionne les nodes
  async function swapNodes(){
-  const divFilters = document.querySelector(".filters").lastElementChild;
-  const divGallery = document.querySelector(".gallery");
+  const portfolio = document.querySelector("#portfolio");
+  const divFilters = document.querySelector(".filters");
+  const allBtn = document.querySelector(".all");
 
-  divGallery.insertBefore(divFilters, divGallery.children[0]);
+  // Tu vois ce node(portfolio) / tu met divFilters avant/à la place du second enfant de ce node.
+  portfolio.insertBefore(divFilters, portfolio.children[1]);
+  divFilters.insertBefore(allBtn, divFilters.children[0]);
 }
 
 
@@ -108,4 +112,6 @@ console.log(works)
 console.log(categories)
 
 //--------------------------------------------
-//const portfolio = document.querySelector("#portfolio");
+//const filterButton = document.querySelector(".filter_btn");
+//filterBtn = document.querySelector(".filter_btn");
+//filterBtn.classList.add(categories.name)
