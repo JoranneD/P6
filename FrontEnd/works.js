@@ -11,7 +11,7 @@ async function loadWorks(){
 
   // Création de la balise galerie qui accueillera les figures
   const divGallery = document.createElement("div");
-  divGallery.classList.add("gallery")
+  divGallery.classList.add("gallery");
 
   works.forEach((works) => {
   // Récupération de l'élément du DOM qui accueillera les figures
@@ -19,6 +19,13 @@ async function loadWorks(){
 
 	// Création d’une balise dédiée à un travail de la galerie
   const galleryElement = document.createElement("figure");
+
+  // Création des attributs de figures
+  galleryElement.setAttribute("id",works.id);
+  //galleryElement.setAttribute("category_id",works.categoryId);
+  //galleryElement.setAttribute("category_name",works.category.name);
+  //galleryElement.setAttribute("user_id",works.userId);
+
 
   // Création des balises visibles
   const imageElement = document.createElement("img");
@@ -29,9 +36,9 @@ async function loadWorks(){
   figcaptionElement.innerHTML = works.title;
   
   // Création des balises invisibles (works)
-  const workId = document.createElement("p");
-  workId.classList.add("work_id");
-  workId.innerHTML = works.id;
+  //const workId = document.createElement("p");
+  //workId.classList.add("work_id");
+  //workId.innerHTML = works.id;
   //workId.innerHTML = "";
 
   const userId = document.createElement("p");
@@ -39,11 +46,16 @@ async function loadWorks(){
   userId.innerHTML = works.userId;
   //userId.innerHTML = "";
 
-  //Création des balises invisibles (categories)
   const categoryId = document.createElement("p");
-  categoryId.classList.add("category_id");
-  categoryId.innerHTML = works.category.id;
+  categoryId.classList.add("categoryId");
+  categoryId.innerHTML = works.categoryId;
   //categoryId.innerHTML = "";
+
+  //Création des balises invisibles (categories)
+  const category_Id = document.createElement("p");
+  category_Id.classList.add("category_id");
+  category_Id.innerHTML = works.category.id;
+  //category_Id.innerHTML = "";
 
   const categoryName = document.createElement("p");
   categoryName.classList.add("category_name");
@@ -56,15 +68,16 @@ async function loadWorks(){
   galleryElement.appendChild(imageElement);
   galleryElement.appendChild(figcaptionElement);
 
-  galleryElement.appendChild(workId);
+  //galleryElement.appendChild(workId);
   galleryElement.appendChild(userId);
-
   galleryElement.appendChild(categoryId);
+
+  galleryElement.appendChild(category_Id);
   galleryElement.appendChild(categoryName);
   })
 }
 
-// Création d'une fonction filtre les travaux
+// Création d'une fonction qui filtre les travaux
 async function loadFilters(){
 
   // Création d’une balise dédiée à un travail de la galerie
@@ -103,20 +116,22 @@ async function loadFilters(){
   divFilters.insertBefore(allBtn, divFilters.children[0]);
 }
 
-// Retourne une liste des figures dont la category.id est 1
-async function filterButtons() {
 
-const objectsButton = document.querySelector(".Objets");
+
+// Test fonction filtre par ID
+const invalidElements = 0;
+
+async function filterObjects() {
+
+  const objectsButton = document.querySelector(".Objets");
   objectsButton.addEventListener("click", function () {
-    const lookObjects = works.filter(function (work) {
-        return works.categoryId === 1;
-    });
-    document.querySelector(".gallery").innerHTML = "";
-    loadWorks(lookObjects);
-});
+    console.log("Hello")
+  });
+  loadWorks();
 }
 
-
+// Retourne une liste des figures dont la categoryId est 1
+// Affiche les figures dont la categoryId est 1.
 
 
 
@@ -125,14 +140,16 @@ const objectsButton = document.querySelector(".Objets");
 loadWorks(); // (works)
 loadFilters();
 swapNodes();
-filterButtons();
+filterObjects();
 
 
 // --- Show me --- // 
 console.log(works)
 console.log(categories)
 
-
+categories.forEach((categories) => {
+  console.log(categories.name)
+})
 
 //--------------------------------------------
 //const filterButton = document.querySelector(".filter_btn");
@@ -188,3 +205,11 @@ console.log(categories)
   // 2- Au click du bouton Objets
   // Je parcours les figures dans mon Works
   // J' affiche les figures dont le nom la categories est égale à Objets
+  // objectsButton.addEventListener("click", function () {
+  //   const lookObjects = works.filter(function (work) {
+  //     return works.categoryId === 1;
+  //   });
+  //   document.querySelector(".gallery").innerHTML = "";
+  //   loadWorks(lookObjects);
+  // });async function filterButtons() {
+  //}
