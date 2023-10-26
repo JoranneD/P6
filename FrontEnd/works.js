@@ -13,74 +13,54 @@ async function loadWorks(){
   const divGallery = document.createElement("div");
   divGallery.classList.add("gallery");
 
-  works.forEach((works) => {
-  // Récupération de l'élément du DOM qui accueillera les figures
-  const gallery = document.querySelector(".gallery");
-
+  works.forEach((work) => {
 	// Création d’une balise dédiée à un travail de la galerie
   const galleryElement = document.createElement("figure");
 
   // Création des attributs de figures
-  galleryElement.setAttribute("id",works.id);
-  //galleryElement.setAttribute("category_id",works.categoryId);
-  //galleryElement.setAttribute("category_name",works.category.name);
-  //galleryElement.setAttribute("user_id",works.userId);
-
+  galleryElement.setAttribute("id",work.id);
+  galleryElement.dataset.category_id = work.categoryId;
 
   // Création des balises visibles
   const imageElement = document.createElement("img");
-  imageElement.src = works.imageUrl;
-  imageElement.alt = works.title;
+  imageElement.src = work.imageUrl;
+  imageElement.alt = work.title;
   
   const figcaptionElement = document.createElement("figcaption");
-  figcaptionElement.innerHTML = works.title;
+  figcaptionElement.innerHTML = work.title;
   
   // Création des balises invisibles (works)
-  //const workId = document.createElement("p");
-  //workId.classList.add("work_id");
-  //workId.innerHTML = works.id;
-  //workId.innerHTML = "";
-
   const userId = document.createElement("p");
   userId.classList.add("user_id");
-  userId.innerHTML = works.userId;
-  //userId.innerHTML = "";
-
-  const categoryId = document.createElement("p");
-  categoryId.classList.add("categoryId");
-  categoryId.innerHTML = works.categoryId;
-  //categoryId.innerHTML = "";
+  userId.innerHTML = work.userId;
+  userId.innerHTML = "";
 
   //Création des balises invisibles (categories)
   const category_Id = document.createElement("p");
   category_Id.classList.add("category_id");
-  category_Id.innerHTML = works.category.id;
-  //category_Id.innerHTML = "";
+  category_Id.innerHTML = work.category.id;
+  category_Id.innerHTML = "";
 
   const categoryName = document.createElement("p");
   categoryName.classList.add("category_name");
-  categoryName.innerHTML = works.category.name;
-  //categoryName.innerHTML = "";
+  categoryName.innerHTML = work.category.name;
+  categoryName.innerHTML = "";
 
   // On rattache les balises enfants à leurs parents
   document.querySelector("#portfolio").appendChild(divGallery);
   divGallery.appendChild(galleryElement);
   galleryElement.appendChild(imageElement);
   galleryElement.appendChild(figcaptionElement);
-
-  //galleryElement.appendChild(workId);
   galleryElement.appendChild(userId);
-  galleryElement.appendChild(categoryId);
-
   galleryElement.appendChild(category_Id);
   galleryElement.appendChild(categoryName);
   })
 }
 
-// Création d'une fonction qui filtre les travaux
-async function loadFilters(){
+// Création d'une fonction qui charge les boutons de filtrage
+async function loadButtons(){
 
-  // Création d’une balise dédiée à un travail de la galerie
+  // Création d'une balise parent qui accueillera les boutons
   const divFilters = document.createElement("div");
   divFilters.classList.add("filters");
 
@@ -88,6 +68,12 @@ async function loadFilters(){
   const allBtn = document.createElement("button");
   allBtn.classList.add("btn","all");
   allBtn.innerHTML = "Tous";
+
+  // On rattache la balise enfant à son parent
+  divFilters.appendChild(allBtn);
+
+  // On place l'écouteur qui active la fonction loadFilters
+  allBtn.addEventListener("click", () => loadFilters(null))
 
   // Création des boutons "Categories"
    categories.forEach((categories) => {
@@ -99,57 +85,50 @@ async function loadFilters(){
   
     // On rattache les balises enfants à leurs parents
     document.querySelector("#portfolio").appendChild(divFilters);
-    divFilters.appendChild(allBtn);
     divFilters.appendChild(filterBtn);
+
+    // On place un écouteur sur chacun des bouton qui active la fonction loadFilters
+    filterBtn.addEventListener("click", () => loadFilters(categories.id))
   })
 }
 
-// Création d'une fonction qui repositionne les nodes
- async function swapNodes(){
+// Création d'une fonction qui filtre les travaux par catégories
+async function loadFilters(category) {
 
-  const portfolio = document.querySelector("#portfolio");
-  const divFilters = document.querySelector(".filters");
-  const allBtn = document.querySelector(".all");
+  // Je déclare ma liste, les elements(figures) que je vais parcourir
+  const works = document.querySelectorAll(".gallery > figure");
 
-  // Tu vois ce node(portfolio) / tu met divFilters avant/à la place du second enfant de ce node.
-  portfolio.insertBefore(divFilters, portfolio.children[1]);
-  divFilters.insertBefore(allBtn, divFilters.children[0]);
+  // J'affiche toutes les figures par defaut
+  works.forEach((element) => {
+    element.style.display = "block";
+  })
+
+  // Cependant, si la categorie n'est pas null, 
+  // je parcours mes elements 
+  // et je n'affiche pas les elements dont la categorie est differente
+  if (category !== null) {
+    works.forEach((work) => {
+      if (work.dataset.category_id !== category.toString()) {
+        work.style.display = "none";
+      }
+    })
+  }
 }
-
-
-
-// Test fonction filtre par ID
-const invalidElements = 0;
-
-async function filterObjects() {
-
-  const objectsButton = document.querySelector(".Objets");
-  objectsButton.addEventListener("click", function () {
-    console.log("Hello")
-  });
-  loadWorks();
-}
-
-// Retourne une liste des figures dont la categoryId est 1
-// Affiche les figures dont la categoryId est 1.
-
-
 
 
 // Lance les fonctions suivantes :
-loadWorks(); // (works)
+loadButtons();
 loadFilters();
-swapNodes();
-filterObjects();
+loadWorks();
 
 
 // --- Show me --- // 
 console.log(works)
 console.log(categories)
 
-categories.forEach((categories) => {
-  console.log(categories.name)
-})
+// categories.forEach((categories) => {
+//   console.log(categories.name)
+// })
 
 //--------------------------------------------
 //const filterButton = document.querySelector(".filter_btn");
@@ -213,3 +192,30 @@ categories.forEach((categories) => {
   //   loadWorks(lookObjects);
   // });async function filterButtons() {
   //}
+  //const workId = document.createElement("p");
+  //workId.classList.add("work_id");
+  //workId.innerHTML = works.id;
+  //workId.innerHTML = "";
+// Récupération de l'élément du DOM qui accueillera les figures
+  //const gallery = document.querySelector(".gallery"); // a jeter
+  //galleryElement.setAttribute("category_name",works.category.name);
+  //galleryElement.setAttribute("user_id",works.userId);
+  //const categoryId = document.createElement("p");
+  //categoryId.classList.add("categoryId");
+  //categoryId.innerHTML = work.categoryId;
+  //categoryId.innerHTML = "";
+  //galleryElement.appendChild(workId);
+  //galleryElement.appendChild(categoryId);
+
+// Création d'une fonction qui repositionne les nodes
+// async function swapNodes(){
+
+//   const portfolio = document.querySelector("#portfolio");
+//   const divFilters = document.querySelector(".filters");
+//   const allBtn = document.querySelector(".all");
+
+//   // Tu vois ce node(portfolio) / tu met divFilters avant/à la place du second enfant de ce node.
+//   portfolio.insertBefore(divFilters, portfolio.children[1]);
+//   divFilters.insertBefore(allBtn, divFilters.children[0]);
+// }
+
