@@ -9,6 +9,9 @@
 	<link href="https://fonts.googleapis.com/css2?family=Syne:wght@700;800&family=Work+Sans&display=swap" rel="stylesheet">
 	<meta name="description" content="">
 	<link rel="stylesheet" href="./assets/style.css">
+    <!-- AJOUT MODULE JS -->
+    <script type="module" src="login.js"></script>
+    <!-- <script type="module" src="../Backend/controllers/users.controller.js"></script> -->
 </head>
 <body id="bodyLogin">
     <header>
@@ -27,10 +30,10 @@
             <h2>Log In</h2>
             <form action="#" method="post">
                 <label for="email">E-mail</label>
-                <input type="email" name="email" id="email">
+                <input type="email" name="email" id="email" autocomplete="on">
                 <label for="password">Mot de passe</label>
-                <input type="password" name="password" id="password">
-                <input type="submit" value="Se connecter">
+                <input type="password" name="password" id="password" autocomplete="on">
+                <input type="submit" id="loginBtn" value="Se connecter">
             </form>
             <p><a href="">Mot de passe oublié</a></p>
         </section>

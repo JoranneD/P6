@@ -1,3 +1,8 @@
+//import { logIn } from "./login.js";
+
+// on appel la fonction pour ajouter le listener au formulaire
+//logIn();
+
 // Récupération des travaux et categories depuis l'API
 const reponse = await fetch("http://localhost:5678/api/works");
 const works = await reponse.json();
