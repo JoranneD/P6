@@ -17,29 +17,59 @@ export function logIn() {
 		});
 		console.log(fetchPromise)
 
-		// Ma response -- Recuperation des informations avec la propriété dataset
-		fetchPromise
-		.then((response) => {
-			// Me donne le statut de la promesse
-			console.log(response);
-			return response.json();
-		})
-			// Me donne l'objet demandé (ici un userId et un token)
-		 .then((userData) => {
-		 	console.log(userData);
-		});
+		
+		getAnswer();
 	});
 }
 
+function getAnswer() {
+// Ma response -- Recuperation des informations avec la propriété dataset
+fetchPromise
+.then((response) => {
+	// Me donne le statut de la promesse
+	console.log(response);
+	return response.json();
+})
+	// Me donne l'objet demandé (ici un userId et un token)
+ .then((userData) => {
+	 console.log(userData);
+	console.log(userData.userId);
+	console.log(userData.token);
+	return userData;
+});
 
+const identification = userData.userId;
+const password = userData.token;
+function loginRedirection(){
+	window.location = "./index.html"; 
+}
+}
 
 // Lance les fonctions suivantes :
 logIn();
+getAnswer();
 
 // --- Show me --- // 
 //console.log(fetchPromise)
 //console.log(response)
 //console.log(userData)
-
+// console.log(userData);
+// console.log(userData.userId);
+// console.log(userData.token);
 
 //--------------------------------------------
+// Me donne l'objet demandé (ici un userId et un token)
+//.then((userData) => {
+//	console.log(userData);
+
+
+
+// if (category !== null) {
+//     works.forEach((work) => {
+//       if (work.dataset.category_id !== category.toString()) {
+//         work.style.display = "none";
+//       }
+//     })
+//   }
+
+
