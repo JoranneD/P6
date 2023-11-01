@@ -229,6 +229,38 @@ li:hover {
 	border: none;
 	box-shadow: 0px 4px 14px rgba(0, 0, 0, 0.09);
 }
+
+/**/
+/* #login input {
+	transition: background-color 500ms;
+} */
+
+#login input:not(:focus):invalid {
+	background-color: #B1663C; /*#b20a37*/
+	color: #fff;
+	animation: headshake 100ms cubic-bezier(.4,.1,.6,.9) 2;
+}
+
+@keyframes headshake {
+    25% {
+        /* entièrement à droite */
+        transform: translateX(1%);
+    }
+    75% {
+        /* entièrement à gauche */
+        transform: translateX(1% * -1);
+    }
+}
+
+/* input[type="password"]:invalid {
+    background-color: #b20a37;
+	border: 2px solid #b20a37;
+	color: #fff;
+	content: "✖";
+  	color: #b20a37;
+} */
+
+/**/
 #contact label, #login label {
 	margin: 2em 0 1em 0;
 }
