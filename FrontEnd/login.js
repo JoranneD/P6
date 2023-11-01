@@ -25,30 +25,39 @@ export function logIn() {
 			//console.log(response.status);
 			//console.log(response.ok);
 
-			// Si la combinaison utilisateur - mot de passe est correcte, comment
-			// rediriger vers la page d’accueil et s’assurer que la configuration est
-			// maintenue ? 
+			// Si la combinaison utilisateur/mdp est correcte, redirection vers homepage 
 			if (response.ok) {
-				//window.location = "./index.html";
+				window.location = "./index.html";
 			}
 			else {
-				  // Création du bouton "Tous"
-					const errorMessage = document.createElement("p");
-					errorMessage.classList.add("error");
-					errorMessage.innerHTML = "Nom d'utilisateur ou mot de passe invalide";
+				// Création du message d'erreur
+				const errorBox = document.createElement("div");
+				errorBox.classList.add("error-box");
 
-					// On rattache la balise enfant à son parent
-					loginForm.appendChild(errorMessage);
+				const errorMessage = document.createElement("p");
+				errorMessage.classList.add("error");
+				errorMessage.innerHTML = "Nom d'utilisateur ou mot de passe invalide";
 
-					
-					loginForm.insertBefore(errorMessage, loginForm.children[4]);
-					
+				// On rattache la balise enfant à son parent
+				loginForm.appendChild(errorBox);
+				errorBox.appendChild(errorMessage);
 
-					// On place l'écouteur qui active la fonction loadFilters
-					//allBtn.addEventListener("click", () => loadFilters(null))
+				// On le positionne avant le bouton se connecter
+				loginForm.insertBefore(errorBox, loginForm.children[4]);
 				
-			}
+				// Disparition du message d'erreur
+				const emailInput = document.querySelector("#login input#email");
+				console.log(emailInput)
+				const passwordInput = document.querySelector("#login input#password");
+				console.log(passwordInput)
 
+				window.onclick = function(event) {
+					if (event.target == emailInput || event.target == passwordInput ) {
+						errorBox.style.display = "none";
+						errorMessage.innerHTML = "";
+					}
+				}
+			}
 			return response.json();
 		})
 			// Me donne l'objet demandé (ici un userId et un token)
@@ -57,14 +66,13 @@ export function logIn() {
 			console.log(userData.userId);
 			console.log(userData.token);
 			return userData;
-		
 		});
 	});
 }
 
 
 // ○ Si la combinaison est fausse, comment prévenir l’utilisateur ?
-
+// et s’assurer que la configuration est maintenue ? 
 
 
 
@@ -134,3 +142,10 @@ logIn();
 
 // $('#email').on('input', validate);
 // throw new Error ("");
+
+// errorBox.onclick = function(event) {
+					// 	if (event.target == errorBox) {
+					// 		errorBox.style.display = "none";
+					// 		errorMessage.innerHTML = "";
+					// 	}
+					// }
