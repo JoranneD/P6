@@ -1,4 +1,4 @@
-export function logIn() {
+function logIn() {
 	const loginForm = document.querySelector("#login form");
 	loginForm.addEventListener("submit", async function (event) {
 		event.preventDefault();
@@ -17,67 +17,70 @@ export function logIn() {
 		});
 		console.log(fetchPromise)
 
-		// Ma response -- Recuperation des informations avec la propriété dataset
+		// Ma response -- Recuperation des informations
 		fetchPromise
-		.then((response) => {
-			// Me donne le statut de la promesse
+		.then((response) => { // J'ai pu recuperer ma Response
 			console.log(response);
-			//console.log(response.status);
-			//console.log(response.ok);
-
-			// Si la combinaison utilisateur/mdp est correcte, redirection vers homepage 
-			if (response.ok) {
-				window.location = "./index.html";
-			}
-			else {
+			// Je charge mes messages d'erreurs
+			function loadErrorMessage() {
 				// Création du message d'erreur
-				const errorBox = document.createElement("div");
-				errorBox.classList.add("error-box");
-
+				const errorBox = document.getElementById("errorSign");
+				errorBox.classList.remove('hidden');
+				errorBox.innerHTML = "";
+		
 				const errorMessage = document.createElement("p");
 				errorMessage.classList.add("error");
-				errorMessage.innerHTML = "Nom d'utilisateur ou mot de passe invalide";
-
-				// On rattache la balise enfant à son parent
-				loginForm.appendChild(errorBox);
-				errorBox.appendChild(errorMessage);
-
-				// On le positionne avant le bouton se connecter
-				loginForm.insertBefore(errorBox, loginForm.children[4]);
 				
+				if (response.status === 401 || response.status === 404 ) {
+					
+					errorMessage.innerHTML = "Nom d'utilisateur ou mot de passe invalide";
+				}
+				else {
+					errorMessage.innerHTML = "Erreur de serveur interne";
+				}
+				
+				// On rattache la balise enfant à son parent
+				errorBox.appendChild(errorMessage);
+		
 				// Disparition du message d'erreur
+				const inputs = document.querySelectorAll("#login input");
 				const emailInput = document.querySelector("#login input#email");
-				console.log(emailInput)
 				const passwordInput = document.querySelector("#login input#password");
-				console.log(passwordInput)
-
-				window.onclick = function(event) {
+		
+				loginForm.onclick = function(event) {
 					if (event.target == emailInput || event.target == passwordInput ) {
-						errorBox.style.display = "none";
-						errorMessage.innerHTML = "";
+						errorBox.classList.add('hidden');
 					}
 				}
 			}
-			return response.json();
+			// Si la combinaison utilisateur/mdp est correcte : 
+			if (response.status === 200) {
+				response.json() // 
+				.then((data) => {
+					console.log(data);
+					localStorage.setItem("token", data.token); // stockage du token
+					window.location = "./index.html"; // redirection vers homepage 
+				});
+			}
+			// Si la combinaison utilisateur/mdp est incorrecte :
+			else if (response.status === 401 || response.status === 404 ) {
+				loadErrorMessage()
+			}
 		})
-			// Me donne l'objet demandé (ici un userId et un token)
-		.then((userData) => {
-			console.log(userData);
-			console.log(userData.userId);
-			console.log(userData.token);
-			return userData;
-		});
+		.catch((error) => { //Je n'ai pu recuperer ma Response 
+			loadErrorMessage()
+			console.log(error)
+		})
 	});
 }
 
 
-// ○ Si la combinaison est fausse, comment prévenir l’utilisateur ?
-// et s’assurer que la configuration est maintenue ? 
-
 
 
 // Lance les fonctions suivantes :
+
 logIn();
+//loadErrorMessage();
 //getAnswer();
 
 // --- Show me --- // 
@@ -149,3 +152,8 @@ logIn();
 					// 		errorMessage.innerHTML = "";
 					// 	}
 					// }
+
+					// On le positionne avant le bouton se connecter
+				//loginForm.insertBefore(errorBox, loginForm.children[4]);
+				
+				

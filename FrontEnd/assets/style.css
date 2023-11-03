@@ -223,7 +223,7 @@ li:hover {
 	flex-direction: column;
 }
 
-#contact input, #login input, .error-box {
+#contact input, #login input, .errorBox {
 	height: 50px;
 	font-size: 1.2em;
 	border: none;
@@ -232,20 +232,24 @@ li:hover {
 
 /**/
 
-.error-box {
+.errorBox {
 	display: flex;
 	background-color: #cd6d6d; /* #b58a71; /* #6d5649; /*#b20a37*/
 	color: #fff;
 	justify-content: center;
     align-items: center;
 	margin-top: 35px;
-	animation: headshake 100ms cubic-bezier(.4,.1,.6,.9) 2;
+	animation: headshake 400ms cubic-bezier(.4,.1,.6,.9) 2;
 }
 
 .hidden {
 	display: none;
-  	opacity: 0;
+  	/*opacity: 0;*/
 }
+
+/* .shake {
+	animation: headshake 400ms cubic-bezier(.4,.1,.6,.9) 2;
+} */
 
 
 /* #login input {
