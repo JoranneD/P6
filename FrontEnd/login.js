@@ -21,7 +21,7 @@ function logIn() {
 		fetchPromise
 		.then((response) => { // J'ai pu recuperer ma Response
 			console.log(response);
-			// Je charge mes messages d'erreurs
+			// Je charge mes gestionnaire d'erreurs et d'affichage d'édition
 			function loadErrorMessage() {
 				// Création du message d'erreur
 				const errorBox = document.getElementById("errorSign");
@@ -33,7 +33,7 @@ function logIn() {
 				
 				if (response.status === 401 || response.status === 404 ) {
 					
-					errorMessage.innerHTML = "Nom d'utilisateur ou mot de passe invalide";
+					errorMessage.innerHTML = "Erreur dans l’identifiant ou le mot de passe";
 				}
 				else {
 					errorMessage.innerHTML = "Erreur de serveur interne";
@@ -52,15 +52,17 @@ function logIn() {
 						errorBox.classList.add('hidden');
 					}
 				}
-			}
+			};
+		
 			// Si la combinaison utilisateur/mdp est correcte : 
 			if (response.status === 200) {
-				response.json() // 
+				response.json()
 				.then((data) => {
 					console.log(data);
 					localStorage.setItem("token", data.token); // stockage du token
-					window.location = "./index.html"; // redirection vers homepage 
+					window.location.href = 'index.html'; // Redirigez vers index.html
 				});
+				
 			}
 			// Si la combinaison utilisateur/mdp est incorrecte :
 			else if (response.status === 401 || response.status === 404 ) {
@@ -155,5 +157,128 @@ logIn();
 
 					// On le positionne avant le bouton se connecter
 				//loginForm.insertBefore(errorBox, loginForm.children[4]);
+// function loadEdit() {
+// 	const editMode = document.getElementById("editSign");
+// 	editMode.classList.remove('hidden');
+// 	//editMode.innerHTML = "";
+// 	console.log(editMode)
+
+// 	const editMessage = document.createElement("p");
+// 	editMessage.classList.add("error");
+// 	editMessage.innerHTML = "Mode édition";
+
+// 	const editIcone = document.createElement("i");
+// 	editIcone.classList.add("fa-regular fa-pen-to-square");
+
+// 	//On rattache la balise enfant à son parent
+// 	editMode.appendChild(editMessage);
+// 	editMessage.appendChild(editIcone);
+// }
 				
-				
+// function loadEdit() {
+// 	const editMode = document.getElementById("editSign").style.display = "none";;
+// 	//editMode.classList.remove('hidden');
+// 	//editMode.innerHTML = "";
+// 	//console.log(editMode)
+// 	//work.style.display = "none";
+
+// Remplacez ceci par votre jeton d'authentification réel
+// const votreToken = "votre-jeton-d-authentification-ici";
+
+// // URL de la ressource protégée
+// const url = "https://api.example.com/resource";
+
+// // Configuration de l'en-tête d'authentification
+// const headers = new Headers({
+// 'Authorization': `Bearer ${votreToken}`
+// });
+
+// // Configuration de l'objet de la requête
+// const options = {
+// method: 'GET',
+// headers: headers
+// };
+
+// // Effectuez la requête en utilisant Fetch
+// fetch(url, options)
+// .then(response => {
+// 	if (response.ok) {
+// 	return response.json();
+// 	} else {
+// 	throw new Error(`Échec avec code d'état ${response.status}`);
+// 	}
+// })
+// .then(data => {
+// 	console.log("Succès !");
+// 	console.log(data);  // Affiche la réponse de l'API
+// })
+// .catch(error => {
+// 	console.error(error);
+// });
+
+// function loadEdit() {
+// 	// Vérifiez si le jeton est déjà stocké dans localStorage
+// 	const votreToken = localStorage.getItem('token');
+
+// 	// URL de la ressource protégée
+// 	const url = "./index.html";
+// 	const editMode = document.getElementById("editSign");
+// 	 editMode.classList.remove('hidden');
+// 	 //editMode.innerHTML = "";
+// 	 console.log(editMode)
+
+// 	if (votreToken) {
+// 		// Configuration de l'en-tête d'authentification
+// 		const headers = new Headers({
+// 		  'Authorization': `Bearer ${votreToken}`
+// 		});
+
+// 		// Configuration de l'objet de la requête
+// 		const options = {
+// 		method: 'GET',
+// 		headers: headers
+// 		};
+
+// 		// Effectuez la requête en utilisant Fetch
+// 		fetch(url, options)
+// 		.then(response => {
+// 		if (response.ok) {
+// 			return response.json();
+// 		} else {
+// 			throw new Error(`Échec avec code d'état ${response.status}`);
+// 		}
+// 		})
+// 		.then(data => {
+// 		console.log("Succès !");
+// 		console.log(data);  // Affiche la réponse de l'API
+// 		})
+// 		.catch(error => {
+// 		console.error(error);
+// 		});
+// 	} 
+// 	else {
+// 	console.error("Le jeton d'authentification n'est pas présent dans localStorage.");
+// 	}
+			
+	// // Je recupere mon token
+	// const key = window.localStorage.getItem("token");
+	// if (key != null) {
+	// 	key = JSON.parse(key);
+	// 	document.getElementById("editSign").style.display = "block";
+	// }
+
+	// Fonction pour définir l'indicateur dans localStorage
+	// function setEditSignVisible() {
+	// 	localStorage.setItem('editSignVisible', 'true');
+	//   };
+	// function loadEdit() {
+	// 	// Vérifiez si l'indicateur est défini dans localStorage
+	// 	const isEditSignVisible = localStorage.getItem('editSignVisible') === 'true';
+	// 	if (isEditSignVisible) {
+	// 	  // Supprimez la classe "hidden" de l'élément "editSign"
+	// 	  const editSignElement = document.getElementById('editSign');
+	// 	  if (editSignElement) {
+	// 		editSignElement.classList.remove('hidden');
+	// 	  }
+	// 	}
+	// }
