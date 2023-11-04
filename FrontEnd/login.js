@@ -62,7 +62,6 @@ function logIn() {
 					localStorage.setItem("token", data.token); // stockage du token
 					window.location.href = 'index.html'; // Redirigez vers index.html
 				});
-				
 			}
 			// Si la combinaison utilisateur/mdp est incorrecte :
 			else if (response.status === 401 || response.status === 404 ) {
@@ -77,11 +76,9 @@ function logIn() {
 }
 
 
-
-
 // Lance les fonctions suivantes :
-
 logIn();
+
 //loadErrorMessage();
 //getAnswer();
 
