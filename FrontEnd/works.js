@@ -12,7 +12,7 @@ const categories = await second_reponse.json();
 
 
 // Création d'une fonction qui charge la galerie
-function loadWorks(){
+export function loadWorks(){
 
   // Création de la balise galerie qui accueillera les figures
   const divGallery = document.createElement("div");
