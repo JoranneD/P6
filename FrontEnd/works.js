@@ -12,7 +12,7 @@ const categories = await second_reponse.json();
 
 
 // Création d'une fonction qui charge la galerie
-async function loadWorks(){
+function loadWorks(){
 
   // Création de la balise galerie qui accueillera les figures
   const divGallery = document.createElement("div");
@@ -63,7 +63,7 @@ async function loadWorks(){
 }
 
 // Création d'une fonction qui charge les boutons de filtrage
-async function loadButtons(){
+function loadButtons(){
 
   // Création d'une balise parent qui accueillera les boutons
   const divFilters = document.createElement("div");
@@ -98,7 +98,7 @@ async function loadButtons(){
 }
 
 // Création d'une fonction qui filtre les travaux par catégories
-async function loadFilters(category) {
+function loadFilters(category) {
 
   // Je déclare ma liste, les elements(figures) que je vais parcourir
   const works = document.querySelectorAll(".gallery > figure");

@@ -232,6 +232,21 @@ li:hover {
 
 /**/
 
+.editMode {
+	display: flex;
+	background-color: black;
+	color: white;
+	height: 59px;
+	justify-content: center;
+    align-items: center;
+}
+
+.editMode p {
+	display: flex;
+	gap: 20px;
+	font-size: 16px;
+}
+
 .errorBox {
 	display: flex;
 	background-color: #cd6d6d; /* #b58a71; /* #6d5649; /*#b20a37*/
