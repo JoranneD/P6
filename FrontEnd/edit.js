@@ -25,7 +25,7 @@ export function loadEditInterface() {
 		const editBtn = document.createElement("button");
 		editBtn.setAttribute("id", "editBtn");
 		editBtn.classList.add("edit_Btn");
-		editBtn.innerHTML = `<i class="fa-regular fa-pen-to-square"></i> Mode édition`;
+		editBtn.innerHTML = `<i class="fa-regular fa-pen-to-square"></i> Modifier`;
 
 		editBox.appendChild(editBtn);
 		editBox.appendChild(editTitle);
