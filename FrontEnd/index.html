@@ -7,26 +7,25 @@
 	<link rel="preconnect" href="https://fonts.googleapis.com">
 	<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 	<link href="https://fonts.googleapis.com/css2?family=Syne:wght@700;800&family=Work+Sans&display=swap" rel="stylesheet">
-	<!-- FONTAWESOME LIBRARY -->
+	<!-- Fontawesome library -->
     <script src="https://kit.fontawesome.com/1640f594a2.js" crossorigin="anonymous"></script>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.2.1/css/all.min.css" integrity="sha512-MV7K8+y+gLIBoVD59lQIYicR65iaqukzvf/nwasF0nqhPay5w/9lJmVM2hMDcnK1OnMGCdVK+iQrJ7lzPJQd1w==" crossorigin="anonymous" referrerpolicy="no-referrer">
-    <!------ -->
 	<meta name="description" content="">
 	<link rel="stylesheet" href="./assets/style.css">
-	<!-- AJOUT MODULE JS -->
+	<!-- Module Javascript -->
 	<script type="module" src="works.js"></script>
-	
 </head>
 <body>
-	<div id="editSign" class="editMode hidden">
-		<p><i class="fa-regular fa-pen-to-square" id="editBtn"></i>Mode édition</p>
+	<!-- Interface d'édition -->
+	<div id="editInterface" class="editMode hidden">
+		<p><i class="fa-regular fa-pen-to-square"></i>Mode édition</p>
 	</div>
 
-	<!-- La modal -->
-    <div id="myModal" class="modal hidden">
+	<!-- Fenetre modale -->
+    <div id="modalWindow" class="modal hidden">
+		<span id="closeBtn" class="close" >&times;</span>
 		<div class="modal-content">
-		  <span class="close" id="closeModal">&times;</span>
-		  <p>Contenu de la modal...</p>
+			<!-- Galerie ici -->
 		</div>
 	</div>
 
@@ -55,8 +54,10 @@
 	</section>
 	<section id="portfolio">
 		<h2>Mes Projets</h2>
-		<!-- AJOUT BOUTONS DE FILTRE ICI -->
-		<!-- AJOUT GALERIE ICI -->
+		<div id="divFilters" class="filters">
+			<!-- Boutons de filtres -->
+		</div>
+		<!-- Galerie -->
 	</section>
 	<section id="contact">
 		<h2>Contact</h2>
@@ -72,7 +73,6 @@
 		</form>
 	</section>
 </main>
-
 <footer>
 	<nav>
 		<ul>
@@ -80,14 +80,15 @@
 		</ul>
 	</nav>
 </footer>
-
+<!-- AJOUT MODULE JS -->
 <script type="module">
-	import { loadEdit } from './visibility.js';
-	loadEdit();
-  </script>
-  <script type="module">
-	import { openModal } from './modal.js';
+	import { loadEditInterface } from './edit.js';
+	loadEditInterface();
+</script>
+  <!-- <script type="module">
+	import { openModal, closeModal } from './modal.js';
 	openModal();
-  </script>
+	closeModal();
+</script> -->
 </body>
 </html>

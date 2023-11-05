@@ -63,11 +63,12 @@ export function loadWorks(){
 }
 
 // Création d'une fonction qui charge les boutons de filtrage
-function loadButtons(){
+export function loadButtons(){
 
   // Création d'une balise parent qui accueillera les boutons
-  const divFilters = document.createElement("div");
-  divFilters.classList.add("filters");
+  const divFilters = document.getElementById("divFilters");
+  //const divFilters = document.createElement("div");
+  //divFilters.classList.add("filters");
 
   // Création du bouton "Tous"
   const allBtn = document.createElement("button");
@@ -89,7 +90,7 @@ function loadButtons(){
     filterBtn.classList.add("btn","filter_btn");
   
     // On rattache les balises enfants à leurs parents
-    document.querySelector("#portfolio").appendChild(divFilters);
+    //document.querySelector("#portfolio").appendChild(divFilters);
     divFilters.appendChild(filterBtn);
 
     // On place un écouteur sur chacun des bouton qui active la fonction loadFilters
