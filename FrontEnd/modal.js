@@ -5,7 +5,7 @@ export function openModal() {
     const editBtn = document.getElementById('editBtn');
   
     // Récupérez la modal par son ID
-    const modal = document.getElementById('myModal');
+    const modal = document.getElementById('modalWindow');
   
     // Ajoutez un écouteur d'événements au clic sur "editBtn"
     editBtn.addEventListener('click', function() {
@@ -19,7 +19,7 @@ export function openModal() {
         const gallery = document.querySelector('.gallery');
 
         // Récupérez le paragraphe "editSign" par son ID
-        const editContent = document.querySelector('#editSign p');
+        // const editContent = document.querySelector('#editSign p');
 
         // Ajoutez la galerie à l'intérieur du paragraphe "editSign"
         editContent.appendChild(gallery);
