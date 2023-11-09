@@ -22,12 +22,19 @@
 	</div>
 
 	<!-- Fenetre modale -->
-    <div id="modalWindow" class="modal hidden">
-		<span id="closeBtn" class="close" >&times;</span>
-		<div class="modal-content">
+    <aside id="modalWindow" class="modal" aria-hidden="true" role="dialog" aria_labelledby="modalTitle">
+		<div class="modalContent">
+			<div class="modalButtons">
+			<i id="closeBtn" class="fa-solid fa-xmark"></i>
+			<!-- <i id="previousBtn" class="fa-solid fa-arrow-left"></i>-->
+			</div>
+			<p class="modalTitle">Galerie Photo</p>
+			<div class="figureContent">
 			<!-- Galerie ici -->
+			</div>
+			<button class="btn modalSubmitBtn">Ajouter une photo</button>
 		</div>
-	</div>
+	</aside>
 
 <header>
 	<h1>Sophie Bluel <span>Architecte d'intérieur</span></h1>
@@ -85,10 +92,10 @@
 	import { loadEditInterface } from './edit.js';
 	loadEditInterface();
 </script>
-  <!-- <script type="module">
+<script type="module">
 	import { openModal, closeModal } from './modal.js';
 	openModal();
 	closeModal();
-</script> -->
+</script>
 </body>
 </html>
