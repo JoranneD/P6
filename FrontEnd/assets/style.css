@@ -355,8 +355,6 @@ footer nav ul {
     width: 100%;
     height: 100%;
     background-color: rgba(0, 0, 0, 0.7);
-	
-	/* display: flex; */
 	align-items: center;
 	justify-content: center;
 }
@@ -372,7 +370,6 @@ footer nav ul {
 	border: solid #dbdbdb 1px;
     border-radius: 10px;
 	background-color: #ffffff;
-
 	display: flex;
 	flex-direction: column;
 }
@@ -391,25 +388,20 @@ footer nav ul {
 	color: #B1663C;
 }
 
-.modalSubmitBtn {
-	width: fit-content;
-	background-color: #1D6154;
-	color: #ffffff;
-	padding: 10px 55px;
-}
-
 .modalTitle {
 	font-family: 'Work Sans';
 	font-size: 26px;
-	margin: 20px 0px;
+	margin-bottom: 20px;
 	text-align: center;
 }
 
 .figureContent {
 	align-self: center;
 	width: 420px;
+	height: 360px;
 	border-bottom: solid #B3B3B3 2px;
-	background-color: lightsalmon;
+	background-color: #ffffff;
+	padding-bottom: 50px;
 
 	
 	/* display: none;
@@ -425,4 +417,36 @@ footer nav ul {
 	padding: 30px;
 	gap: 22px;
 	margin: auto; */
+}
+
+.figureContent .gallery {
+    grid-template-columns: 1fr 1fr 1fr 1fr 1fr;
+    justify-content: center;
+}
+
+.modalSubmitBtn {
+	width: fit-content;
+	background-color: #1D6154;
+	color: #ffffff;
+	padding: 10px 55px;
+	align-self: center;
+	margin-top: 35px;
+}
+
+.deleteIcon {
+	height: 24px;
+	width: 24px;
+	background-color: black;
+	color: #ffffff;
+	display: flex;
+	justify-content: center;
+	position: relative;
+    bottom: 90px;
+    left: 40px;
+}
+
+.deleteIcon i {
+	align-self: center;
+	/* font-size: 10px; */
+
 }
