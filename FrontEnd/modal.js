@@ -1,11 +1,12 @@
 import { loadWorks } from './works.js';
-//import { loadEditInterface } from './edit.js';
-
 
 // Déclarez les variables en dehors des fonctions pour les rendre accessibles à toutes les fonctions
 const editBtn = document.getElementById('editBtn');
 const modal = document.getElementById('modalWindow');
 const closeBtn = document.getElementById('closeBtn');
+const figureContent = document.querySelector('.figureContent');
+const gallery = document.querySelector('.gallery');
+
 
 export function openModal() {
   // Vérifiez si l'élément avec l'ID 'editBtn' est présent
@@ -15,23 +16,49 @@ export function openModal() {
     // Rend la modal visible
     modal.style.display = 'flex';
     });
+
+    // Chargez la galerie lorsque la modal est ouverte
+    loadWorks();
+    
+    if (gallery) {
+      // Récupérez tous les éléments figcaption à l'intérieur de la galerie
+      const figcaptions = gallery.querySelectorAll('figcaption');
+
+      // Ajoutez la classe hidden à chaque figcaption
+      figcaptions.forEach((figcaption) => {
+        figcaption.classList.add('hidden');
+      });
+
+      
+      // Récupérez tous les figures à l'intérieur de la galerie
+      const figures = gallery.querySelectorAll('figure');
+      
+      // Je cree une div icone à chaque figure
+      figures.forEach((figure) => {
+        const deleteIcon = document.createElement("div");
+        deleteIcon.classList.add('deleteIcon');
+        deleteIcon.innerHTML = `<i class="fa-solid fa-trash-can"></i>`;
+        
+        // Je le rattache à son parent
+        figure.appendChild(deleteIcon);
+      });
+
+
+    }
+
+
+
+    //console.log(figcaptions)
+    console.log(gallery)
+
+    // const figcaptions = document.querySelectorAll('.figureContent .gallery figure figcaption');
+
+    // Ajouter la galerie à l'intérieur du paragraphe "editSign"
+    figureContent.appendChild(gallery);
   } 
   // else {
-  //   console.error("L'élément avec l'ID 'editBtn' n'est pas présent dans le document.");
+  // console.error("L'élément avec l'ID 'editBtn' n'est pas présent dans le document.");
   // }
-      
-  // Chargez la galerie lorsque la modal est ouverte
-  //loadWorks();
-
-  // Récupérez la galerie
-  //const gallery = document.querySelector('.gallery');
-
-  // Récupérez le paragraphe "editSign" par son ID
-  // const editContent = document.querySelector('#editSign p');
-
-  // Ajoutez la galerie à l'intérieur du paragraphe "editSign"
-  //editContent.appendChild(gallery);
-  
 }
   
 export function closeModal() {
