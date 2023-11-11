@@ -26,12 +26,21 @@
 		<div class="modalContent">
 			<div class="modalButtons">
 			<i id="closeBtn" class="fa-solid fa-xmark"></i>
-			<!-- <i id="previousBtn" class="fa-solid fa-arrow-left"></i>-->
+			<i id="previousBtn" class="fa-solid fa-arrow-left hidden"></i>
 			</div>
 			<p class="modalTitle">Galerie Photo</p>
 			<div class="figureContent">
 			<!-- Galerie ici -->
 			</div>
+			<form class="modalForm hidden">
+				<div class="photoUpload">
+					<i class="fa-solid fa-photo"></i>
+					<input type="file" class="photoInput" accept=".jpg, .jpeg, .png">
+					<p class="photoText">jpg</p>
+				</div>
+				<input type="text" placeholder="Titre de la photo">
+				<input type="text" placeholder="Catégorie">
+			</form>
 			<button class="btn modalSubmitBtn">Ajouter une photo</button>
 		</div>
 	</aside>

@@ -4,8 +4,12 @@ import { loadWorks } from './works.js';
 const editBtn = document.getElementById('editBtn');
 const modal = document.getElementById('modalWindow');
 const closeBtn = document.getElementById('closeBtn');
+const previousBtn = document.getElementById("previousBtn");
 const figureContent = document.querySelector('.figureContent');
 const gallery = document.querySelector('.gallery');
+const modalTitle = document.querySelector('.modalTitle');
+const modalForm = document.querySelector('.modalForm');
+const modalSubmitBtn = document.querySelector('.modalSubmitBtn');
 
 
 export function openModal() {
@@ -35,14 +39,45 @@ export function openModal() {
       
       // Je cree une div icone à chaque figure
       figures.forEach((figure) => {
-        const deleteIcon = document.createElement("div");
-        deleteIcon.classList.add('deleteIcon');
-        deleteIcon.innerHTML = `<i class="fa-solid fa-trash-can"></i>`;
+        const deleteBtn = document.createElement("div");
+        deleteBtn.classList.add('deleteBtn');
+        deleteBtn.innerHTML = `<i class="fa-solid fa-trash-can"></i>`;
         
         // Je le rattache à son parent
-        figure.appendChild(deleteIcon);
+        figure.appendChild(deleteBtn);
       });
 
+      // Au clic de ajouter une photo :
+      modalSubmitBtn.addEventListener('click', function() {
+
+        // J'affiche la fleche precedent
+        previousBtn.classList.remove('hidden');
+
+        // Je masque la galerie
+        figureContent.classList.add('hidden');
+
+        // Je change le titre en "Ajout photo"
+        modalTitle.textContent = "Ajout photo";
+
+        // J'affiche le formulaire
+        modalForm.classList.remove('hidden');
+
+        previousBtn.addEventListener('click', function() {
+          figureContent.classList.remove('hidden');
+          previousBtn.classList.add('hidden');
+          modalTitle.textContent = "Galerie Photo";
+          modalForm.classList.add('hidden');
+        });
+
+        
+
+        // J'ajoute un formulaire composé d'une div dans laquel se trouve une icone photo+ un input "ajouter photo"+ un petit texte dan slequel est ecrit "jpg". ensuite j'ai un input titre et un input categorie ou je peux scroller
+
+        });
+
+
+      // j'ajoute une figure à #portfolio .gallery
+      
 
     }
 
@@ -149,3 +184,9 @@ export function closeModal() {
         //modal.classList.add('hidden');
       //}
     //});
+
+    // previousBtn.classList.add('hidden');
+
+    //     const previousBtn = document.createElement("i");
+    //     previousBtn.classList.add("fa-solid", "fa-arrow-left");
+    //     modalButtons.appendChild(previousBtn);
