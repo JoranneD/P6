@@ -34,12 +34,29 @@
 			</div>
 			<form class="modalForm hidden">
 				<div class="photoUpload">
-					<i class="fa-solid fa-photo"></i>
-					<input type="file" class="photoInput" accept=".jpg, .jpeg, .png">
-					<p class="photoText">jpg</p>
+					<i class="fa-regular fa-image"></i>
+					<label for="photoInput" class="photoInputBtn">+ Ajouter photo</label>
+					<input type="file" id="photoInput" class="photoInput" accept=".jpg, .jpeg, .png" style="display: none;">
+					<p class="photoText">jpg, png : 4mo max</p>
 				</div>
-				<input type="text" placeholder="Titre de la photo">
-				<input type="text" placeholder="Catégorie">
+				<div class="dataInputs">
+					<div class="title">
+						<label for="titleInput">Titre</label>
+						<input type="text">
+					</div>
+					
+					<div class="category">
+						<label for="categoryInput">Catégorie</label>
+						<input type="text" list="categoryList">
+						<datalist id="categoryList">
+							<option value="Catégorie 1">
+							<option value="Catégorie 2">
+							<option value="Catégorie 3">
+							<!-- Ajoutez ici toutes vos catégories -->
+						</datalist>
+					</div>
+					
+				</div>
 			</form>
 			<button class="btn modalSubmitBtn">Ajouter une photo</button>
 		</div>

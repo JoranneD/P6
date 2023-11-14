@@ -45,7 +45,59 @@ export function openModal() {
         
         // Je le rattache à son parent
         figure.appendChild(deleteBtn);
+
+        // Au clic de deleteBtn :
+        // je supprime la figure dont l'id est xx appartenant à #portfolio .gallery
+        deleteBtn.addEventListener('click', function() {
+          
+          // Je sauvegarde les données de ma galerie
+          const backupData = {};
+          // Récupérer les figures existantes dans la galerie
+          //const figures = gallery.querySelectorAll('figure');
+
+          // Stocker les données de chaque figure dans backupData
+          //figures.forEach((figure) => {
+            //const figureId = figure.getAttribute('id');
+            //const figureData = /* récupérer les données associées à la figure */;
+
+            //backupData[figureId] = figureData;
+          //});
+
+
+          // Je recupere l'ID de la figure actuelle
+          const figureId = figure.getAttribute('id');
+          console.log("Suppression de la figure", figureId);
+
+          
+
+
+
+
+          // Je fais ma requete 
+          // const fetchPromise = fetch("http://localhost:5678/api/works/"+ figureId, {
+		  	  //   method: "DELETE",
+		      // });
+		      // console.log(fetchPromise)
+
+          // Ma response -- Recuperation des informations
+          // .then(response => {
+          //   if (response.status === 200) {
+
+          //     // Supprime la figure du DOM si la suppression côté serveur réussit
+          //     figure.remove(); 
+
+          //   } else {
+          //     console.error('La suppression a échoué.');
+          //   }
+          // })
+          // .catch(error => {
+          //   console.error('Erreur lors de la suppression :', error);
+          // });
+        });
       });
+
+      
+      
 
       // Au clic de ajouter une photo :
       modalSubmitBtn.addEventListener('click', function() {
@@ -68,12 +120,7 @@ export function openModal() {
           modalTitle.textContent = "Galerie Photo";
           modalForm.classList.add('hidden');
         });
-
-        
-
-        // J'ajoute un formulaire composé d'une div dans laquel se trouve une icone photo+ un input "ajouter photo"+ un petit texte dan slequel est ecrit "jpg". ensuite j'ai un input titre et un input categorie ou je peux scroller
-
-        });
+      });
 
 
       // j'ajoute une figure à #portfolio .gallery
@@ -81,14 +128,7 @@ export function openModal() {
 
     }
 
-
-
-    //console.log(figcaptions)
-    console.log(gallery)
-
-    // const figcaptions = document.querySelectorAll('.figureContent .gallery figure figcaption');
-
-    // Ajouter la galerie à l'intérieur du paragraphe "editSign"
+    // Ajouter la galerie à l'intérieur de la div figureContent
     figureContent.appendChild(gallery);
   } 
   // else {
@@ -106,7 +146,17 @@ export function closeModal() {
 }
 
 
+//console.log(figcaptions)
+console.log(gallery)
 
+// Fonctions necessaires
+// hideFigcaptions()
+// displayDeleteBtn()
+// saveDatas()
+// deleteWorks()
+
+
+// ------------------------------------------------------------------------------------------
 // Fonction pour ouvrir la modal
 // export function openModal() {
 //     const modal = document.getElementById('myModal');
