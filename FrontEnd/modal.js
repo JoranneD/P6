@@ -12,6 +12,7 @@ const modalForm = document.querySelector('.modalForm');
 const modalSubmitBtn = document.querySelector('.modalSubmitBtn');
 const deleteBtn = document.querySelector('.deleteBtn');
 const figures = gallery.querySelectorAll('figure');
+const deleteBtns = document.querySelectorAll('.deleteBtn');
 
 
 export function openModal() {
@@ -32,7 +33,8 @@ export function openModal() {
         figcaption.classList.add('hidden');
       });
   }
-  function displayDeleteBtn() {
+  function deleteWork() {
+    // CREATION DES BOUTONS DE SUPPRESSION
     // Je cree une div icone à chaque figure
     figures.forEach((figure) => {
       const deleteBtn = document.createElement("div");
@@ -41,39 +43,37 @@ export function openModal() {
       
       // Je le rattache à son parent
       figure.appendChild(deleteBtn);
-      
-      deleteBtn.addEventListener('click', function() {
-        const figureId = figure.getAttribute('id');
-        console.log("Suppression de la figure", figureId);
-     });
 
+      // SUPPRESSION D'UN PROJET
+      // Je recupere l'id de chaques figures pour plus tard les supprimer
+        deleteBtn.addEventListener('click', function() {
+          const figureId = figure.getAttribute('id');
+          console.log("Suppression de la figure", figureId);
+
+          // Je fais ma requete 
+          // const fetchPromise = fetch("http://localhost:5678/api/works/"+ figureId, {
+		  	  //   method: "DELETE",
+		      // });
+		      // console.log(fetchPromise)
+
+          // Ma response -- Recuperation des informations
+          // .then(response => {
+          //   if (response.status === 200) {
+
+          //     // Supprime la figure du DOM si la suppression côté serveur réussit
+          //     figure.remove(); 
+
+          //   } else {
+          //     console.error('La suppression a échoué.');
+          //   }
+          // })
+          // .catch(error => {
+          //   console.error('Erreur lors de la suppression :', error);
+          // });
+        });
     });
   }
-  function saveData() {
-    // Au clic de deleteBtn : je supprime la figure dont l'id est xx appartenant à #portfolio .gallery
-    deleteBtn.addEventListener('click', function() {
-          
-      // Je sauvegarde les données de ma galerie
-      const backupData = {};
-      // Récupérer les figures existantes dans la galerie
-      const figures = gallery.querySelectorAll('figure');
-
-      // Stocker les données de chaque figure dans backupData
-      figures.forEach((figure) => {
-        const figureId = figure.getAttribute('id');
-        const figureData = /* récupérer les données associées à la figure */
-
-        backupData[figureId] = figureData;
-        console.log(figureData)
-      });
-    });
-  }
-  function deleteWork() {
-    deleteBtn.addEventListener('click', function() {
-       const figureId = figure.getAttribute('id');
-       console.log("Suppression de la figure", figureId);
-    });
-  }
+  
   function addWork() {
     modalSubmitBtn.addEventListener('click', function() {
       // J'affiche la fleche precedent
@@ -106,17 +106,9 @@ export function openModal() {
     loadWorks();
     
     if (gallery) {
-      hideFigcaptions();
-      displayDeleteBtn();
-
-      // Suppression de projets
-      if (deleteBtn) {
-        //saveData();
-        //deleteWork();
-      }
-
-      // Ajout de projets
-      addWork();
+      hideFigcaptions(); // Cache les figcaptions
+      deleteWork(); // Supprime un projet
+      addWork(); // Ajoute un projet
     }
 
     // Je place la galerie à l'intérieur de la div figureContent
@@ -167,7 +159,25 @@ export function closeModal() {
 
 
 
-
+          // function saveData() {
+          //   // Au clic de deleteBtn : je supprime la figure dont l'id est xx appartenant à #portfolio .gallery
+          //   deleteBtn.addEventListener('click', function() {
+                  
+          //     // Je sauvegarde les données de ma galerie
+          //     const backupData = {};
+          //     // Récupérer les figures existantes dans la galerie
+          //     const figures = gallery.querySelectorAll('figure');
+        
+          //     // Stocker les données de chaque figure dans backupData
+          //     figures.forEach((figure) => {
+          //       const figureId = figure.getAttribute('id');
+          //       const figureData = /* récupérer les données associées à la figure */
+        
+          //       backupData[figureId] = figureData;
+          //       console.log(figureData)
+          //     });
+          //   });
+          // }
 
 
 
