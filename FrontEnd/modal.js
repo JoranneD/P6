@@ -68,72 +68,73 @@ export function openModal() {
         const figureId = figure.getAttribute('id');
         console.log("Suppression de la figure", figureId);
 
-        // Si le jeton est présent :
-        if (key) {
-          // Je fais ma requete 
-          const fetchPromise = fetch("http://localhost:5678/api/works/"+ figureId, {
-            method: "DELETE",
-          });
-          console.log(fetchPromise)
+        // Je fais ma requete (ces en-têtes sont couramment utilisés dans le contexte de l'API Web pour gérer l'authentification et spécifier le type de contenu envoyé avec la requête.)
+        const fetchPromise = fetch(`http://localhost:5678/api/works/${figureId}`, {
+          method: "DELETE",
+          headers: {
+            // indique au serveur que le corps de la requête est au format JSON
+            "Content-Type": "application/json",
+            // le serveur vérifie ce jeton pour s'assurer que la personne qui effectue la requête a l'autorisation
+            "Authorization": "Bearer " + key
+          }
+        });
+        console.log(fetchPromise)
 
-          // Ma response -- Recuperation des informations
-          fetchPromise
-          .then(response => { // J'ai pu recuperer ma Response
-            console.log(response);
-            function loadErrorMessage() {
-              // Création du message d'erreur
-              const errorBox = document.getElementById("errorSign");
-              errorBox.classList.remove('hidden');
-              errorBox.innerHTML = "";
-          
-              const errorMessage = document.createElement("p");
-              errorMessage.classList.add("error");
 
-              modalSubmitBtn.classList.add("errorStyle");
-              //modalSubmitBtn.classList.add("unavailable");
+        // Ma response -- Recuperation des informations
+        fetchPromise
+        .then(response => { // J'ai pu recuperer ma Response
+          console.log(response);
+          function loadErrorMessage() {
+            // Création du message d'erreur
+            const errorBox = document.getElementById("errorSign");
+            errorBox.classList.remove('hidden');
+            errorBox.innerHTML = "";
+        
+            const errorMessage = document.createElement("p");
+            errorMessage.classList.add("error");
 
-              
-              if (response.status === 401) {
-                errorMessage.innerHTML = "Vous n'êtes pas autorisé à effectuer cette opération";
-              }
-              else {
-                errorMessage.innerHTML = "Erreur de serveur interne";
-              }
-              
-              // On rattache la balise enfant à son parent
-              errorBox.appendChild(errorMessage);
-          
-              // Disparition du message d'erreur
-              window.onclick = function(event) {
-                if (event.target === modal || event.target == closeBtn || event.target == modalSubmitBtn) {
-                  errorBox.classList.add('hidden');
-                }
-              }
-            };
+            modalSubmitBtn.classList.add("errorStyle");
 
-            // Si la suppression côté serveur est réussit :
-            if (response.status === 200) {
-              // Je supprime la figure du DOM 
-              figure.remove();
-            } 
-            // Si je ne suis pas autorisé :
-            else if (response.status === 401) {
-              loadErrorMessage()
+            if (response.status === 401) {
+              errorMessage.innerHTML = "Vous n'êtes pas autorisé à effectuer cette opération";
             }
-            // Si la suppression côté serveur a échoué :
             else {
-              loadErrorMessage()
+              errorMessage.innerHTML = "Erreur de serveur interne";
             }
-          })
-          .catch(error => { //Je n'ai pu recuperer ma Response 
+            
+            // On rattache la balise enfant à son parent
+            errorBox.appendChild(errorMessage);
+        
+            // Disparition du message d'erreur
+            window.onclick = function(event) {
+              if (event.target === modal || event.target == closeBtn || event.target == modalSubmitBtn) {
+                errorBox.classList.add('hidden');
+              }
+            }
+          };
+
+          // Si la suppression côté serveur est réussit :
+          if (response.status === 200) {
+            // Je supprime la figure du DOM 
+            figure.remove();
+          } 
+          // Si je ne suis pas autorisé :
+          else if (response.status === 401) {
             loadErrorMessage()
-            console.error('Erreur lors de la suppression :', error);
-          });
-        }  
+          }
+          // Si la suppression côté serveur a échoué :
+          else {
+            loadErrorMessage()
+          }
+        })
+        .catch(error => { //Je n'ai pu recuperer ma Response 
+          loadErrorMessage()
+          console.error('Erreur lors de la suppression :', error);
+        });
       });
     });
   }
-  
   function addWork() {
     modalSubmitBtn.addEventListener('click', function() {
       // J'affiche la fleche precedent
@@ -216,7 +217,7 @@ export function closeModal() {
           // });
 
 
-
+        //"http://localhost:5678/api/works/"+ figureId
 
 
           
