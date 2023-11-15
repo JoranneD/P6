@@ -515,3 +515,20 @@ footer nav ul {
 .dataInputs input:focus {
 	outline: #B3B3B3;
 }
+
+.modalContent #errorSign {
+	margin: unset;
+	box-shadow: 0 30px 40px rgba(0,0,0,.1);
+	/* border:1px solid transparent;
+	border-left:150px solid transparent;
+	border-right:150px solid transparent; */
+}
+
+.errorStyle {
+    margin-top: 10px;
+}
+
+.unavailable {
+	pointer-events: none;
+	background-color: #B3B3B3;
+}
