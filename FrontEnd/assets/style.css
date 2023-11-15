@@ -518,8 +518,10 @@ footer nav ul {
 
 .modalContent #errorSign {
 	margin: unset;
-	box-shadow: 0 30px 40px rgba(0,0,0,.1);
-	/* border:1px solid transparent;
+	align-self: center;
+    padding: 0px 15px;
+	/* box-shadow: 0 30px 40px rgba(0,0,0,.1);
+	border:1px solid transparent;
 	border-left:150px solid transparent;
 	border-right:150px solid transparent; */
 }
