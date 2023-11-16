@@ -398,7 +398,7 @@ footer nav ul {
 .figureContent, .modalForm {
 	align-self: center;
 	width: 420px;
-	height: 360px;
+	height: 390px; /* 360*/
 	border-bottom: solid #B3B3B3 2px;
 	background-color: #ffffff;
 	padding-bottom: 50px;
@@ -533,4 +533,14 @@ footer nav ul {
 .unavailable {
 	pointer-events: none;
 	background-color: #B3B3B3;
+}
+
+.display {
+	display: flex;
+}
+
+.modalForm #formSubmitBtn {
+    display: flex;
+    margin-top: 78px; /*48*/
+	width: 180px;
 }

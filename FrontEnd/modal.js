@@ -15,7 +15,7 @@ const deleteBtn = document.querySelector('.deleteBtn');
 const figures = gallery.querySelectorAll('figure');
 const deleteBtns = document.querySelectorAll('.deleteBtn');
 const key = localStorage.getItem('token');
-
+const formSubmitBtn = document.getElementById('formSubmitBtn');
 
 export function openModal() {
   // Je déclare ici les fonctions que j'appelerai plus bas dans le code
@@ -143,9 +143,13 @@ export function openModal() {
       figureContent.classList.add('hidden');
       // Je change le titre en "Ajout photo"
       modalTitle.textContent = "Ajout photo";
-      modalSubmitBtn.textContent = "Valider";
+      formSubmitBtn.classList.add('modalSubmitBtn');
+      //modalSubmitBtn.textContent = "Valider";
+
       // J'affiche le formulaire
       modalForm.classList.remove('hidden');
+      // Je masque modalSubmitBtn (bouton qui me permet de "changer" de page de modal)
+      modalSubmitBtn.classList.add('hidden');
 
       // j'ajoute une figure à #portfolio .gallery. Pour ca je fais une demande à l'API //
 
@@ -155,7 +159,80 @@ export function openModal() {
         modalTitle.textContent = "Galerie Photo";
         modalSubmitBtn.textContent = "Ajouter une photo";
         modalForm.classList.add('hidden');
+        modalSubmitBtn.classList.remove('hidden');
       });
+      console.log(modalSubmitBtn)
+      // Je fais ma requete
+      formSubmitBtn.addEventListener("submit", async function (event) {
+        event.preventDefault();
+        // Création de l’objet.
+        const loginDatas = {
+          email: event.target.querySelector("[name=email]").value,
+          password: event.target.querySelector("[name=password]").value,
+        };
+        // Création de la charge utile au format JSON
+        const chargeUtile = JSON.stringify(loginDatas);
+        // Ma requete -- Appel de la fonction fetch avec toutes les informations nécessaires
+        const fetchPromise = fetch("http://localhost:5678/api/users/login", {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: chargeUtile
+        });
+        console.log(fetchPromise)
+
+
+      // Ma response -- Recuperation des informations
+      fetchPromise
+      .then(response => { // J'ai pu recuperer ma Response
+        console.log(response);
+        function loadErrorMessage() {
+          // Création du message d'erreur
+          const errorBox = document.getElementById("errorSign");
+          errorBox.classList.remove('hidden');
+          errorBox.innerHTML = "";
+      
+          const errorMessage = document.createElement("p");
+          errorMessage.classList.add("error");
+
+          modalSubmitBtn.classList.add("errorStyle");
+
+          if (response.status === 401) {
+            errorMessage.innerHTML = "Vous n'êtes pas autorisé à effectuer cette opération";
+          }
+          else {
+            errorMessage.innerHTML = "Erreur de serveur interne";
+          }
+          
+          // On rattache la balise enfant à son parent
+          errorBox.appendChild(errorMessage);
+      
+          // Disparition du message d'erreur
+          window.onclick = function(event) {
+            if (event.target === modal || event.target == closeBtn || event.target == modalSubmitBtn) {
+              errorBox.classList.add('hidden');
+            }
+          }
+        };
+
+        // Si la suppression côté serveur est réussit :
+        if (response.status === 200) {
+          // Je supprime la figure du DOM 
+          figure.remove();
+        } 
+        // Si je ne suis pas autorisé :
+        else if (response.status === 401) {
+          loadErrorMessage()
+        }
+        // Si la suppression côté serveur a échoué :
+        else {
+          loadErrorMessage()
+        }
+      })
+      .catch(error => { //Je n'ai pu recuperer ma Response 
+        loadErrorMessage()
+        console.error('Erreur lors de la suppression :', error);
+      });
+    });
     });
   }
 
