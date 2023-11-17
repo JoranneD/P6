@@ -25,29 +25,30 @@
     <aside id="modalWindow" class="modal" aria-hidden="true" role="dialog" aria_labelledby="modalTitle">
 		<div class="modalContent">
 			<div class="modalButtons">
-			<i id="closeBtn" class="fa-solid fa-xmark"></i>
-			<i id="previousBtn" class="fa-solid fa-arrow-left hidden"></i>
+				<i id="closeBtn" class="fa-solid fa-xmark"></i>
+				<i id="previousBtn" class="fa-solid fa-arrow-left hidden"></i>
 			</div>
 			<p class="modalTitle">Galerie Photo</p>
 			<div class="figureContent">
 			<!-- Galerie ici -->
 			</div>
-			<form class="modalForm hidden">
+			<form id="modalForm" class="modalForm hidden">
 				<div class="photoUpload">
 					<i class="fa-regular fa-image"></i>
 					<label for="photoInput" class="photoInputBtn">+ Ajouter photo</label>
-					<input type="file" id="photoInput" class="photoInput" accept=".jpg, .jpeg, .png" style="display: none;">
+					<input type="file" name="image" id="photoInput" class="photoInput" accept=".jpg, .jpeg, .png" style="display: none;" required>
+					<!-- <img id="photoPreview" class="" src="" alt="" /> -->
 					<p class="photoText">jpg, png : 4mo max</p>
 				</div>
 				<div class="dataInputs">
 					<div class="title">
 						<label for="titleInput">Titre</label>
-						<input type="text">
+						<input type="text" name="title" required>
 					</div>
 					
 					<div class="category">
 						<label for="categoryInput">Catégorie</label>
-						<input type="text" list="categoryList">
+						<input type="text" id="categoryInput" name="category" list="categoryList" required>
 						<datalist id="categoryList">
 							<option value="Catégorie 1">
 							<option value="Catégorie 2">
@@ -55,13 +56,14 @@
 							<!-- Ajoutez ici toutes vos catégories -->
 						</datalist>
 					</div>
-					
 				</div>
+				<div id="errorForm" class="errorBox"></div>
 				<div class="submitBtnBox">
-					<input type="submit" id="formSubmitBtn" class="btn" value="Valider">
+					<input type="submit" id="formSubmitBtn" class="btn errorStyleForm" value="Valider">
 				</div>
 			</form>
 			<div id="errorSign" class="errorBox hidden"></div>
+			<!-- Sert surtout de bouton de navigation -->
 			<button class="btn modalSubmitBtn">Ajouter une photo</button>
 		</div>
 	</aside>

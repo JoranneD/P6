@@ -16,6 +16,17 @@ const figures = gallery.querySelectorAll('figure');
 const deleteBtns = document.querySelectorAll('.deleteBtn');
 const key = localStorage.getItem('token');
 const formSubmitBtn = document.getElementById('formSubmitBtn');
+const photoInput = document.getElementById("photoInput");
+//const photoPreview = document.getElementById("photoPreview");
+const photoUploadIcon = document.querySelector('.photoUpload i');
+const photoUploadLabel = document.querySelector('.photoUpload label');
+//const photoUploadInput = document.querySelector('.photoUpload input');
+const photoUploadP = document.querySelector('.photoUpload p');
+const photoUpload = document.querySelector('.photoUpload');
+
+
+
+
 
 export function openModal() {
   // Je déclare ici les fonctions que j'appelerai plus bas dans le code
@@ -136,46 +147,123 @@ export function openModal() {
     });
   }
   function addWork() {
-    modalSubmitBtn.addEventListener('click', function() {
-      // J'affiche la fleche precedent
-      previousBtn.classList.remove('hidden');
-      // Je masque la galerie
-      figureContent.classList.add('hidden');
-      // Je change le titre en "Ajout photo"
-      modalTitle.textContent = "Ajout photo";
-      formSubmitBtn.classList.add('modalSubmitBtn');
-      //modalSubmitBtn.textContent = "Valider";
-
-      // J'affiche le formulaire
-      modalForm.classList.remove('hidden');
-      // Je masque modalSubmitBtn (bouton qui me permet de "changer" de page de modal)
-      modalSubmitBtn.classList.add('hidden');
-
-      // j'ajoute une figure à #portfolio .gallery. Pour ca je fais une demande à l'API //
-
-      previousBtn.addEventListener('click', function() {
-        figureContent.classList.remove('hidden');
-        previousBtn.classList.add('hidden');
-        modalTitle.textContent = "Galerie Photo";
-        modalSubmitBtn.textContent = "Ajouter une photo";
-        modalForm.classList.add('hidden');
-        modalSubmitBtn.classList.remove('hidden');
+    function loadModalPages () {
+      modalSubmitBtn.addEventListener('click', function() {
+        // J'affiche la fleche precedent
+        previousBtn.classList.remove('hidden');
+        // Je masque la galerie
+        figureContent.classList.add('hidden');
+        // Je change le titre en "Ajout photo"
+        modalTitle.textContent = "Ajout photo";
+        formSubmitBtn.classList.add('modalSubmitBtn');
+        //modalSubmitBtn.textContent = "Valider";
+  
+        // J'affiche le formulaire
+        modalForm.classList.remove('hidden');
+        // Je masque modalSubmitBtn (bouton qui me permet de "changer" de page de modal)
+        modalSubmitBtn.classList.add('hidden');
+  
+        // j'ajoute une figure à #portfolio .gallery. Pour ca je fais une demande à l'API //
+  
+        previousBtn.addEventListener('click', function() {
+          figureContent.classList.remove('hidden');
+          previousBtn.classList.add('hidden');
+          modalTitle.textContent = "Galerie Photo";
+          modalSubmitBtn.textContent = "Ajouter une photo";
+          modalForm.classList.add('hidden');
+          modalSubmitBtn.classList.remove('hidden');
+        });
+        //console.log(modalSubmitBtn)
       });
-      console.log(modalSubmitBtn)
+    }
+    function loadPreview() {
+      // je met mon image, je vois la preview, je note mon titre, je cherche ma categorie, je fais ma requete
+
+      photoInput.addEventListener('change', function () {
+        // Si j'ai une image dans ma liste d'image
+        if (photoInput.files.length > 0) {
+          // Alors je selectionne la premiere
+          const uploadedFile = photoInput.files[0];
+          // Je lui crée une URL
+          const uploadedFileURL = URL.createObjectURL(uploadedFile);          
+
+          // Créer un nouvel élément image
+          const photoPreview = document.createElement('img');
+          photoPreview.src = uploadedFileURL;
+          photoPreview.classList.add('preview');
+          //photoUpload.appendChild(photoPreview);
+          photoUpload.insertBefore(photoPreview, photoUpload.children[3]);
+
+
+          // Et je place l'URL dans la source de ma preview afin de visualiser mon image 
+          //photoPreview.setAttribute("id", "photoPreview");
+          
+
+          
+
+          // Je stylise le reste de mes élément en fonction de la maquette
+          //photoPreview.classList.add('preview');
+          photoUploadIcon.classList.add('hidden');
+          photoUploadLabel.classList.remove('photoInputBtn');
+          photoUploadLabel.classList.add('hidden');
+          photoInput.classList.add('hidden');
+          photoUploadP.classList.add('hidden');
+
+          // Montre moi ---------------------------------------------
+          console.log("Infos sur mon image uploadée:",uploadedFile)
+          console.log("Mon URL actuel:",uploadedFileURL)
+          console.log("Ma preview actuel:",photoPreview)
+
+          // Disparition du message d'erreur
+          window.onclick = function(event) {
+            if (event.target === previousBtn || event.target == closeBtn) {
+
+              photoInput.value = ''; // Réinitialise la valeur du champ de fichier
+              photoPreview.src = ''; // Réinitialise la source de l'image
+              //categoryInput.value = ''; // Réinitialise la valeur du champ de categorie
+
+              // Je revoque mon URL
+              URL.revokeObjectURL(uploadedFileURL);
+              
+              photoUploadIcon.classList.remove('hidden');
+              photoUploadLabel.classList.add('photoInputBtn');
+              photoUploadLabel.classList.remove('hidden');
+              photoInput.classList.remove('hidden');
+              photoUploadP.classList.remove('hidden');
+
+              // Montre moi ---------------------------------------------
+              console.log("Mon URL apres:",uploadedFileURL);
+              console.log("Ma preview apres:",photoPreview)
+            }
+          }
+
+          // previousBtn.addEventListener('change', function () {
+          // });
+          // if (file.type.startsWith('image/')) {
+          // } 
+          // else {
+          //   photoPreview.src = '';
+          //   console.log('Veuillez sélectionner une image.');
+          // }
+        }
+      });
+    }
+    function loadRequest() {
       // Je fais ma requete
       formSubmitBtn.addEventListener("submit", async function (event) {
         event.preventDefault();
         // Création de l’objet.
-        const loginDatas = {
-          email: event.target.querySelector("[name=email]").value,
-          password: event.target.querySelector("[name=password]").value,
+        const formDatas = {
+          image: event.target.querySelector("[name=image]").value,
+          title: event.target.querySelector("[name=title]").value,
+          category: event.target.querySelector("[name=category]").value,
         };
         // Création de la charge utile au format JSON
-        const chargeUtile = JSON.stringify(loginDatas);
+        const chargeUtile = JSON.stringify(formDatas);
         // Ma requete -- Appel de la fonction fetch avec toutes les informations nécessaires
-        const fetchPromise = fetch("http://localhost:5678/api/users/login", {
+        const fetchPromise = fetch("http://localhost:5678/api/works", {
             method: "POST",
-            headers: { "Content-Type": "application/json" },
+            headers: { "Content-Type": "multipart/form-data" },
             body: chargeUtile
         });
         console.log(fetchPromise)
@@ -187,18 +275,30 @@ export function openModal() {
         console.log(response);
         function loadErrorMessage() {
           // Création du message d'erreur
-          const errorBox = document.getElementById("errorSign");
+          const errorBox = document.getElementById("errorForm");
           errorBox.classList.remove('hidden');
           errorBox.innerHTML = "";
       
           const errorMessage = document.createElement("p");
           errorMessage.classList.add("error");
 
-          modalSubmitBtn.classList.add("errorStyle");
+          formSubmitBtn.classList.add("errorStyleForm");
 
-          if (response.status === 401) {
+          modalForm.addEventListener('submit', function (event) {
+            if (inputImage.files.length === 0) {
+              errorMessage.innerHTML = "Veuillez sélectionner une image";
+              //event.preventDefault();  // Empêche l'envoi du formulaire s'il manque des champs
+            }
+          });
+
+          if (response.status === 400) {
+            errorMessage.innerHTML = "Une erreur s'est glissée dans votre formulaire";
+          }
+
+          else if (response.status === 401) {
             errorMessage.innerHTML = "Vous n'êtes pas autorisé à effectuer cette opération";
           }
+
           else {
             errorMessage.innerHTML = "Erreur de serveur interne";
           }
@@ -233,8 +333,13 @@ export function openModal() {
         console.error('Erreur lors de la suppression :', error);
       });
     });
-    });
   }
+    loadModalPages();
+    loadPreview();
+    loadRequest();
+    //Hotel First Arte New Delhi
+  }
+  
 
   // Je vérifie si editBtn est présent dans mon code
   if (editBtn) {
@@ -296,9 +401,51 @@ export function closeModal() {
 
         //"http://localhost:5678/api/works/"+ figureId
 
-
+              //supprimer la preview en utilisant form reset
           
+   // photoInput.onchange = evt => {
+      //   const [selectedImage] = photoInput.files
+      //   if (selectedImage) {
+      //     const objectURL = URL.createObjectURL(selectedImage);
+      //     photoPreview.src = objectURL;
+      //     //photoPreview.src = URL.createObjectURL(selectedImage);
+      //     console.log(photoPreview)
+      //     photoPreview.classList.add('preview');
+      //     photoUploadIcon.classList.add('hidden');
+      //     photoUploadLabel.classList.remove('photoInputBtn');
+      //     photoUploadLabel.classList.add('hidden');
+      //     photoInput.classList.add('hidden');
+      //     photoUploadP.classList.add('hidden');
 
+      //     // Disparition du message d'erreur
+      //     window.onclick = function(event) {
+      //       if (event.target === previousBtn || event.target == closeBtn) {
+      //         URL.revokeObjectURL(objectURL);
+      //         console.log(photoPreview)
+      //         //photoPreview.classList.remove('preview');
+      //         photoUploadIcon.classList.remove('hidden');
+      //         photoUploadLabel.classList.add('photoInputBtn');
+      //         photoUploadLabel.classList.remove('hidden');
+      //         photoInput.classList.remove('hidden');
+      //         photoUploadP.classList.remove('hidden');
+      //       }
+      //     }
+
+          // Disparition du message d'erreur
+          // window.onclick = function(event) {
+          //   if (event.target === previousBtn || event.target == closeBtn) {
+          //     photoPreview.src = URL.revokeObjectURL(file);
+          //     console.log(photoPreview)
+          //     photoPreview.classList.remove('preview');
+          //     photoUploadIcon.classList.remove('hidden');
+          //     photoUploadLabel.classList.add('photoInputBtn');
+          //     photoUploadLabel.classList.remove('hidden');
+          //     photoInput.classList.remove('hidden');
+          //     photoUploadP.classList.remove('hidden');
+          //   }
+         
+
+        //}
 
 
 
