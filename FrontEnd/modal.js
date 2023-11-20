@@ -189,17 +189,10 @@ export function openModal() {
 
           // Créer un nouvel élément image
           const photoPreview = document.createElement('img');
-          photoPreview.src = uploadedFileURL;
+          photoPreview.setAttribute("id", "photoPreview");
+          photoPreview.src = uploadedFileURL; // Je place l'URL dans la source de ma preview pour visualiser mon image
           photoPreview.classList.add('preview');
-          //photoUpload.appendChild(photoPreview);
           photoUpload.insertBefore(photoPreview, photoUpload.children[3]);
-
-
-          // Et je place l'URL dans la source de ma preview afin de visualiser mon image 
-          //photoPreview.setAttribute("id", "photoPreview");
-          
-
-          
 
           // Je stylise le reste de mes élément en fonction de la maquette
           //photoPreview.classList.add('preview');
@@ -210,9 +203,9 @@ export function openModal() {
           photoUploadP.classList.add('hidden');
 
           // Montre moi ---------------------------------------------
-          console.log("Infos sur mon image uploadée:",uploadedFile)
-          console.log("Mon URL actuel:",uploadedFileURL)
-          console.log("Ma preview actuel:",photoPreview)
+          //console.log("Infos sur mon image uploadée:",uploadedFile)
+          //console.log("Mon URL actuel:",uploadedFileURL)
+          //console.log("Ma preview actuel:",photoPreview)
 
           // Disparition du message d'erreur
           window.onclick = function(event) {
@@ -223,7 +216,7 @@ export function openModal() {
               //categoryInput.value = ''; // Réinitialise la valeur du champ de categorie
 
               // Je revoque mon URL
-              URL.revokeObjectURL(uploadedFileURL);
+              window.URL.revokeObjectURL(uploadedFileURL);
               
               photoUploadIcon.classList.remove('hidden');
               photoUploadLabel.classList.add('photoInputBtn');
@@ -232,26 +225,47 @@ export function openModal() {
               photoUploadP.classList.remove('hidden');
 
               // Montre moi ---------------------------------------------
-              console.log("Mon URL apres:",uploadedFileURL);
-              console.log("Ma preview apres:",photoPreview)
+              //console.log("Mon URL apres:",uploadedFileURL);
+              //console.log("Ma preview apres:",photoPreview)
             }
           }
-
-          // previousBtn.addEventListener('change', function () {
-          // });
-          // if (file.type.startsWith('image/')) {
-          // } 
-          // else {
-          //   photoPreview.src = '';
-          //   console.log('Veuillez sélectionner une image.');
-          // }
         }
       });
     }
-    function loadRequest() {
-      // Je fais ma requete
-      formSubmitBtn.addEventListener("submit", async function (event) {
+    function sendRequest() {
+      function loadErrorBox(message) {
+        // Création du message d'erreur
+        const errorBox = document.getElementById("errorForm");
+        errorBox.classList.remove('hidden');
+        errorBox.innerHTML = "";
+    
+        const errorMessage = document.createElement("p");
+        errorMessage.classList.add("error");
+        errorMessage.innerHTML = message;
+
+        formSubmitBtn.classList.add("errorStyleForm");
+
+        // On rattache la balise enfant à son parent
+        errorBox.appendChild(errorMessage);
+
+        // Disparition du message d'erreur
+        window.onclick = function(event) {
+          if (event.target === modal || event.target == previousBtn || event.target == closeBtn) {
+            errorBox.classList.add('hidden');
+            formSubmitBtn.classList.remove("errorStyleForm");
+            modalForm.reset();
+          }
+        }
+      };
+      // Au clique de "Valider"(formSubmitBtn), je fais ma requete
+      formSubmitBtn.addEventListener("click", async function (event) {
         event.preventDefault();
+
+       // S'il manque une image dans le formulaire :
+       if (photoInput.files.length === 0) {
+        loadErrorBox("Veuillez compléter le formulaire."); //Veuillez sélectionner une image
+      }
+
         // Création de l’objet.
         const formDatas = {
           image: event.target.querySelector("[name=image]").value,
@@ -268,7 +282,6 @@ export function openModal() {
         });
         console.log(fetchPromise)
 
-
       // Ma response -- Recuperation des informations
       fetchPromise
       .then(response => { // J'ai pu recuperer ma Response
@@ -281,52 +294,85 @@ export function openModal() {
       
           const errorMessage = document.createElement("p");
           errorMessage.classList.add("error");
-
+  
           formSubmitBtn.classList.add("errorStyleForm");
-
-          modalForm.addEventListener('submit', function (event) {
-            if (inputImage.files.length === 0) {
-              errorMessage.innerHTML = "Veuillez sélectionner une image";
-              //event.preventDefault();  // Empêche l'envoi du formulaire s'il manque des champs
-            }
-          });
-
+  
+          // On rattache la balise enfant à son parent
+          errorBox.appendChild(errorMessage);
+  
+          // Gestion d'erreur
           if (response.status === 400) {
-            errorMessage.innerHTML = "Une erreur s'est glissée dans votre formulaire";
+          errorMessage.innerHTML = "Une erreur s'est glissée dans votre formulaire";
           }
-
           else if (response.status === 401) {
             errorMessage.innerHTML = "Vous n'êtes pas autorisé à effectuer cette opération";
           }
-
           else {
             errorMessage.innerHTML = "Erreur de serveur interne";
           }
-          
-          // On rattache la balise enfant à son parent
-          errorBox.appendChild(errorMessage);
       
           // Disparition du message d'erreur
           window.onclick = function(event) {
-            if (event.target === modal || event.target == closeBtn || event.target == modalSubmitBtn) {
+            if (event.target === modal || event.target == previousBtn || event.target == closeBtn) {
               errorBox.classList.add('hidden');
             }
           }
         };
+        function createWork() {
+          figures.forEach((figure) => {
+            // Je creer une nouvelle figure dans ma galerie
+            const newFigure = gallery.createElement('figure');
+            gallery.append(newFigure);
 
-        // Si la suppression côté serveur est réussit :
-        if (response.status === 200) {
-          // Je supprime la figure du DOM 
-          figure.remove();
-        } 
-        // Si je ne suis pas autorisé :
-        else if (response.status === 401) {
-          loadErrorMessage()
+            // Id
+            newFigure.setAttribute("id",figure.id);
+            //newFigure.dataset.image = figure.categoryId;
+
+            // Titre
+            const newFigureFigcaption = document.createElement("figcaption");
+            newFigureFigcaption.innerHTML = figure.title;
+
+            // Image
+            const newFigureImage = document.createElement("img");
+            newFigureImage.src = figure.imageUrl;
+            newFigureImage.alt = figure.title;
+
+            // Categorie
+            const newCategoryId = document.createElement("p");
+            //categoryId.classList.add("categoryId");
+            newCategoryId.innerHTML = figure.category.id;
+            newCategoryId.innerHTML = "";
+
+            // Utilisateur
+            const newUserId = document.createElement("p");
+            newUserId.classList.add("user_id");
+            newUserId.innerHTML = work.newUserId;
+            newUserId.innerHTML = "";
+
+            // On rattache les balises enfants à leurs parents
+            gallery.appendChild(newFigureImage);
+            gallery.appendChild(newFigureFigcaption);
+            gallery.appendChild(newUserId);
+            gallery.appendChild(newCategoryId);
+          
+            //const //previousElementSibling.id + 1)
+          });
         }
-        // Si la suppression côté serveur a échoué :
-        else {
-          loadErrorMessage()
-        }
+        
+          // Si l'ajout côté serveur est réussit :
+         if (response.status === 201) {
+            // J'ajoute la figure du DOM
+            createWork();
+          }
+          // Si l'ajout côté serveur à échoué ou que l'ajout côté serveur n'est pas authorisé :
+          else if (response.status === 400 || response.status === 401) {
+            loadErrorMessage()
+          }
+          // Pour tout autre probleme :
+          else {
+            loadErrorMessage()
+          }
+
       })
       .catch(error => { //Je n'ai pu recuperer ma Response 
         loadErrorMessage()
@@ -334,9 +380,9 @@ export function openModal() {
       });
     });
   }
-    loadModalPages();
-    loadPreview();
-    loadRequest();
+    loadModalPages(); // ok
+    loadPreview(); // ok
+    sendRequest();
     //Hotel First Arte New Delhi
   }
   
@@ -402,7 +448,24 @@ export function closeModal() {
         //"http://localhost:5678/api/works/"+ figureId
 
               //supprimer la preview en utilisant form reset
-          
+      
+              
+              // function work(image, title, category) {
+              //   this.image = image;
+              //   this.title = title;
+              //   this.category = category;
+              // }
+
+
+
+
+
+
+
+
+
+
+
    // photoInput.onchange = evt => {
       //   const [selectedImage] = photoInput.files
       //   if (selectedImage) {
