@@ -530,10 +530,7 @@ footer nav ul {
     margin-top: 10px;
 }
 
-.errorStyleForm {
-    margin-top: 10px;
-	background-color: rebeccapurple;
-}
+
 
 .unavailable {
 	pointer-events: none;
@@ -544,12 +541,26 @@ footer nav ul {
 	display: flex;
 }
 
-.modalForm #formSubmitBtn {
+#formSubmitBtn {
+	margin: auto;
     display: flex;
-    margin-top: 78px; /*48*/
+    margin-top: 78px;
 	width: 180px;
 }
 
 .preview {
 	height: 169px;
+}
+
+.errorStyleForm {
+    display: flex;
+   	margin-top: calc(20% - 55px); /*25px; */
+	width: 180px;
+}
+
+#errorForm.errorBox {
+	z-index: 10;
+    position: absolute;
+    width: inherit;
+    height: fit-content;
 }
