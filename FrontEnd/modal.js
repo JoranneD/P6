@@ -1,6 +1,9 @@
 import { loadWorks } from './works.js';
 //import { loadErrorMessage } from './login.js';
 
+const second_reponse = await fetch("http://localhost:5678/api/categories");
+const categories = await second_reponse.json();
+
 // Je déclare les variables en dehors des fonctions pour les rendre accessibles à toutes les fonctions
 const editBtn = document.getElementById('editBtn');
 const modal = document.getElementById('modalWindow');
@@ -23,8 +26,15 @@ const photoUploadLabel = document.querySelector('.photoUpload label');
 //const photoUploadInput = document.querySelector('.photoUpload input');
 const photoUploadP = document.querySelector('.photoUpload p');
 const photoUpload = document.querySelector('.photoUpload');
-
-
+const titleInput = modalForm.querySelector("[name=title]").value;
+const categoryInput = modalForm.querySelector("[name=category]").value;
+const titleOption = modalForm.querySelector("[name=title]").categoryId;
+const categoryOption = modalForm.querySelector("[name=category]").categoryId;
+const category = [categories];
+//const categoryInput = document.getElementById(category.id);
+const categoryList = document.getElementById("categoryList");
+console.log(categoryList)
+//console.log(categoryInput)
 
 
 
@@ -37,16 +47,16 @@ export function openModal() {
     modal.style.display = 'flex';
     });
   }
-  function hideFigcaptions() {
-    // Récupérez tous les éléments figcaption à l'intérieur de la galerie
-      const figcaptions = gallery.querySelectorAll('figcaption');
-
-      // Ajoutez la classe hidden à chaque figcaption
-      figcaptions.forEach((figcaption) => {
-        figcaption.classList.add('hidden');
-      });
-  }
-  function deleteWork() {
+  function displayDeletePage() {
+    function hideFigcaptions() {
+      // Récupérez tous les éléments figcaption à l'intérieur de la galerie
+        const figcaptions = gallery.querySelectorAll('figcaption');
+  
+        // Ajoutez la classe hidden à chaque figcaption
+        figcaptions.forEach((figcaption) => {
+          figcaption.classList.add('hidden');
+        });
+    }
     function saveData() {
       // Je sauvegarde les données de ma galerie
       const backupData = {};
@@ -62,118 +72,101 @@ export function openModal() {
         console.log(figureData)
       });
     }
-
-    // --- CREATION DES BOUTONS DE SUPPRESSION ---
-    // Je cree une div icone à chaque figure
-    figures.forEach((figure) => {
-      const deleteBtn = document.createElement("div");
-      deleteBtn.classList.add('deleteBtn');
-      deleteBtn.innerHTML = `<i class="fa-solid fa-trash-can"></i>`;
-      
-      // Je le rattache à son parent
-      figure.appendChild(deleteBtn);
-
-      // --- SUPPRESSION D'UN PROJET ---
-      // Je recupere l'id de chaques figures pour plus tard les supprimer
-      deleteBtn.addEventListener('click', function() {
-        const figureId = figure.getAttribute('id');
-        console.log("Suppression de la figure", figureId);
-
-        // Je fais ma requete (ces en-têtes sont couramment utilisés dans le contexte de l'API Web pour gérer l'authentification et spécifier le type de contenu envoyé avec la requête.)
-        const fetchPromise = fetch(`http://localhost:5678/api/works/${figureId}`, {
-          method: "DELETE",
-          headers: {
-            // indique au serveur que le corps de la requête est au format JSON
-            "Content-Type": "application/json",
-            // le serveur vérifie ce jeton pour s'assurer que la personne qui effectue la requête a l'autorisation
-            "Authorization": "Bearer " + key
-          }
-        });
-        console.log(fetchPromise)
-
-
-        // Ma response -- Recuperation des informations
-        fetchPromise
-        .then(response => { // J'ai pu recuperer ma Response
-          console.log(response);
-          function loadErrorMessage() {
-            // Création du message d'erreur
-            const errorBox = document.getElementById("errorSign");
-            errorBox.classList.remove('hidden');
-            errorBox.innerHTML = "";
+    function deleteWork() {
+      // --- CREATION DES BOUTONS DE SUPPRESSION ---
+      // Je cree une div icone à chaque figure
+      figures.forEach((figure) => {
+        const deleteBtn = document.createElement("div");
+        deleteBtn.classList.add('deleteBtn');
+        deleteBtn.innerHTML = `<i class="fa-solid fa-trash-can"></i>`;
         
-            const errorMessage = document.createElement("p");
-            errorMessage.classList.add("error");
-
-            modalSubmitBtn.classList.add("errorStyle");
-
-            if (response.status === 401) {
-              errorMessage.innerHTML = "Vous n'êtes pas autorisé à effectuer cette opération";
+        // Je le rattache à son parent
+        figure.appendChild(deleteBtn);
+  
+        // --- SUPPRESSION D'UN PROJET ---
+        // Je recupere l'id de chaques figures pour plus tard les supprimer
+        deleteBtn.addEventListener('click', function() {
+          const figureId = figure.getAttribute('id');
+          console.log("Suppression de la figure", figureId);
+  
+          // Je fais ma requete (ces en-têtes sont couramment utilisés dans le contexte de l'API Web pour gérer l'authentification et spécifier le type de contenu envoyé avec la requête.)
+          const fetchPromise = fetch(`http://localhost:5678/api/works/${figureId}`, {
+            method: "DELETE",
+            headers: {
+              // indique au serveur que le corps de la requête est au format JSON
+              "Content-Type": "application/json",
+              // le serveur vérifie ce jeton pour s'assurer que la personne qui effectue la requête a l'autorisation
+              "Authorization": "Bearer " + key
             }
-            else {
-              errorMessage.innerHTML = "Erreur de serveur interne";
-            }
-            
-            // On rattache la balise enfant à son parent
-            errorBox.appendChild(errorMessage);
-        
-            // Disparition du message d'erreur
-            window.onclick = function(event) {
-              if (event.target === modal || event.target == closeBtn || event.target == modalSubmitBtn) {
-                errorBox.classList.add('hidden');
+          });
+          console.log(fetchPromise)
+  
+  
+          // Ma response -- Recuperation des informations
+          fetchPromise
+          .then(response => { // J'ai pu recuperer ma Response
+            console.log(response);
+            function loadErrorMessage() {
+              // Création du message d'erreur
+              const errorBox = document.getElementById("errorSign");
+              errorBox.classList.remove('hidden');
+              errorBox.innerHTML = "";
+          
+              const errorMessage = document.createElement("p");
+              errorMessage.classList.add("error");
+  
+              modalSubmitBtn.classList.add("errorStyle");
+  
+              if (response.status === 401) {
+                errorMessage.innerHTML = "Vous n'êtes pas autorisé à effectuer cette opération";
               }
+              else {
+                errorMessage.innerHTML = "Erreur de serveur interne";
+              }
+              
+              // On rattache la balise enfant à son parent
+              errorBox.appendChild(errorMessage);
+          
+              // Disparition du message d'erreur
+              window.onclick = function(event) {
+                if (event.target === modal || event.target == closeBtn || event.target == modalSubmitBtn) {
+                  errorBox.classList.add('hidden');
+                }
+              }
+            };
+  
+            // Si la suppression côté serveur est réussit :
+            if (response.status === 200) {
+              // Je supprime la figure du DOM 
+              figure.remove();
+            } 
+            // Si je ne suis pas autorisé :
+            else if (response.status === 401) {
+              loadErrorMessage()
             }
-          };
-
-          // Si la suppression côté serveur est réussit :
-          if (response.status === 200) {
-            // Je supprime la figure du DOM 
-            figure.remove();
-          } 
-          // Si je ne suis pas autorisé :
-          else if (response.status === 401) {
+            // Si la suppression côté serveur a échoué :
+            else {
+              loadErrorMessage()
+            }
+          })
+          .catch(error => { //Je n'ai pu recuperer ma Response 
             loadErrorMessage()
-          }
-          // Si la suppression côté serveur a échoué :
-          else {
-            loadErrorMessage()
-          }
-        })
-        .catch(error => { //Je n'ai pu recuperer ma Response 
-          loadErrorMessage()
-          console.error('Erreur lors de la suppression :', error);
+            console.error('Erreur lors de la suppression :', error);
+          });
         });
       });
-    });
+    }
+    // J'appelle mes fonctions
+    hideFigcaptions()
+    deleteWork()
   }
-  function addWork() {
-    function loadModalPages () {
-      modalSubmitBtn.addEventListener('click', function() {
-        // J'affiche la fleche precedent
-        previousBtn.classList.remove('hidden');
-        // Je masque la galerie
-        figureContent.classList.add('hidden');
-        // Je change le titre en "Ajout photo"
-        modalTitle.textContent = "Ajout photo";
-        formSubmitBtn.classList.add('modalSubmitBtn');
-        //modalSubmitBtn.textContent = "Valider";
-  
-        // J'affiche le formulaire
-        modalForm.classList.remove('hidden');
-        // Je masque modalSubmitBtn (bouton qui me permet de "changer" de page de modal)
-        modalSubmitBtn.classList.add('hidden');
-  
-        // j'ajoute une figure à #portfolio .gallery. Pour ca je fais une demande à l'API //
-  
-        previousBtn.addEventListener('click', function() {
-          figureContent.classList.remove('hidden');
-          previousBtn.classList.add('hidden');
-          modalTitle.textContent = "Galerie Photo";
-          modalSubmitBtn.textContent = "Ajouter une photo";
-          modalForm.classList.add('hidden');
-          modalSubmitBtn.classList.remove('hidden');
-        });
-        //console.log(modalSubmitBtn)
+  function displayAddPage() {
+    function loadCategoryList () {
+      categories.forEach((category) => {
+        const option = document.createElement("option");
+        option.dataset.categoryId = category.id;
+        option.value = category.name;
+        categoryList.appendChild(option);
       });
     }
     function loadPreview() {
@@ -214,6 +207,7 @@ export function openModal() {
               photoInput.value = ''; // Réinitialise la valeur du champ de fichier
               photoPreview.src = ''; // Réinitialise la source de l'image
               //categoryInput.value = ''; // Réinitialise la valeur du champ de categorie
+              modalForm.reset();
 
               // Je revoque mon URL
               window.URL.revokeObjectURL(uploadedFileURL);
@@ -232,7 +226,7 @@ export function openModal() {
         }
       });
     }
-    function sendRequest() {
+    function addWork() {
       function loadErrorBox(message) {
         // Création du message d'erreur
         const errorBox = document.getElementById("errorForm");
@@ -257,135 +251,557 @@ export function openModal() {
           }
         }
       };
-      // Au clique de "Valider"(formSubmitBtn), je fais ma requete
-      formSubmitBtn.addEventListener("click", async function (event) {
+      
+      // Au clique de formSubmitBtn, je valide mon formulaire
+      formSubmitBtn.addEventListener("click", function (event) {
         event.preventDefault();
 
-       // S'il manque une image dans le formulaire :
+       // Je vérifie si le champs image du formulaire est rempli:
+      //  !titleInput || !categoryInput || photoInput.files.length === 0
        if (photoInput.files.length === 0) {
-        loadErrorBox("Veuillez compléter le formulaire."); //Veuillez sélectionner une image
-      }
-
-        // Création de l’objet.
-        const formDatas = {
-          image: event.target.querySelector("[name=image]").value,
-          title: event.target.querySelector("[name=title]").value,
-          category: event.target.querySelector("[name=category]").value,
-        };
-        // Création de la charge utile au format JSON
-        const chargeUtile = JSON.stringify(formDatas);
-        // Ma requete -- Appel de la fonction fetch avec toutes les informations nécessaires
-        const fetchPromise = fetch("http://localhost:5678/api/works", {
-            method: "POST",
-            headers: { "Content-Type": "multipart/form-data" },
-            body: chargeUtile
-        });
-        console.log(fetchPromise)
-
-      // Ma response -- Recuperation des informations
-      fetchPromise
-      .then(response => { // J'ai pu recuperer ma Response
-        console.log(response);
-        function loadErrorMessage() {
-          // Création du message d'erreur
-          const errorBox = document.getElementById("errorForm");
-          errorBox.classList.remove('hidden');
-          errorBox.innerHTML = "";
-      
-          const errorMessage = document.createElement("p");
-          errorMessage.classList.add("error");
-  
-          formSubmitBtn.classList.add("errorStyleForm");
-  
-          // On rattache la balise enfant à son parent
-          errorBox.appendChild(errorMessage);
-  
-          // Gestion d'erreur
-          if (response.status === 400) {
-          errorMessage.innerHTML = "Une erreur s'est glissée dans votre formulaire";
-          }
-          else if (response.status === 401) {
-            errorMessage.innerHTML = "Vous n'êtes pas autorisé à effectuer cette opération";
-          }
-          else {
-            errorMessage.innerHTML = "Erreur de serveur interne";
-          }
-      
-          // Disparition du message d'erreur
-          window.onclick = function(event) {
-            if (event.target === modal || event.target == previousBtn || event.target == closeBtn) {
-              errorBox.classList.add('hidden');
-            }
-          }
-        };
-        function createWork() {
-          figures.forEach((figure) => {
-            // Je creer une nouvelle figure dans ma galerie
-            const newFigure = gallery.createElement('figure');
-            gallery.append(newFigure);
-
-            // Id
-            newFigure.setAttribute("id",figure.id);
-            //newFigure.dataset.image = figure.categoryId;
-
-            // Titre
-            const newFigureFigcaption = document.createElement("figcaption");
-            newFigureFigcaption.innerHTML = figure.title;
-
-            // Image
-            const newFigureImage = document.createElement("img");
-            newFigureImage.src = figure.imageUrl;
-            newFigureImage.alt = figure.title;
-
-            // Categorie
-            const newCategoryId = document.createElement("p");
-            //categoryId.classList.add("categoryId");
-            newCategoryId.innerHTML = figure.category.id;
-            newCategoryId.innerHTML = "";
-
-            // Utilisateur
-            const newUserId = document.createElement("p");
-            newUserId.classList.add("user_id");
-            newUserId.innerHTML = work.newUserId;
-            newUserId.innerHTML = "";
-
-            // On rattache les balises enfants à leurs parents
-            gallery.appendChild(newFigureImage);
-            gallery.appendChild(newFigureFigcaption);
-            gallery.appendChild(newUserId);
-            gallery.appendChild(newCategoryId);
-          
-            //const //previousElementSibling.id + 1)
-          });
+        loadErrorBox("Veuillez remplir tous les champs du formulaire"); //Veuillez inserer une image dans le formulaire
         }
-        
-          // Si l'ajout côté serveur est réussit :
-         if (response.status === 201) {
-            // J'ajoute la figure du DOM
-            createWork();
-          }
-          // Si l'ajout côté serveur à échoué ou que l'ajout côté serveur n'est pas authorisé :
-          else if (response.status === 400 || response.status === 401) {
-            loadErrorMessage()
-          }
-          // Pour tout autre probleme :
-          else {
-            loadErrorMessage()
-          }
+        // S'il sont remplis, alors je lance ma requete
+        // titleInput && categoryInput && photoInput.files[0]
+        else {
+         // Création de l’objet si tout les champs remplis :
+          const formDatas = {
+          image: photoInput.files[0], //event.target.querySelector("[name=image]").value,
+          title: titleInput, //event.target.querySelector("[name=title]").value,
+          category: categoryInput, //event.target.querySelector("[name=category]").value,
+          };
+          // Création de la charge utile au format JSON
+          const chargeUtile = JSON.stringify(formDatas);
+          // Ma requete -- Appel de la fonction fetch avec toutes les informations nécessaires
+          const fetchPromise = fetch("http://localhost:5678/api/works", {
+            method: "POST",
+            headers: { "Content-Type": "multipart/form-data",
+            "Authorization": "Bearer " + key
+            },
+            body: chargeUtile
+          });
+          console.log(fetchPromise)
 
-      })
-      .catch(error => { //Je n'ai pu recuperer ma Response 
-        loadErrorMessage()
-        console.error('Erreur lors de la suppression :', error);
+          // Ma response -- Recuperation des informations
+          fetchPromise
+          .then(response => { // J'ai pu recuperer ma Response
+            console.log(response);
+            function loadErrorMessage() {
+              function removePreview() {
+                modalForm.reset();
+                photoInput.value = ''; // Réinitialise la valeur du champ de fichier
+                photoPreview.src = ''; // Réinitialise la source de l'image
+                photoUploadIcon.classList.remove('hidden');
+                photoUploadLabel.classList.add('photoInputBtn');
+                photoUploadLabel.classList.remove('hidden');
+                photoInput.classList.remove('hidden');
+                photoUploadP.classList.remove('hidden');
+              }
+              // Création du message d'erreur
+              const errorBox = document.getElementById("errorForm");
+              errorBox.classList.remove('hidden');
+              errorBox.innerHTML = "";
+          
+              const errorMessage = document.createElement("p");
+              errorMessage.classList.add("error");
+      
+              formSubmitBtn.classList.add("errorStyleForm");
+      
+              // On rattache la balise enfant à son parent
+              errorBox.appendChild(errorMessage);
+      
+              // Gestion d'erreur
+              if (response.status === 400) {
+              errorMessage.innerHTML = "Une erreur s'est glissée dans votre formulaire";
+              }
+              else if (response.status === 401) {
+                errorMessage.innerHTML = "Vous n'êtes pas autorisé à effectuer cette opération";
+                removePreview()
+              }
+              else {
+                errorMessage.innerHTML = "Erreur de serveur interne";
+                removePreview()
+              }
+          
+              // Disparition du message d'erreur
+              window.onclick = function(event) {
+                if (event.target === modal || event.target == previousBtn || event.target == closeBtn) {
+                  errorBox.classList.add('hidden');
+                }
+              }
+            };
+            function createWork() {
+              figures.forEach((figure) => {
+                // Je creer une nouvelle figure dans ma galerie
+                const newFigure = gallery.createElement('figure');
+                gallery.append(newFigure);
+
+                // Id
+                newFigure.setAttribute("id",figure.id);
+                //newFigure.dataset.image = figure.categoryId;
+
+                // Titre
+                const newFigureFigcaption = document.createElement("figcaption");
+                newFigureFigcaption.innerHTML = figure.title;
+
+                // Image
+                const newFigureImage = document.createElement("img");
+                newFigureImage.src = figure.imageUrl;
+                newFigureImage.alt = figure.title;
+
+                // Categorie
+                const newCategoryId = document.createElement("p");
+                //categoryId.classList.add("categoryId");
+                newCategoryId.innerHTML = figure.category.id;
+                newCategoryId.innerHTML = "";
+
+                // Utilisateur
+                const newUserId = document.createElement("p");
+                newUserId.classList.add("user_id");
+                newUserId.innerHTML = work.newUserId;
+                newUserId.innerHTML = "";
+
+                // On rattache les balises enfants à leurs parents
+                gallery.appendChild(newFigureImage);
+                gallery.appendChild(newFigureFigcaption);
+                gallery.appendChild(newUserId);
+                gallery.appendChild(newCategoryId);
+              
+                //const //previousElementSibling.id + 1)
+              });
+            }
+            // Si l'ajout côté serveur est réussit :
+            if (response.status === 201) {
+                // J'ajoute la figure du DOM
+                //createWork();
+                console.log("Nouveau projet ajouté !")
+              }
+            // Si l'ajout côté serveur à échoué ou que l'ajout côté serveur n'est pas authorisé :
+            else if (response.status === 400 || response.status === 401) {
+              loadErrorMessage()
+            }
+            // Pour tout autre probleme :
+            else {
+              loadErrorMessage()
+            }
+          })
+          .catch(error => { //Je n'ai pu recuperer ma Response 
+            loadErrorMessage()
+            console.error('Erreur lors de la suppression :', error);
+          });
+        } 
       });
+    }
+    // J'appelle mes fonctions
+    loadCategoryList(); // ok
+    loadPreview(); // ok
+    addWork();
+  }
+  function switchPages () {
+    modalSubmitBtn.addEventListener('click', function() {
+      // J'affiche la fleche precedent
+      previousBtn.classList.remove('hidden');
+      // Je masque la galerie
+      figureContent.classList.add('hidden');
+      // Je change le titre en "Ajout photo"
+      modalTitle.textContent = "Ajout photo";
+      formSubmitBtn.classList.add('modalSubmitBtn');
+      //modalSubmitBtn.textContent = "Valider";
+
+      // J'affiche le formulaire
+      modalForm.classList.remove('hidden');
+      // Je masque modalSubmitBtn (bouton qui me permet de "changer" de page de modal)
+      modalSubmitBtn.classList.add('hidden');
+
+      // j'ajoute une figure à #portfolio .gallery. Pour ca je fais une demande à l'API //
+
+      previousBtn.addEventListener('click', function() {
+        figureContent.classList.remove('hidden');
+        previousBtn.classList.add('hidden');
+        modalTitle.textContent = "Galerie Photo";
+        modalSubmitBtn.textContent = "Ajouter une photo";
+        modalForm.classList.add('hidden');
+        modalSubmitBtn.classList.remove('hidden');
+      });
+      //console.log(modalSubmitBtn)
     });
   }
-    loadModalPages(); // ok
-    loadPreview(); // ok
-    sendRequest();
-    //Hotel First Arte New Delhi
-  }
+  // function hideFigcaptions() {
+  //   // Récupérez tous les éléments figcaption à l'intérieur de la galerie
+  //     const figcaptions = gallery.querySelectorAll('figcaption');
+
+  //     // Ajoutez la classe hidden à chaque figcaption
+  //     figcaptions.forEach((figcaption) => {
+  //       figcaption.classList.add('hidden');
+  //     });
+  // }
+  // function loadCategoryList () {
+  //   categories.forEach((category) => {
+  //     const option = document.createElement("option");
+  //     option.dataset.categoryId = category.id;
+  //     option.value = category.name;
+  //     categoryList.appendChild(option);
+  //   });
+  // }
+  // function deleteWork() {
+  //   function saveData() {
+  //     // Je sauvegarde les données de ma galerie
+  //     const backupData = {};
+  //     // Je recupere les figures existantes dans la galerie
+  //     const figures = gallery.querySelectorAll('figure');
+      
+  //     // Je stocke les données de chaque figure dans backupData
+  //     figures.forEach((figure) => {
+  //       const figureId = figure.getAttribute('id');
+  //       const figureData = /* récupérer les données associées à la figure */
+      
+  //       backupData[figureId] = figureData;
+  //       console.log(figureData)
+  //     });
+  //   }
+
+  //   // --- CREATION DES BOUTONS DE SUPPRESSION ---
+  //   // Je cree une div icone à chaque figure
+  //   figures.forEach((figure) => {
+  //     const deleteBtn = document.createElement("div");
+  //     deleteBtn.classList.add('deleteBtn');
+  //     deleteBtn.innerHTML = `<i class="fa-solid fa-trash-can"></i>`;
+      
+  //     // Je le rattache à son parent
+  //     figure.appendChild(deleteBtn);
+
+  //     // --- SUPPRESSION D'UN PROJET ---
+  //     // Je recupere l'id de chaques figures pour plus tard les supprimer
+  //     deleteBtn.addEventListener('click', function() {
+  //       const figureId = figure.getAttribute('id');
+  //       console.log("Suppression de la figure", figureId);
+
+  //       // Je fais ma requete (ces en-têtes sont couramment utilisés dans le contexte de l'API Web pour gérer l'authentification et spécifier le type de contenu envoyé avec la requête.)
+  //       const fetchPromise = fetch(`http://localhost:5678/api/works/${figureId}`, {
+  //         method: "DELETE",
+  //         headers: {
+  //           // indique au serveur que le corps de la requête est au format JSON
+  //           "Content-Type": "application/json",
+  //           // le serveur vérifie ce jeton pour s'assurer que la personne qui effectue la requête a l'autorisation
+  //           "Authorization": "Bearer " + key
+  //         }
+  //       });
+  //       console.log(fetchPromise)
+
+
+  //       // Ma response -- Recuperation des informations
+  //       fetchPromise
+  //       .then(response => { // J'ai pu recuperer ma Response
+  //         console.log(response);
+  //         function loadErrorMessage() {
+  //           // Création du message d'erreur
+  //           const errorBox = document.getElementById("errorSign");
+  //           errorBox.classList.remove('hidden');
+  //           errorBox.innerHTML = "";
+        
+  //           const errorMessage = document.createElement("p");
+  //           errorMessage.classList.add("error");
+
+  //           modalSubmitBtn.classList.add("errorStyle");
+
+  //           if (response.status === 401) {
+  //             errorMessage.innerHTML = "Vous n'êtes pas autorisé à effectuer cette opération";
+  //           }
+  //           else {
+  //             errorMessage.innerHTML = "Erreur de serveur interne";
+  //           }
+            
+  //           // On rattache la balise enfant à son parent
+  //           errorBox.appendChild(errorMessage);
+        
+  //           // Disparition du message d'erreur
+  //           window.onclick = function(event) {
+  //             if (event.target === modal || event.target == closeBtn || event.target == modalSubmitBtn) {
+  //               errorBox.classList.add('hidden');
+  //             }
+  //           }
+  //         };
+
+  //         // Si la suppression côté serveur est réussit :
+  //         if (response.status === 200) {
+  //           // Je supprime la figure du DOM 
+  //           figure.remove();
+  //         } 
+  //         // Si je ne suis pas autorisé :
+  //         else if (response.status === 401) {
+  //           loadErrorMessage()
+  //         }
+  //         // Si la suppression côté serveur a échoué :
+  //         else {
+  //           loadErrorMessage()
+  //         }
+  //       })
+  //       .catch(error => { //Je n'ai pu recuperer ma Response 
+  //         loadErrorMessage()
+  //         console.error('Erreur lors de la suppression :', error);
+  //       });
+  //     });
+  //   });
+  // }
+  // function addWork() {
+  //   // function loadModalPages () {
+  //   //   modalSubmitBtn.addEventListener('click', function() {
+  //   //     // J'affiche la fleche precedent
+  //   //     previousBtn.classList.remove('hidden');
+  //   //     // Je masque la galerie
+  //   //     figureContent.classList.add('hidden');
+  //   //     // Je change le titre en "Ajout photo"
+  //   //     modalTitle.textContent = "Ajout photo";
+  //   //     formSubmitBtn.classList.add('modalSubmitBtn');
+  //   //     //modalSubmitBtn.textContent = "Valider";
   
+  //   //     // J'affiche le formulaire
+  //   //     modalForm.classList.remove('hidden');
+  //   //     // Je masque modalSubmitBtn (bouton qui me permet de "changer" de page de modal)
+  //   //     modalSubmitBtn.classList.add('hidden');
+  
+  //   //     // j'ajoute une figure à #portfolio .gallery. Pour ca je fais une demande à l'API //
+  
+  //   //     previousBtn.addEventListener('click', function() {
+  //   //       figureContent.classList.remove('hidden');
+  //   //       previousBtn.classList.add('hidden');
+  //   //       modalTitle.textContent = "Galerie Photo";
+  //   //       modalSubmitBtn.textContent = "Ajouter une photo";
+  //   //       modalForm.classList.add('hidden');
+  //   //       modalSubmitBtn.classList.remove('hidden');
+  //   //     });
+  //   //     //console.log(modalSubmitBtn)
+  //   //   });
+  //   // }
+  //   // function loadPreview() {
+  //   //   // je met mon image, je vois la preview, je note mon titre, je cherche ma categorie, je fais ma requete
+
+  //   //   photoInput.addEventListener('change', function () {
+  //   //     // Si j'ai une image dans ma liste d'image
+  //   //     if (photoInput.files.length > 0) {
+  //   //       // Alors je selectionne la premiere
+  //   //       const uploadedFile = photoInput.files[0];
+  //   //       // Je lui crée une URL
+  //   //       const uploadedFileURL = URL.createObjectURL(uploadedFile);          
+
+  //   //       // Créer un nouvel élément image
+  //   //       const photoPreview = document.createElement('img');
+  //   //       photoPreview.setAttribute("id", "photoPreview");
+  //   //       photoPreview.src = uploadedFileURL; // Je place l'URL dans la source de ma preview pour visualiser mon image
+  //   //       photoPreview.classList.add('preview');
+  //   //       photoUpload.insertBefore(photoPreview, photoUpload.children[3]);
+
+  //   //       // Je stylise le reste de mes élément en fonction de la maquette
+  //   //       //photoPreview.classList.add('preview');
+  //   //       photoUploadIcon.classList.add('hidden');
+  //   //       photoUploadLabel.classList.remove('photoInputBtn');
+  //   //       photoUploadLabel.classList.add('hidden');
+  //   //       photoInput.classList.add('hidden');
+  //   //       photoUploadP.classList.add('hidden');
+
+  //   //       // Montre moi ---------------------------------------------
+  //   //       //console.log("Infos sur mon image uploadée:",uploadedFile)
+  //   //       //console.log("Mon URL actuel:",uploadedFileURL)
+  //   //       //console.log("Ma preview actuel:",photoPreview)
+
+  //   //       // Disparition du message d'erreur
+  //   //       window.onclick = function(event) {
+  //   //         if (event.target === previousBtn || event.target == closeBtn) {
+
+  //   //           photoInput.value = ''; // Réinitialise la valeur du champ de fichier
+  //   //           photoPreview.src = ''; // Réinitialise la source de l'image
+  //   //           //categoryInput.value = ''; // Réinitialise la valeur du champ de categorie
+  //   //           modalForm.reset();
+
+  //   //           // Je revoque mon URL
+  //   //           window.URL.revokeObjectURL(uploadedFileURL);
+              
+  //   //           photoUploadIcon.classList.remove('hidden');
+  //   //           photoUploadLabel.classList.add('photoInputBtn');
+  //   //           photoUploadLabel.classList.remove('hidden');
+  //   //           photoInput.classList.remove('hidden');
+  //   //           photoUploadP.classList.remove('hidden');
+
+  //   //           // Montre moi ---------------------------------------------
+  //   //           //console.log("Mon URL apres:",uploadedFileURL);
+  //   //           //console.log("Ma preview apres:",photoPreview)
+  //   //         }
+  //   //       }
+  //   //     }
+  //   //   });
+  //   // }
+  //   function sendRequest() {
+  //     function loadErrorBox(message) {
+  //       // Création du message d'erreur
+  //       const errorBox = document.getElementById("errorForm");
+  //       errorBox.classList.remove('hidden');
+  //       errorBox.innerHTML = "";
+    
+  //       const errorMessage = document.createElement("p");
+  //       errorMessage.classList.add("error");
+  //       errorMessage.innerHTML = message;
+
+  //       formSubmitBtn.classList.add("errorStyleForm");
+
+  //       // On rattache la balise enfant à son parent
+  //       errorBox.appendChild(errorMessage);
+
+  //       // Disparition du message d'erreur
+  //       window.onclick = function(event) {
+  //         if (event.target === modal || event.target == previousBtn || event.target == closeBtn) {
+  //           errorBox.classList.add('hidden');
+  //           formSubmitBtn.classList.remove("errorStyleForm");
+  //           modalForm.reset();
+  //         }
+  //       }
+  //     };
+      
+  //     // Au clique de formSubmitBtn, je valide mon formulaire
+  //     formSubmitBtn.addEventListener("click", function (event) {
+  //       event.preventDefault();
+
+  //      // Je vérifie si le champs image du formulaire est rempli:
+  //     //  !titleInput || !categoryInput || photoInput.files.length === 0
+  //      if (photoInput.files.length === 0) {
+  //       loadErrorBox("Veuillez remplir tous les champs du formulaire"); //Veuillez inserer une image dans le formulaire
+  //       }
+  //       // S'il sont remplis, alors je lance ma requete
+  //       // titleInput && categoryInput && photoInput.files[0]
+  //       else {
+  //        // Création de l’objet si tout les champs remplis :
+  //         const formDatas = {
+  //         image: photoInput.files[0], //event.target.querySelector("[name=image]").value,
+  //         title: titleInput, //event.target.querySelector("[name=title]").value,
+  //         category: categoryInput, //event.target.querySelector("[name=category]").value,
+  //         };
+  //         // Création de la charge utile au format JSON
+  //         const chargeUtile = JSON.stringify(formDatas);
+  //         // Ma requete -- Appel de la fonction fetch avec toutes les informations nécessaires
+  //         const fetchPromise = fetch("http://localhost:5678/api/works", {
+  //           method: "POST",
+  //           headers: { "Content-Type": "multipart/form-data",
+  //           "Authorization": "Bearer " + key
+  //           },
+  //           body: chargeUtile
+  //         });
+  //         console.log(fetchPromise)
+
+  //         // Ma response -- Recuperation des informations
+  //         fetchPromise
+  //         .then(response => { // J'ai pu recuperer ma Response
+  //           console.log(response);
+  //           function loadErrorMessage() {
+  //             function removePreview() {
+  //               modalForm.reset();
+  //               photoInput.value = ''; // Réinitialise la valeur du champ de fichier
+  //               photoPreview.src = ''; // Réinitialise la source de l'image
+  //               photoUploadIcon.classList.remove('hidden');
+  //               photoUploadLabel.classList.add('photoInputBtn');
+  //               photoUploadLabel.classList.remove('hidden');
+  //               photoInput.classList.remove('hidden');
+  //               photoUploadP.classList.remove('hidden');
+  //             }
+  //             // Création du message d'erreur
+  //             const errorBox = document.getElementById("errorForm");
+  //             errorBox.classList.remove('hidden');
+  //             errorBox.innerHTML = "";
+          
+  //             const errorMessage = document.createElement("p");
+  //             errorMessage.classList.add("error");
+      
+  //             formSubmitBtn.classList.add("errorStyleForm");
+      
+  //             // On rattache la balise enfant à son parent
+  //             errorBox.appendChild(errorMessage);
+      
+  //             // Gestion d'erreur
+  //             if (response.status === 400) {
+  //             errorMessage.innerHTML = "Une erreur s'est glissée dans votre formulaire";
+  //             }
+  //             else if (response.status === 401) {
+  //               errorMessage.innerHTML = "Vous n'êtes pas autorisé à effectuer cette opération";
+  //               removePreview()
+  //             }
+  //             else {
+  //               errorMessage.innerHTML = "Erreur de serveur interne";
+  //               removePreview()
+  //             }
+          
+  //             // Disparition du message d'erreur
+  //             window.onclick = function(event) {
+  //               if (event.target === modal || event.target == previousBtn || event.target == closeBtn) {
+  //                 errorBox.classList.add('hidden');
+  //               }
+  //             }
+  //           };
+  //           function createWork() {
+  //             figures.forEach((figure) => {
+  //               // Je creer une nouvelle figure dans ma galerie
+  //               const newFigure = gallery.createElement('figure');
+  //               gallery.append(newFigure);
+
+  //               // Id
+  //               newFigure.setAttribute("id",figure.id);
+  //               //newFigure.dataset.image = figure.categoryId;
+
+  //               // Titre
+  //               const newFigureFigcaption = document.createElement("figcaption");
+  //               newFigureFigcaption.innerHTML = figure.title;
+
+  //               // Image
+  //               const newFigureImage = document.createElement("img");
+  //               newFigureImage.src = figure.imageUrl;
+  //               newFigureImage.alt = figure.title;
+
+  //               // Categorie
+  //               const newCategoryId = document.createElement("p");
+  //               //categoryId.classList.add("categoryId");
+  //               newCategoryId.innerHTML = figure.category.id;
+  //               newCategoryId.innerHTML = "";
+
+  //               // Utilisateur
+  //               const newUserId = document.createElement("p");
+  //               newUserId.classList.add("user_id");
+  //               newUserId.innerHTML = work.newUserId;
+  //               newUserId.innerHTML = "";
+
+  //               // On rattache les balises enfants à leurs parents
+  //               gallery.appendChild(newFigureImage);
+  //               gallery.appendChild(newFigureFigcaption);
+  //               gallery.appendChild(newUserId);
+  //               gallery.appendChild(newCategoryId);
+              
+  //               //const //previousElementSibling.id + 1)
+  //             });
+  //           }
+  //           // Si l'ajout côté serveur est réussit :
+  //           if (response.status === 201) {
+  //               // J'ajoute la figure du DOM
+  //               //createWork();
+  //               console.log("Nouveau projet ajouté !")
+  //             }
+  //           // Si l'ajout côté serveur à échoué ou que l'ajout côté serveur n'est pas authorisé :
+  //           else if (response.status === 400 || response.status === 401) {
+  //             loadErrorMessage()
+  //           }
+  //           // Pour tout autre probleme :
+  //           else {
+  //             loadErrorMessage()
+  //           }
+  //         })
+  //         .catch(error => { //Je n'ai pu recuperer ma Response 
+  //           loadErrorMessage()
+  //           console.error('Erreur lors de la suppression :', error);
+  //         });
+  //       } 
+  //     });
+  //   }
+  //   loadModalPages(); // ok
+  //   loadPreview(); // ok
+  //   sendRequest();
+  //   //Hotel First Arte New Delhi
+  //   //console.log(categoryInput)
+  // }
 
   // Je vérifie si editBtn est présent dans mon code
   if (editBtn) {
@@ -395,9 +811,21 @@ export function openModal() {
     loadWorks();
     
     if (gallery) {
-      hideFigcaptions(); // Cache les figcaptions
-      deleteWork(); // Supprime un projet
-      addWork(); // Ajoute un projet
+      // J'affiche ma page de supression
+      displayDeletePage();
+
+      // Si je clique sur "Ajouter une photo" :
+      modalSubmitBtn.addEventListener('click', function() {
+        // Je cache ma page supression et affiche mon formulaire d'ajout
+        switchPages ();
+        displayAddPage();
+      });
+
+      //loadCategoryList();
+      //hideFigcaptions(); // Cache les figcaptions
+      //deleteWork(); // Supprime un projet
+      //addWork(); // Ajoute un projet
+     
     }
 
     // Je place la galerie à l'intérieur de la div figureContent
@@ -423,6 +851,56 @@ export function closeModal() {
 
 
 // ------------------------------------------------------------------------------------------
+// Recherche de l'ID associé au nom de la catégorie
+      //const selectedCategory = categories.find(category => category.name === categoryName);
+
+      // Retournez l'ID trouvé (ou null si aucune correspondance)
+      //return selectedCategory ? selectedCategory.id : null;
+
+      //option.setAttribute("id",category.id)
+      //category.dataset.category_id !== category.toString()
+      //const selectedCategory = option.getAttribute("id");
+      // const option = document.createElement("option");
+      // option.dataset.id = category.id;
+      // option.value = category.name;
+      // category.name = option.categoryId;
+      //category.name = option.getAttribute('data-id');
+
+      // const selectedOption = dataList.querySelector(`option[value="${categoryInput.value}"]`);
+      // categoryInput.addEventListener('input', function(event) {
+      //   if (selectedOption) {
+      //     selectedOption = dataList.querySelector(`option[value="${categoryInput.id}"]`);
+      //   }
+      //   console.log(selectedOption)
+      // });
+
+      // categoryInput.addEventListener('input', function() {
+      //   const selectedOption = dataList.querySelector(`option[value="${categoryInput.value}"]`);
+      //   if (selectedOption) {
+      //     const categoryId = selectedOption.getAttribute('data-id');
+      //     categoryInput.setAttribute('data-id', categoryId);
+      //   } else {
+      //     // Réinitialisez l'ID si aucune option n'est sélectionnée
+      //     categoryInput.setAttribute('data-id', '');
+      //   }
+      //   //console.log(selectedOption)
+      // });
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 // Je fais ma requete 
           // const fetchPromise = fetch("http://localhost:5678/api/works/"+ figureId, {
 		  	  //   method: "DELETE",
@@ -459,7 +937,10 @@ export function closeModal() {
 
 
 
-
+              // <!-- <option value="Objets">
+							// <option value="Appartements">
+							// <option value="Hotels & restaurants"> -->
+							// <!-- Ajoutez ici toutes vos catégories -->
 
 
 

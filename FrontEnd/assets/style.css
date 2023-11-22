@@ -563,4 +563,5 @@ footer nav ul {
     position: absolute;
     width: inherit;
     height: fit-content;
+	padding: 3px;
 }
