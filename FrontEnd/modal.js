@@ -27,14 +27,14 @@ const photoUploadLabel = document.querySelector('.photoUpload label');
 const photoUploadP = document.querySelector('.photoUpload p');
 const photoUpload = document.querySelector('.photoUpload');
 const titleInput = modalForm.querySelector("[name=title]").value;
-const categoryInput = modalForm.querySelector("[name=category]").value;
-const titleOption = modalForm.querySelector("[name=title]").categoryId;
-const categoryOption = modalForm.querySelector("[name=category]").categoryId;
+const categoryInput = document.getElementById('categoryInput');
 const category = [categories];
-//const categoryInput = document.getElementById(category.id);
-const categoryList = document.getElementById("categoryList");
+const categoryList = document.getElementById('categoryList');
+const titleOption = modalForm.querySelector("[name=title]").categoryId;
+//const selectedOption = categoryList.querySelector('option').id;
+
 console.log(categoryList)
-//console.log(categoryInput)
+//console.log(selectedOption)
 
 
 
@@ -46,6 +46,40 @@ export function openModal() {
     // Je rend la modale visible
     modal.style.display = 'flex';
     });
+  }
+  function loadCategoryList () {
+    categories.forEach((category) => {
+      const option = document.createElement("option");
+      //option.dataset.categoryId = category.id;
+      option.setAttribute('id', category.id);
+      option.value = category.name;
+      categoryList.appendChild(option);
+    });
+  }
+  function switchPages () {
+    // J'affiche la fleche precedent
+    previousBtn.classList.remove('hidden');
+    // Je masque la galerie
+    figureContent.classList.add('hidden');
+    // Je change le titre en "Ajout photo"
+    modalTitle.textContent = "Ajout photo";
+    formSubmitBtn.classList.add('modalSubmitBtn');
+    //modalSubmitBtn.textContent = "Valider";
+
+    // J'affiche le formulaire
+    modalForm.classList.remove('hidden');
+    // Je masque modalSubmitBtn (bouton qui me permet de "changer" de page de modal)
+    modalSubmitBtn.classList.add('hidden');
+
+    previousBtn.addEventListener('click', function() {
+      figureContent.classList.remove('hidden');
+      previousBtn.classList.add('hidden');
+      modalTitle.textContent = "Galerie Photo";
+      modalSubmitBtn.textContent = "Ajouter une photo";
+      modalForm.classList.add('hidden');
+      modalSubmitBtn.classList.remove('hidden');
+    });
+    //console.log(modalSubmitBtn)
   }
   function displayDeletePage() {
     function hideFigcaptions() {
@@ -161,14 +195,6 @@ export function openModal() {
     deleteWork()
   }
   function displayAddPage() {
-    function loadCategoryList () {
-      categories.forEach((category) => {
-        const option = document.createElement("option");
-        option.dataset.categoryId = category.id;
-        option.value = category.name;
-        categoryList.appendChild(option);
-      });
-    }
     function loadPreview() {
       // je met mon image, je vois la preview, je note mon titre, je cherche ma categorie, je fais ma requete
 
@@ -251,10 +277,27 @@ export function openModal() {
           }
         }
       };
+      function switchValueToId() {
+        categoryInput.addEventListener('input', function () {
+          const inputValue = categoryInput.value;
+        
+          // Je cherche l'option correspondante dans datalist
+          const selectedOption = Array.from(categoryList.options).find(option => option.value === inputValue);
+        
+          if (selectedOption) {
+            const selectedOptionId = selectedOption.id;
+            console.log(selectedOptionId);
+          }
+        });
+      }
       
+
       // Au clique de formSubmitBtn, je valide mon formulaire
       formSubmitBtn.addEventListener("click", function (event) {
         event.preventDefault();
+
+        //Hotel First Arte New Delhi
+        //switchValueToId();
 
        // Je vérifie si le champs image du formulaire est rempli:
       //  !titleInput || !categoryInput || photoInput.files.length === 0
@@ -267,8 +310,8 @@ export function openModal() {
          // Création de l’objet si tout les champs remplis :
           const formDatas = {
           image: photoInput.files[0], //event.target.querySelector("[name=image]").value,
-          title: titleInput, //event.target.querySelector("[name=title]").value,
-          category: categoryInput, //event.target.querySelector("[name=category]").value,
+          title: titleInput, // event.target.querySelector("[name=title]").value, //, 
+          category: selectedOption, //event.target.querySelector("[name=category]").id, //categoryInput, 
           };
           // Création de la charge utile au format JSON
           const chargeUtile = JSON.stringify(formDatas);
@@ -393,40 +436,300 @@ export function openModal() {
       });
     }
     // J'appelle mes fonctions
-    loadCategoryList(); // ok
     loadPreview(); // ok
     addWork();
   }
-  function switchPages () {
-    modalSubmitBtn.addEventListener('click', function() {
-      // J'affiche la fleche precedent
-      previousBtn.classList.remove('hidden');
-      // Je masque la galerie
-      figureContent.classList.add('hidden');
-      // Je change le titre en "Ajout photo"
-      modalTitle.textContent = "Ajout photo";
-      formSubmitBtn.classList.add('modalSubmitBtn');
-      //modalSubmitBtn.textContent = "Valider";
-
-      // J'affiche le formulaire
-      modalForm.classList.remove('hidden');
-      // Je masque modalSubmitBtn (bouton qui me permet de "changer" de page de modal)
-      modalSubmitBtn.classList.add('hidden');
-
-      // j'ajoute une figure à #portfolio .gallery. Pour ca je fais une demande à l'API //
-
-      previousBtn.addEventListener('click', function() {
-        figureContent.classList.remove('hidden');
-        previousBtn.classList.add('hidden');
-        modalTitle.textContent = "Galerie Photo";
-        modalSubmitBtn.textContent = "Ajouter une photo";
-        modalForm.classList.add('hidden');
-        modalSubmitBtn.classList.remove('hidden');
+ 
+  // Je vérifie si editBtn est présent dans mon code
+  if (editBtn) {
+    //J'affiche la modale 
+    displayModal();
+    // Je charge la galerie lorsque la modale est ouverte
+    loadWorks();
+    loadCategoryList();
+    
+    if (gallery) {
+      // J'affiche ma page de supression
+      displayDeletePage();
+      
+      // Si je clique sur "Ajouter une photo" :
+      modalSubmitBtn.addEventListener('click', function() {
+        // Je cache ma page supression et affiche mon formulaire d'ajout
+        switchPages ();
+        displayAddPage();
+        console.log(categoryList)
+        //console.log(selectedOption)
       });
-      //console.log(modalSubmitBtn)
-    });
-  }
-  // function hideFigcaptions() {
+
+      //loadCategoryList();
+      //hideFigcaptions(); // Cache les figcaptions
+      //deleteWork(); // Supprime un projet
+      //addWork(); // Ajoute un projet
+     
+    }
+
+    // Je place la galerie à l'intérieur de la div figureContent
+    figureContent.appendChild(gallery);
+  } 
+  // else {
+  // console.error("L'élément avec l'ID 'editBtn' n'est pas présent dans le document.");
+  // }
+}
+  
+export function closeModal() {
+  // Ajoutez un écouteur d'événements pour fermer la modal en cliquant en dehors de la modal
+  window.addEventListener('click', function(event) {
+    if (event.target === modal || event.target === closeBtn) {
+      modal.style.display = "none";
+    }
+  });
+}
+
+
+//console.log(gallery)
+
+
+
+// ------------------------------------------------------------------------------------------
+// j'ajoute une figure à #portfolio .gallery. Pour ca je fais une demande à l'API //
+
+// Recherche de l'ID associé au nom de la catégorie
+      //const selectedCategory = categories.find(category => category.name === categoryName);
+
+      // Retournez l'ID trouvé (ou null si aucune correspondance)
+      //return selectedCategory ? selectedCategory.id : null;
+
+      //option.setAttribute("id",category.id)
+      //category.dataset.category_id !== category.toString()
+      //const selectedCategory = option.getAttribute("id");
+      // const option = document.createElement("option");
+      // option.dataset.id = category.id;
+      // option.value = category.name;
+      // category.name = option.categoryId;
+      //category.name = option.getAttribute('data-id');
+
+      // const selectedOption = dataList.querySelector(`option[value="${categoryInput.value}"]`);
+      // categoryInput.addEventListener('input', function(event) {
+      //   if (selectedOption) {
+      //     selectedOption = dataList.querySelector(`option[value="${categoryInput.id}"]`);
+      //   }
+      //   console.log(selectedOption)
+      // });
+
+      // categoryInput.addEventListener('input', function() {
+      //   const selectedOption = dataList.querySelector(`option[value="${categoryInput.value}"]`);
+      //   if (selectedOption) {
+      //     const categoryId = selectedOption.getAttribute('data-id');
+      //     categoryInput.setAttribute('data-id', categoryId);
+      //   } else {
+      //     // Réinitialisez l'ID si aucune option n'est sélectionnée
+      //     categoryInput.setAttribute('data-id', '');
+      //   }
+      //   //console.log(selectedOption)
+      // });
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+// Je fais ma requete 
+          // const fetchPromise = fetch("http://localhost:5678/api/works/"+ figureId, {
+		  	  //   method: "DELETE",
+		      // });
+		      // console.log(fetchPromise)
+
+          // Ma response -- Recuperation des informations
+          // .then(response => {
+          //   if (response.status === 200) {
+
+          //     // Supprime la figure du DOM si la suppression côté serveur réussit
+          //     figure.remove(); 
+
+          //   } else {
+          //     console.error('La suppression a échoué.');
+          //   }
+          // })
+          // .catch(error => {
+          //   console.error('Erreur lors de la suppression :', error);
+          // });
+
+
+        //"http://localhost:5678/api/works/"+ figureId
+
+              //supprimer la preview en utilisant form reset
+      
+              
+              // function work(image, title, category) {
+              //   this.image = image;
+              //   this.title = title;
+              //   this.category = category;
+              // }
+
+
+
+
+              // <!-- <option value="Objets">
+							// <option value="Appartements">
+							// <option value="Hotels & restaurants"> -->
+							// <!-- Ajoutez ici toutes vos catégories -->
+
+
+
+
+
+
+   // photoInput.onchange = evt => {
+      //   const [selectedImage] = photoInput.files
+      //   if (selectedImage) {
+      //     const objectURL = URL.createObjectURL(selectedImage);
+      //     photoPreview.src = objectURL;
+      //     //photoPreview.src = URL.createObjectURL(selectedImage);
+      //     console.log(photoPreview)
+      //     photoPreview.classList.add('preview');
+      //     photoUploadIcon.classList.add('hidden');
+      //     photoUploadLabel.classList.remove('photoInputBtn');
+      //     photoUploadLabel.classList.add('hidden');
+      //     photoInput.classList.add('hidden');
+      //     photoUploadP.classList.add('hidden');
+
+      //     // Disparition du message d'erreur
+      //     window.onclick = function(event) {
+      //       if (event.target === previousBtn || event.target == closeBtn) {
+      //         URL.revokeObjectURL(objectURL);
+      //         console.log(photoPreview)
+      //         //photoPreview.classList.remove('preview');
+      //         photoUploadIcon.classList.remove('hidden');
+      //         photoUploadLabel.classList.add('photoInputBtn');
+      //         photoUploadLabel.classList.remove('hidden');
+      //         photoInput.classList.remove('hidden');
+      //         photoUploadP.classList.remove('hidden');
+      //       }
+      //     }
+
+          // Disparition du message d'erreur
+          // window.onclick = function(event) {
+          //   if (event.target === previousBtn || event.target == closeBtn) {
+          //     photoPreview.src = URL.revokeObjectURL(file);
+          //     console.log(photoPreview)
+          //     photoPreview.classList.remove('preview');
+          //     photoUploadIcon.classList.remove('hidden');
+          //     photoUploadLabel.classList.add('photoInputBtn');
+          //     photoUploadLabel.classList.remove('hidden');
+          //     photoInput.classList.remove('hidden');
+          //     photoUploadP.classList.remove('hidden');
+          //   }
+         
+
+        //}
+
+
+
+
+
+
+
+
+
+
+
+
+
+// Fonction pour ouvrir la modal
+// export function openModal() {
+//     const modal = document.getElementById('myModal');
+//     modal.style.display = 'block';
+// }
+  
+// // Fonction pour fermer la modal
+// export function closeModal() {
+//     const modal = document.getElementById('myModal');
+//     modal.style.display = 'none';
+// }
+
+// export function openModal() {
+//     // Récupérez l'élément "editBtn" par son ID
+//     const editBtn = document.getElementById('editBtn');
+    
+//     // Ajoutez un écouteur d'événements au clic sur "editBtn"
+//     editBtn.addEventListener('click', function() {
+//       // Vérifiez si l'élément "editSign" est visible
+//       const editSignElement = document.getElementById('editSign');
+//       if (editSignElement && !editSignElement.classList.contains('hidden')) {
+//         const modal = document.getElementById('myModal');
+//         modal.style.display = 'block';
+//       }
+//     });
+//   }
+  
+// export function closeModal() {
+//     const modal = document.getElementById('myModal');
+//     modal.style.display = 'none';
+// }
+
+// export function openModal() {
+//     // Récupérez l'élément "editBtn" par son ID
+//     const editBtn = document.getElementById('editBtn');
+  
+//     // Récupérez la modal et le bouton de fermeture par leur ID
+//     const modal = document.getElementById('myModal');
+//     const closeModalButton = document.getElementById('closeModal');
+    
+//     // Ajoutez un écouteur d'événements au clic sur "editBtn"
+//     editBtn.addEventListener('click', function() {
+//       // Vérifiez si l'élément "editSign" est visible
+//       const editSignElement = document.getElementById('editSign');
+//       if (editSignElement && !editSignElement.classList.contains('hidden')) {
+//         modal.style.display = 'block';
+//       }
+//     });
+  
+//     // Ajoutez un écouteur d'événements pour fermer la modal en cliquant sur le bouton de fermeture
+//     closeModalButton.addEventListener('click', function() {
+//       modal.style.display = 'none';
+//     });
+  
+//     // Ajoutez un écouteur d'événements pour fermer la modal en cliquant en dehors de la modal
+//     window.addEventListener('click', function(event) {
+//       if (event.target === modal) {
+//         modal.style.display = 'none';
+//       }
+//     });
+//   }
+
+// Ajoutez un écouteur d'événements pour fermer la modal en cliquant sur le bouton de fermeture
+    //closeModalButton.addEventListener('click', function() {
+      // Cachez la modal en ajoutant la classe "hidden"
+      //modal.classList.add('hidden');
+    //});
+  
+
+  
+    // Ajoutez un écouteur d'événements pour fermer la modal en cliquant n'importe où sur la page en dehors de la modal
+    //document.addEventListener('click', function(event) {
+      //if (event.target === modal) {
+        // Cachez la modal en ajoutant la classe "hidden"
+        //modal.classList.add('hidden');
+      //}
+    //});
+
+    // previousBtn.classList.add('hidden');
+
+    //     const previousBtn = document.createElement("i");
+    //     previousBtn.classList.add("fa-solid", "fa-arrow-left");
+    //     modalButtons.appendChild(previousBtn);
+
+    // function hideFigcaptions() {
   //   // Récupérez tous les éléments figcaption à l'intérieur de la galerie
   //     const figcaptions = gallery.querySelectorAll('figcaption');
 
@@ -802,287 +1105,3 @@ export function openModal() {
   //   //Hotel First Arte New Delhi
   //   //console.log(categoryInput)
   // }
-
-  // Je vérifie si editBtn est présent dans mon code
-  if (editBtn) {
-    //J'affiche la modale 
-    displayModal();
-    // Je charge la galerie lorsque la modale est ouverte
-    loadWorks();
-    
-    if (gallery) {
-      // J'affiche ma page de supression
-      displayDeletePage();
-
-      // Si je clique sur "Ajouter une photo" :
-      modalSubmitBtn.addEventListener('click', function() {
-        // Je cache ma page supression et affiche mon formulaire d'ajout
-        switchPages ();
-        displayAddPage();
-      });
-
-      //loadCategoryList();
-      //hideFigcaptions(); // Cache les figcaptions
-      //deleteWork(); // Supprime un projet
-      //addWork(); // Ajoute un projet
-     
-    }
-
-    // Je place la galerie à l'intérieur de la div figureContent
-    figureContent.appendChild(gallery);
-  } 
-  // else {
-  // console.error("L'élément avec l'ID 'editBtn' n'est pas présent dans le document.");
-  // }
-}
-  
-export function closeModal() {
-  // Ajoutez un écouteur d'événements pour fermer la modal en cliquant en dehors de la modal
-  window.addEventListener('click', function(event) {
-    if (event.target === modal || event.target === closeBtn) {
-      modal.style.display = "none";
-    }
-  });
-}
-
-
-//console.log(gallery)
-
-
-
-// ------------------------------------------------------------------------------------------
-// Recherche de l'ID associé au nom de la catégorie
-      //const selectedCategory = categories.find(category => category.name === categoryName);
-
-      // Retournez l'ID trouvé (ou null si aucune correspondance)
-      //return selectedCategory ? selectedCategory.id : null;
-
-      //option.setAttribute("id",category.id)
-      //category.dataset.category_id !== category.toString()
-      //const selectedCategory = option.getAttribute("id");
-      // const option = document.createElement("option");
-      // option.dataset.id = category.id;
-      // option.value = category.name;
-      // category.name = option.categoryId;
-      //category.name = option.getAttribute('data-id');
-
-      // const selectedOption = dataList.querySelector(`option[value="${categoryInput.value}"]`);
-      // categoryInput.addEventListener('input', function(event) {
-      //   if (selectedOption) {
-      //     selectedOption = dataList.querySelector(`option[value="${categoryInput.id}"]`);
-      //   }
-      //   console.log(selectedOption)
-      // });
-
-      // categoryInput.addEventListener('input', function() {
-      //   const selectedOption = dataList.querySelector(`option[value="${categoryInput.value}"]`);
-      //   if (selectedOption) {
-      //     const categoryId = selectedOption.getAttribute('data-id');
-      //     categoryInput.setAttribute('data-id', categoryId);
-      //   } else {
-      //     // Réinitialisez l'ID si aucune option n'est sélectionnée
-      //     categoryInput.setAttribute('data-id', '');
-      //   }
-      //   //console.log(selectedOption)
-      // });
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-// Je fais ma requete 
-          // const fetchPromise = fetch("http://localhost:5678/api/works/"+ figureId, {
-		  	  //   method: "DELETE",
-		      // });
-		      // console.log(fetchPromise)
-
-          // Ma response -- Recuperation des informations
-          // .then(response => {
-          //   if (response.status === 200) {
-
-          //     // Supprime la figure du DOM si la suppression côté serveur réussit
-          //     figure.remove(); 
-
-          //   } else {
-          //     console.error('La suppression a échoué.');
-          //   }
-          // })
-          // .catch(error => {
-          //   console.error('Erreur lors de la suppression :', error);
-          // });
-
-
-        //"http://localhost:5678/api/works/"+ figureId
-
-              //supprimer la preview en utilisant form reset
-      
-              
-              // function work(image, title, category) {
-              //   this.image = image;
-              //   this.title = title;
-              //   this.category = category;
-              // }
-
-
-
-
-              // <!-- <option value="Objets">
-							// <option value="Appartements">
-							// <option value="Hotels & restaurants"> -->
-							// <!-- Ajoutez ici toutes vos catégories -->
-
-
-
-
-
-
-   // photoInput.onchange = evt => {
-      //   const [selectedImage] = photoInput.files
-      //   if (selectedImage) {
-      //     const objectURL = URL.createObjectURL(selectedImage);
-      //     photoPreview.src = objectURL;
-      //     //photoPreview.src = URL.createObjectURL(selectedImage);
-      //     console.log(photoPreview)
-      //     photoPreview.classList.add('preview');
-      //     photoUploadIcon.classList.add('hidden');
-      //     photoUploadLabel.classList.remove('photoInputBtn');
-      //     photoUploadLabel.classList.add('hidden');
-      //     photoInput.classList.add('hidden');
-      //     photoUploadP.classList.add('hidden');
-
-      //     // Disparition du message d'erreur
-      //     window.onclick = function(event) {
-      //       if (event.target === previousBtn || event.target == closeBtn) {
-      //         URL.revokeObjectURL(objectURL);
-      //         console.log(photoPreview)
-      //         //photoPreview.classList.remove('preview');
-      //         photoUploadIcon.classList.remove('hidden');
-      //         photoUploadLabel.classList.add('photoInputBtn');
-      //         photoUploadLabel.classList.remove('hidden');
-      //         photoInput.classList.remove('hidden');
-      //         photoUploadP.classList.remove('hidden');
-      //       }
-      //     }
-
-          // Disparition du message d'erreur
-          // window.onclick = function(event) {
-          //   if (event.target === previousBtn || event.target == closeBtn) {
-          //     photoPreview.src = URL.revokeObjectURL(file);
-          //     console.log(photoPreview)
-          //     photoPreview.classList.remove('preview');
-          //     photoUploadIcon.classList.remove('hidden');
-          //     photoUploadLabel.classList.add('photoInputBtn');
-          //     photoUploadLabel.classList.remove('hidden');
-          //     photoInput.classList.remove('hidden');
-          //     photoUploadP.classList.remove('hidden');
-          //   }
-         
-
-        //}
-
-
-
-
-
-
-
-
-
-
-
-
-
-// Fonction pour ouvrir la modal
-// export function openModal() {
-//     const modal = document.getElementById('myModal');
-//     modal.style.display = 'block';
-// }
-  
-// // Fonction pour fermer la modal
-// export function closeModal() {
-//     const modal = document.getElementById('myModal');
-//     modal.style.display = 'none';
-// }
-
-// export function openModal() {
-//     // Récupérez l'élément "editBtn" par son ID
-//     const editBtn = document.getElementById('editBtn');
-    
-//     // Ajoutez un écouteur d'événements au clic sur "editBtn"
-//     editBtn.addEventListener('click', function() {
-//       // Vérifiez si l'élément "editSign" est visible
-//       const editSignElement = document.getElementById('editSign');
-//       if (editSignElement && !editSignElement.classList.contains('hidden')) {
-//         const modal = document.getElementById('myModal');
-//         modal.style.display = 'block';
-//       }
-//     });
-//   }
-  
-// export function closeModal() {
-//     const modal = document.getElementById('myModal');
-//     modal.style.display = 'none';
-// }
-
-// export function openModal() {
-//     // Récupérez l'élément "editBtn" par son ID
-//     const editBtn = document.getElementById('editBtn');
-  
-//     // Récupérez la modal et le bouton de fermeture par leur ID
-//     const modal = document.getElementById('myModal');
-//     const closeModalButton = document.getElementById('closeModal');
-    
-//     // Ajoutez un écouteur d'événements au clic sur "editBtn"
-//     editBtn.addEventListener('click', function() {
-//       // Vérifiez si l'élément "editSign" est visible
-//       const editSignElement = document.getElementById('editSign');
-//       if (editSignElement && !editSignElement.classList.contains('hidden')) {
-//         modal.style.display = 'block';
-//       }
-//     });
-  
-//     // Ajoutez un écouteur d'événements pour fermer la modal en cliquant sur le bouton de fermeture
-//     closeModalButton.addEventListener('click', function() {
-//       modal.style.display = 'none';
-//     });
-  
-//     // Ajoutez un écouteur d'événements pour fermer la modal en cliquant en dehors de la modal
-//     window.addEventListener('click', function(event) {
-//       if (event.target === modal) {
-//         modal.style.display = 'none';
-//       }
-//     });
-//   }
-
-// Ajoutez un écouteur d'événements pour fermer la modal en cliquant sur le bouton de fermeture
-    //closeModalButton.addEventListener('click', function() {
-      // Cachez la modal en ajoutant la classe "hidden"
-      //modal.classList.add('hidden');
-    //});
-  
-
-  
-    // Ajoutez un écouteur d'événements pour fermer la modal en cliquant n'importe où sur la page en dehors de la modal
-    //document.addEventListener('click', function(event) {
-      //if (event.target === modal) {
-        // Cachez la modal en ajoutant la classe "hidden"
-        //modal.classList.add('hidden');
-      //}
-    //});
-
-    // previousBtn.classList.add('hidden');
-
-    //     const previousBtn = document.createElement("i");
-    //     previousBtn.classList.add("fa-solid", "fa-arrow-left");
-    //     modalButtons.appendChild(previousBtn);

@@ -48,8 +48,10 @@
 					
 					<div class="category">
 						<label for="categoryInput">Catégorie</label>
-						<input type="text" id="categoryInput" name="category" list="categoryList" required>
-						<datalist id="categoryList">
+						<!-- <select id="categoryList" name="category" required>
+						</select> -->
+						<input type="text" id="categoryInput" name="category" list="categoryList" autocomplete="off" required>
+						<datalist id="categoryList" name="category" required>
 						</datalist>
 					</div>
 				</div>

@@ -498,7 +498,7 @@ footer nav ul {
 	flex-direction: column;
 }
 
-.dataInputs input {
+.dataInputs input, .dataInputs select {
 	height: 51px;
 	border: unset;
 	box-shadow: 5px 7px 19px #e7e4e4;
@@ -512,7 +512,7 @@ footer nav ul {
 	color: #3D3D3D;
 }
 
-.dataInputs input:focus {
+.dataInputs input:focus, .dataInputs select:focus {
 	outline: #B3B3B3;
 }
 
@@ -565,3 +565,7 @@ footer nav ul {
     height: fit-content;
 	padding: 3px;
 }
+
+/* #categoryList option {
+	background-color: #1D6154;
+} */
