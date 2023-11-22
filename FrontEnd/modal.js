@@ -26,14 +26,18 @@ const photoUploadLabel = document.querySelector('.photoUpload label');
 //const photoUploadInput = document.querySelector('.photoUpload input');
 const photoUploadP = document.querySelector('.photoUpload p');
 const photoUpload = document.querySelector('.photoUpload');
-const titleInput = modalForm.querySelector("[name=title]").value;
-const categoryInput = document.getElementById('categoryInput');
+//const titleInput = modalForm.querySelector("[name=title]").value;
+const titleInput = document.getElementById('selectedTitle');
+const categoryInput = document.getElementById('selectedOption');
 const category = [categories];
-const categoryList = document.getElementById('categoryList');
+const categoryList = document.getElementById('options');
 const titleOption = modalForm.querySelector("[name=title]").categoryId;
-//const selectedOption = categoryList.querySelector('option').id;
+let selectedOptionId = '';
+let enteredTitle = '';
+let uploadedFileURL = '';
 
-console.log(categoryList)
+
+//console.log(titleInput.value)
 //console.log(selectedOption)
 
 
@@ -54,6 +58,7 @@ export function openModal() {
       option.setAttribute('id', category.id);
       option.value = category.name;
       categoryList.appendChild(option);
+      //console.log(category.name, category.id)
     });
   }
   function switchPages () {
@@ -204,7 +209,8 @@ export function openModal() {
           // Alors je selectionne la premiere
           const uploadedFile = photoInput.files[0];
           // Je lui crée une URL
-          const uploadedFileURL = URL.createObjectURL(uploadedFile);          
+          uploadedFileURL = URL.createObjectURL(uploadedFile);
+          console.log(uploadedFileURL)          
 
           // Créer un nouvel élément image
           const photoPreview = document.createElement('img');
@@ -252,6 +258,19 @@ export function openModal() {
         }
       });
     }
+    // function switchValueToId() {
+    //   categoryInput.addEventListener('input', function () {
+    //     const inputValue = categoryInput.value;
+      
+    //     // Je cherche l'option correspondante dans datalist
+    //     const selectedOption = Array.from(categoryList.options).find(option => option.value === inputValue);
+      
+    //     if (selectedOption) {
+    //       selectedOptionId = selectedOption.id;
+    //       console.log("Retourne l'id selectioné",selectedOptionId);
+    //     }
+    //   });
+    // }
     function addWork() {
       function loadErrorBox(message) {
         // Création du message d'erreur
@@ -277,21 +296,33 @@ export function openModal() {
           }
         }
       };
-      function switchValueToId() {
-        categoryInput.addEventListener('input', function () {
-          const inputValue = categoryInput.value;
-        
-          // Je cherche l'option correspondante dans datalist
-          const selectedOption = Array.from(categoryList.options).find(option => option.value === inputValue);
-        
-          if (selectedOption) {
-            const selectedOptionId = selectedOption.id;
-            console.log(selectedOptionId);
-          }
-        });
-      }
-      
 
+      photoInput.addEventListener('input', function () {
+        // Mettre à jour la variable avec la valeur actuelle de l'input
+        enteredTitle = uploadedFileURL;
+        console.log("L'url de l'image est:", uploadedFileURL);
+      });
+
+      titleInput.addEventListener('change', function () {
+        // Mettre à jour la variable avec la valeur actuelle de l'input
+        enteredTitle = titleInput.value;
+        console.log("Le titre saisi est:", enteredTitle);
+      });
+      
+      categoryInput.addEventListener('input', function () {
+        const inputValue = categoryInput.value;
+      
+        // Je cherche l'option correspondante dans datalist
+        const selectedOption = Array.from(categoryList.options).find(option => option.value === inputValue);
+      
+        if (selectedOption) {
+          selectedOptionId = selectedOption.id;
+          console.log("La categorie choisie correspond à l'id:",selectedOptionId); // ca fonctionne !
+        }
+      });
+
+      //console.log("Retourne l'image selectionée:",photoInput.URL);
+      //console.log("Retourne le titre selectionée:",titleInput);
       // Au clique de formSubmitBtn, je valide mon formulaire
       formSubmitBtn.addEventListener("click", function (event) {
         event.preventDefault();
@@ -309,9 +340,10 @@ export function openModal() {
         else {
          // Création de l’objet si tout les champs remplis :
           const formDatas = {
-          image: photoInput.files[0], //event.target.querySelector("[name=image]").value,
-          title: titleInput, // event.target.querySelector("[name=title]").value, //, 
-          category: selectedOption, //event.target.querySelector("[name=category]").id, //categoryInput, 
+          image: uploadedFileURL, //event.target.querySelector("[name=image]").value,photoInput.files[0]
+          title: enteredTitle, // event.target.querySelector("[name=title]").value, //,titleInput 
+          category: selectedOptionId, //event.target.querySelector("[name=category]").id, //categoryInput,
+          
           };
           // Création de la charge utile au format JSON
           const chargeUtile = JSON.stringify(formDatas);
@@ -457,7 +489,7 @@ export function openModal() {
         // Je cache ma page supression et affiche mon formulaire d'ajout
         switchPages ();
         displayAddPage();
-        console.log(categoryList)
+        //console.log(categoryList)
         //console.log(selectedOption)
       });
 
