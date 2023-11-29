@@ -35,6 +35,10 @@ const titleOption = modalForm.querySelector("[name=title]").categoryId;
 let selectedOptionId = '';
 let enteredTitle = '';
 let uploadedFileURL = '';
+//let uploadedImage = '';
+let imageBinaryData = '';
+let uint8Array = '';
+let hexString = '';
 
 
 //console.log(titleInput.value)
@@ -209,8 +213,7 @@ export function openModal() {
           // Alors je selectionne la premiere
           const uploadedFile = photoInput.files[0];
           // Je lui crée une URL
-          uploadedFileURL = URL.createObjectURL(uploadedFile);
-          console.log(uploadedFileURL)          
+          uploadedFileURL = URL.createObjectURL(uploadedFile);         
 
           // Créer un nouvel élément image
           const photoPreview = document.createElement('img');
@@ -255,8 +258,10 @@ export function openModal() {
               //console.log("Ma preview apres:",photoPreview)
             }
           }
+
         }
-      });
+      })
+      //return uploadedFileURL;
     }
     // function switchValueToId() {
     //   categoryInput.addEventListener('input', function () {
@@ -297,10 +302,30 @@ export function openModal() {
         }
       };
 
-      photoInput.addEventListener('input', function () {
+      photoInput.addEventListener('input', async function () {
         // Mettre à jour la variable avec la valeur actuelle de l'input
-        enteredTitle = uploadedFileURL;
-        console.log("L'url de l'image est:", uploadedFileURL);
+        //uploadedImage = uploadedFileURL;
+        //let uploadedImage = loadPreview();
+        if (photoInput.files.length > 0) {
+          // Alors je selectionne la premiere
+          const uploadedFile = photoInput.files[0];
+          // Je lui crée une URL
+          uploadedFileURL = URL.createObjectURL(uploadedFile);
+          
+          // Utilise fetch pour récupérer les données binaires
+          //const response = await fetch(uploadedFileURL);
+          //const imageBinaryData = await response.arrayBuffer();
+
+          // Créer un Uint8Array à partir des données binaires de l'image
+          //const uint8Array = new Uint8Array(imageBinaryData);
+
+          // Convertir les données binaires en chaîne hexadécimale
+          // const hexString = Array.from(uint8Array)
+          // .map(byte => byte.toString(16).padStart(2, '0'))
+          // .join('')
+
+          console.log("Données binaires de l'image :", uploadedFileURL) //imageBinaryData uint8Array, hexString);
+        }
       });
 
       titleInput.addEventListener('change', function () {
@@ -339,19 +364,18 @@ export function openModal() {
         // titleInput && categoryInput && photoInput.files[0]
         else {
          // Création de l’objet si tout les champs remplis :
-          const formDatas = {
-          image: uploadedFileURL, //event.target.querySelector("[name=image]").value,photoInput.files[0]
-          title: enteredTitle, // event.target.querySelector("[name=title]").value, //,titleInput 
-          category: selectedOptionId, //event.target.querySelector("[name=category]").id, //categoryInput,
-          
-          };
-          // Création de la charge utile au format JSON
-          const chargeUtile = JSON.stringify(formDatas);
+          const chargeUtile = new FormData();
+          chargeUtile.append('image', uploadedFileURL); //imageBinaryData hexString
+          chargeUtile.append('title', enteredTitle);
+          chargeUtile.append('category', selectedOptionId);
+
+          const boundary = '---------------------------' + Date.now().toString(16);
           // Ma requete -- Appel de la fonction fetch avec toutes les informations nécessaires
-          const fetchPromise = fetch("http://localhost:5678/api/works", {
+          const fetchPromise = fetch('http://localhost:5678/api/works', {
             method: "POST",
-            headers: { "Content-Type": "multipart/form-data",
-            "Authorization": "Bearer " + key
+            headers: { "Content-Type": "multipart/form-data; boundary=" + boundary,
+            "Authorization": "Bearer " + key,
+            'Accept': 'application/json',
             },
             body: chargeUtile
           });
@@ -448,7 +472,7 @@ export function openModal() {
             // Si l'ajout côté serveur est réussit :
             if (response.status === 201) {
                 // J'ajoute la figure du DOM
-                //createWork();
+                createWork();
                 console.log("Nouveau projet ajouté !")
               }
             // Si l'ajout côté serveur à échoué ou que l'ajout côté serveur n'est pas authorisé :
@@ -523,6 +547,45 @@ export function closeModal() {
 
 
 // ------------------------------------------------------------------------------------------
+// const formDatas = {
+//   image: imageBinaryData, //uploadedImage, //event.target.querySelector("[name=image]").value,photoInput.files[0]
+//   title: enteredTitle, // event.target.querySelector("[name=title]").value, //,titleInput 
+//   category: selectedOptionId, //event.target.querySelector("[name=category]").id, //categoryInput,
+
+
+
+
+
+
+
+
+
+// photoInput.addEventListener('input', function () {
+//   // Mettre à jour la variable avec la valeur actuelle de l'input
+//   //uploadedImage = uploadedFileURL;
+//   //let uploadedImage = loadPreview();
+//   if (photoInput.files.length > 0) {
+//     // Alors je selectionne la premiere
+//     const uploadedFile = photoInput.files[0];
+//     // Je lui crée une URL
+//     uploadedFileURL = URL.createObjectURL(uploadedFile);
+//     uploadedImage = uploadedFileURL  
+//     console.log("L'url de l'image est:", uploadedImage);
+//   }
+// })
+
+
+
+
+
+
+
+
+
+
+
+
+
 // j'ajoute une figure à #portfolio .gallery. Pour ca je fais une demande à l'API //
 
 // Recherche de l'ID associé au nom de la catégorie
