@@ -35,6 +35,7 @@ const titleOption = modalForm.querySelector("[name=title]").categoryId;
 let selectedOptionId = '';
 let enteredTitle = '';
 let uploadedFileURL = '';
+let blobFile = '';
 //let uploadedImage = '';
 let imageBinaryData = '';
 let uint8Array = '';
@@ -302,6 +303,20 @@ export function openModal() {
         }
       };
 
+      function dataURLtoBlob(dataURL) {
+        var arr = dataURL.split(','),
+            mime = arr[0].match(/:(.*?);/)[1],
+            bstr = atob(arr[1]),
+            n = bstr.length,
+            u8arr = new Uint8Array(n);
+    
+        while (n--) {
+            u8arr[n] = bstr.charCodeAt(n);
+        }
+    
+        return new Blob([u8arr], { type: mime });
+    }
+
       photoInput.addEventListener('input', async function () {
         // Mettre à jour la variable avec la valeur actuelle de l'input
         //uploadedImage = uploadedFileURL;
@@ -309,22 +324,24 @@ export function openModal() {
         if (photoInput.files.length > 0) {
           // Alors je selectionne la premiere
           const uploadedFile = photoInput.files[0];
+
           // Je lui crée une URL
           uploadedFileURL = URL.createObjectURL(uploadedFile);
-          
-          // Utilise fetch pour récupérer les données binaires
-          //const response = await fetch(uploadedFileURL);
-          //const imageBinaryData = await response.arrayBuffer();
+          console.log("Données de l'image :",uploadedFileURL )
 
-          // Créer un Uint8Array à partir des données binaires de l'image
-          //const uint8Array = new Uint8Array(imageBinaryData);
+          // // Utiliser FileReader pour lire le contenu du fichier
+          const reader = new FileReader();
 
-          // Convertir les données binaires en chaîne hexadécimale
-          // const hexString = Array.from(uint8Array)
-          // .map(byte => byte.toString(16).padStart(2, '0'))
-          // .join('')
+          reader.onload = function (event) {
+          //   // event.target.result contient les données binaires
+          // const imageBinaryData = event.target.result;
+          blobFile = dataURLtoBlob(reader.result);
+          console.log("Données binaires de l'image :",imageBinaryData )
+          };
 
-          console.log("Données binaires de l'image :", uploadedFileURL) //imageBinaryData uint8Array, hexString);
+          // Lire le contenu du fichier en tant que données binaires
+          //reader.readAsArrayBuffer(uploadedFile);
+          reader.readAsDataURL(uploadedFile);
         }
       });
 
@@ -365,21 +382,21 @@ export function openModal() {
         else {
          // Création de l’objet si tout les champs remplis :
           const chargeUtile = new FormData();
-          chargeUtile.append('image', uploadedFileURL); //imageBinaryData hexString
+          chargeUtile.append('image', blobFile, 'image.png'); //imageBinaryData hexString
           chargeUtile.append('title', enteredTitle);
           chargeUtile.append('category', selectedOptionId);
 
-          const boundary = '---------------------------' + Date.now().toString(16);
+          //const boundary = '---------------------------' + Date.now().toString(16);
+          //"Content-Type": "multipart/form-data", // boundary= + boundary,
           // Ma requete -- Appel de la fonction fetch avec toutes les informations nécessaires
+          //'Accept': 'application/json',
           const fetchPromise = fetch('http://localhost:5678/api/works', {
             method: "POST",
-            headers: { "Content-Type": "multipart/form-data; boundary=" + boundary,
-            "Authorization": "Bearer " + key,
-            'Accept': 'application/json',
-            },
+            headers: { "Authorization": "Bearer " + key },
             body: chargeUtile
           });
           console.log(fetchPromise)
+          console.log("Token utilisé dans la requête :", key);
 
           // Ma response -- Recuperation des informations
           fetchPromise
@@ -432,7 +449,7 @@ export function openModal() {
             function createWork() {
               figures.forEach((figure) => {
                 // Je creer une nouvelle figure dans ma galerie
-                const newFigure = gallery.createElement('figure');
+                const newFigure = document.createElement('figure');
                 gallery.append(newFigure);
 
                 // Id
@@ -547,6 +564,32 @@ export function closeModal() {
 
 
 // ------------------------------------------------------------------------------------------
+// photoInput.addEventListener('input', async function () {
+//   // Mettre à jour la variable avec la valeur actuelle de l'input
+//   //uploadedImage = uploadedFileURL;
+//   //let uploadedImage = loadPreview();
+//   if (photoInput.files.length > 0) {
+//     // Alors je selectionne la premiere
+//     const uploadedFile = photoInput.files[0];
+//     // Je lui crée une URL
+//     uploadedFileURL = URL.createObjectURL(uploadedFile);
+    
+//     // Utilise fetch pour récupérer les données binaires
+//     const response = await fetch(uploadedFileURL);
+//     const imageBinaryData = await response.arrayBuffer();
+
+//     // Créer un Uint8Array à partir des données binaires de l'image
+//     //const uint8Array = new Uint8Array(imageBinaryData);
+
+//     // Convertir les données binaires en chaîne hexadécimale
+//     // const hexString = Array.from(uint8Array)
+//     // .map(byte => byte.toString(16).padStart(2, '0'))
+//     // .join('')
+
+//     console.log("Données binaires de l'image :",imageBinaryData ) //imageBinaryData uploadedFileURL uint8Array, hexString);
+//   }
+// });
+
 // const formDatas = {
 //   image: imageBinaryData, //uploadedImage, //event.target.querySelector("[name=image]").value,photoInput.files[0]
 //   title: enteredTitle, // event.target.querySelector("[name=title]").value, //,titleInput 
