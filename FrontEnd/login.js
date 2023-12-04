@@ -75,207 +75,83 @@ function logIn() {
 	});
 }
 
+function logOut() {
+	// Supprime le token du localStorage
+	localStorage.removeItem('token');
+	// Mettre à jour l'état de connexion
+	updateLoginStatus();
+}
+  
+export function updateLoginStatus() {
+	const loginButton = document.getElementById('loginButton'); 
+	
+	// Vérifie si l'utilisateur est connecté
+	const isLoggedIn = localStorage.getItem('token') !== null;
+  
+	// Mettre à jour l'interface en fonction de l'état de connexion
+	if (isLoggedIn) {
+	  // L'utilisateur est connecté
+	  loginButton.textContent = 'logout';
+	  //console.log('Logged in');
+
+	  // Ajoute un gestionnaire d'événements au clic sur le bouton de connexion/déconnexion
+	  loginButton.addEventListener('click', function () {
+		// Appele la fonction logout lorsque le bouton est cliqué
+		logOut();
+	  });
+
+	} else {
+	  // L'utilisateur n'est pas connecté
+	  loginButton.textContent = 'login';
+	  //console.log('Logged out');
+	}
+}
 
 // Lance les fonctions suivantes :
+updateLoginStatus();
 logIn();
 
-//loadErrorMessage();
-//getAnswer();
-
-// --- Show me --- // 
-//console.log(fetchPromise)
-//console.log(response)
-//console.log(userData)
-// console.log(userData);
-// console.log(userData.userId);
-// console.log(userData.token);
-
+//--------------------------------------------
+// function logOut() {
+// 	// Vérifie si l'utilisateur est connecté
+// 	if (localStorage.getItem('token')) {
+// 	  // Supprime le token du localStorage
+// 	  localStorage.removeItem('token');
+// 	  // Mettre à jour l'état de connexion
+// 	  updateLoginStatus();
+// 	} else {
+// 	  // L'utilisateur n'est pas connecté, gérer cette condition si nécessaire
+// 	  console.log('L\'utilisateur n\'est pas connecté.');
+// 	}
+// }
 
 //--------------------------------------------
-// Me donne l'objet demandé (ici un userId et un token)
-//.then((userData) => {
-//	console.log(userData);
-
-
-
-// if (category !== null) {
-//     works.forEach((work) => {
-//       if (work.dataset.category_id !== category.toString()) {
-//         work.style.display = "none";
-//       }
-//     })
-//   }
-
-//console.log(status)
-		
-		// Conditions d'authentification
-		// Si c'est les identifiants sont bons : if Response.status(200) alors Response.redirect("https://www.example.com", 302); sinon event.respondWith(Response.error());
-		// if (fetchPromise.status(200)) {
-		// 	console.log(fetchPromise.status(200))
-
-		// }
-
-
-
-		//const responseJson = Response.response;
-		//const identification = userData.userId;
-		//const password = userData.token;
-
-// const validateEmail = (email) => {
-// return email.match(
-// 	/^(([^<>()[\]\\.,;:\s@\"]+(\.[^<>()[\]\\.,;:\s@\"]+)*)|(\".+\"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/
-// );
-// };
-
-// const validate = () => {
-// const $result = $('#result');
-// const email = $('#email').val();
-// $result.text('');
-
-// if(validateEmail(email)){
-// 	$result.text(email + ' is valid.');
-// 	$result.css('color', 'green');
-// } else{
-// 	$result.text(email + ' is invalid.');
-// 	$result.css('color', 'red');
-// }
-// return false;
-// }
-
-// $('#email').on('input', validate);
-// throw new Error ("");
-
-// errorBox.onclick = function(event) {
-					// 	if (event.target == errorBox) {
-					// 		errorBox.style.display = "none";
-					// 		errorMessage.innerHTML = "";
-					// 	}
-					// }
-
-					// On le positionne avant le bouton se connecter
-				//loginForm.insertBefore(errorBox, loginForm.children[4]);
-// function loadEdit() {
-// 	const editMode = document.getElementById("editSign");
-// 	editMode.classList.remove('hidden');
-// 	//editMode.innerHTML = "";
-// 	console.log(editMode)
-
-// 	const editMessage = document.createElement("p");
-// 	editMessage.classList.add("error");
-// 	editMessage.innerHTML = "Mode édition";
-
-// 	const editIcone = document.createElement("i");
-// 	editIcone.classList.add("fa-regular fa-pen-to-square");
-
-// 	//On rattache la balise enfant à son parent
-// 	editMode.appendChild(editMessage);
-// 	editMessage.appendChild(editIcone);
-// }
-				
-// function loadEdit() {
-// 	const editMode = document.getElementById("editSign").style.display = "none";;
-// 	//editMode.classList.remove('hidden');
-// 	//editMode.innerHTML = "";
-// 	//console.log(editMode)
-// 	//work.style.display = "none";
-
-// Remplacez ceci par votre jeton d'authentification réel
-// const votreToken = "votre-jeton-d-authentification-ici";
-
-// // URL de la ressource protégée
-// const url = "https://api.example.com/resource";
-
-// // Configuration de l'en-tête d'authentification
-// const headers = new Headers({
-// 'Authorization': `Bearer ${votreToken}`
-// });
-
-// // Configuration de l'objet de la requête
-// const options = {
-// method: 'GET',
-// headers: headers
-// };
-
-// // Effectuez la requête en utilisant Fetch
-// fetch(url, options)
-// .then(response => {
-// 	if (response.ok) {
-// 	return response.json();
-// 	} else {
-// 	throw new Error(`Échec avec code d'état ${response.status}`);
-// 	}
-// })
-// .then(data => {
-// 	console.log("Succès !");
-// 	console.log(data);  // Affiche la réponse de l'API
-// })
-// .catch(error => {
-// 	console.error(error);
-// });
-
-// function loadEdit() {
-// 	// Vérifiez si le jeton est déjà stocké dans localStorage
-// 	const votreToken = localStorage.getItem('token');
-
-// 	// URL de la ressource protégée
-// 	const url = "./index.html";
-// 	const editMode = document.getElementById("editSign");
-// 	 editMode.classList.remove('hidden');
-// 	 //editMode.innerHTML = "";
-// 	 console.log(editMode)
-
-// 	if (votreToken) {
-// 		// Configuration de l'en-tête d'authentification
-// 		const headers = new Headers({
-// 		  'Authorization': `Bearer ${votreToken}`
-// 		});
-
-// 		// Configuration de l'objet de la requête
-// 		const options = {
-// 		method: 'GET',
-// 		headers: headers
-// 		};
-
-// 		// Effectuez la requête en utilisant Fetch
-// 		fetch(url, options)
-// 		.then(response => {
-// 		if (response.ok) {
-// 			return response.json();
-// 		} else {
-// 			throw new Error(`Échec avec code d'état ${response.status}`);
+// function logOut() {
+// 	// Vérifier si l'utilisateur est connecté
+// 	if (localStorage.getItem('token')) {
+// 	  // Effectuer une requête pour déconnecter l'utilisateur côté serveur
+// 	  fetch('http://localhost:5678/logout', {
+// 		method: 'POST',
+// 		headers: {
+// 		  'Content-Type': 'application/json',
+// 		  'Authorization': 'Bearer ' + localStorage.getItem('token')
 // 		}
-// 		})
-// 		.then(data => {
-// 		console.log("Succès !");
-// 		console.log(data);  // Affiche la réponse de l'API
-// 		})
-// 		.catch(error => {
+// 	  })
+// 	  .then(response => {
+// 		if (!response.ok) {
+// 		  throw new Error('Erreur lors de la déconnexion côté serveur');
+// 		}
+// 		// Supprimer le token du localStorage
+// 		localStorage.removeItem('token');
+// 		// Rediriger vers la page d'accueil ou une autre page de votre choix
+// 		window.location.href = '/';
+// 	  })
+// 	  .catch(error => {
 // 		console.error(error);
-// 		});
-// 	} 
-// 	else {
-// 	console.error("Le jeton d'authentification n'est pas présent dans localStorage.");
+// 		// Gérer les erreurs, par exemple afficher un message à l'utilisateur
+// 	  });
+// 	} else {
+// 	  // L'utilisateur n'est pas connecté, gérer cette condition si nécessaire
+// 	  console.log('L\'utilisateur n\'est pas connecté.');
 // 	}
-			
-	// // Je recupere mon token
-	// const key = window.localStorage.getItem("token");
-	// if (key != null) {
-	// 	key = JSON.parse(key);
-	// 	document.getElementById("editSign").style.display = "block";
-	// }
-
-	// Fonction pour définir l'indicateur dans localStorage
-	// function setEditSignVisible() {
-	// 	localStorage.setItem('editSignVisible', 'true');
-	//   };
-	// function loadEdit() {
-	// 	// Vérifiez si l'indicateur est défini dans localStorage
-	// 	const isEditSignVisible = localStorage.getItem('editSignVisible') === 'true';
-	// 	if (isEditSignVisible) {
-	// 	  // Supprimez la classe "hidden" de l'élément "editSign"
-	// 	  const editSignElement = document.getElementById('editSign');
-	// 	  if (editSignElement) {
-	// 		editSignElement.classList.remove('hidden');
-	// 	  }
-	// 	}
-	// }
+//   }
