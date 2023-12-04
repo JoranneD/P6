@@ -37,7 +37,6 @@
 					<i class="fa-regular fa-image"></i>
 					<label for="photoInput" class="photoInputBtn">+ Ajouter photo</label>
 					<input type="file" name="image" id="photoInput" class="photoInput" accept=".jpg, .jpeg, .png" style="display: none;" required>
-					<!-- <img id="photoPreview" class="" src="" alt="" /> -->
 					<p class="photoText">jpg, png : 4mo max</p>
 				</div>
 				<div class="dataInputs">
@@ -48,8 +47,6 @@
 					
 					<div class="category">
 						<label for="categoryInput">Catégorie</label>
-						<!-- <select id="categoryList" name="category" required>
-						</select> -->
 						<input type="text" id="selectedOption" name="category" list="options" autocomplete="off" required>
 						<datalist id="options" name="category" required>
 						</datalist>
@@ -61,7 +58,6 @@
 				</div>
 			</form>
 			<div id="errorSign" class="errorBox hidden"></div>
-			<!-- Sert surtout de bouton de navigation -->
 			<button class="btn modalSubmitBtn">Ajouter une photo</button>
 		</div>
 	</aside>
@@ -72,7 +68,7 @@
 		<ul>
 			<li><a href="./index.html">projets</a></li>
 			<li>contact</li>
-			<li><a href="./login.html">login</a></li>
+			<li><a id="loginButton" href="./login.html">login</a></li>
 			<li><img src="./assets/icons/instagram.png" alt="Instagram"></li>
 		</ul>
 	</nav>
@@ -117,7 +113,7 @@
 		</ul>
 	</nav>
 </footer>
-<!-- AJOUT MODULE JS // Ici parce qu'asynchrone. -->
+<!-- AJOUT MODULE JS -->
 <script type="module">
 	import { loadEditInterface } from './edit.js';
 	loadEditInterface();
@@ -126,6 +122,10 @@
 	import { openModal, closeModal } from './modal.js';
 	openModal();
 	closeModal();
+</script>
+<script type="module">
+	import { updateLoginStatus } from './login.js';
+	updateLoginStatus();
 </script>
 </body>
 </html>
