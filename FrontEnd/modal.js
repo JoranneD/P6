@@ -287,7 +287,6 @@ export function openModal() {
 
           fetchPromise
           .then(response => {
-            console.log(response);
             function loadErrorMessage() {
               function removePreview() {
                 modalForm.reset();
