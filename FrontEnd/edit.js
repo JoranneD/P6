@@ -1,21 +1,17 @@
+// Affiche l'interface d'édition
 export function loadEditInterface() {
-	// Je vérifie si le jeton est présent dans le localStorage
 	const key = localStorage.getItem('token');
 
-	// Si le jeton est présent :
 	if (key) {
 
-		// Je supprime la classe hidden pour afficher le mode édition
 		const editInterface = document.getElementById('editInterface');
 		editInterface.classList.remove('hidden');
 		
-		// J'ajoute la classe hidden pour masquer les boutons de filtrage
 		const divFilters = document.getElementById('divFilters');
 		if (divFilters) {
 		 	divFilters.classList.add('hidden');
 		}
 
-		// Je creer le bouton modifier
 		const portfolio = document.getElementById("portfolio");
 		const editTitle = document.querySelector("#portfolio h2");
 
