@@ -164,18 +164,13 @@ li:hover {
     border: #1D6154 solid 2px;
 }
 
-/* .all {
-	color: white;
-    background-color: #1D6154;
-    border: #1D6154 solid 2px;
-} */
-
-/* Interpretation de la maquette ? */
 .btn:focus {
 	color: white;
     background-color: #1D6154;
     border: #1D6154 solid 2px;
+	border-inline: unset;
 }
+
 /* ----------------------------------- */
 
 .gallery {
@@ -230,7 +225,7 @@ li:hover {
 	box-shadow: 0px 4px 14px rgba(0, 0, 0, 0.09);
 }
 
-/**/
+/*--------------------------*/
 
 .editMode {
 	display: flex;
@@ -249,7 +244,7 @@ li:hover {
 
 .errorBox {
 	display: flex;
-	background-color: #cd6d6d; /* #b58a71; /* #6d5649; /*#b20a37*/
+	background-color: #cd6d6d;
 	color: #fff;
 	justify-content: center;
     align-items: center;
@@ -259,20 +254,10 @@ li:hover {
 
 .hidden {
 	display: none;
-  	/*opacity: 0;*/
 }
 
-/* .shake {
-	animation: headshake 400ms cubic-bezier(.4,.1,.6,.9) 2;
-} */
-
-
-/* #login input {
-	transition: background-color 500ms;
-} */
-
 #login input:not(:focus):invalid {
-	background-color: #eacaca; /* #B1663C; /*#b20a37*/
+	background-color: #eacaca;
 	color: #fff;
 	animation: headshake 100ms cubic-bezier(.4,.1,.6,.9) 2;
 }
@@ -288,17 +273,8 @@ li:hover {
     }
 }
 
-/* input[type="password"]:invalid {
-    background-color: #b20a37;
-	border: 2px solid #b20a37;
-	color: #fff;
-	content: "✖";
-  	color: #b20a37;
-} */
+/*--------------------------*/
 
-
-
-/**/
 #contact label, #login label {
 	margin: 2em 0 1em 0;
 }
@@ -324,7 +300,7 @@ footer nav ul {
 	margin: 2em
 }
 
-/*   */
+/*--------------------------*/
 
 .editBox {
 	display: flex;
@@ -345,7 +321,7 @@ footer nav ul {
 	background: content-box;
 }
 
-/**/
+/*--------------------------*/
 
 .modal {
 	display: none;
@@ -398,25 +374,10 @@ footer nav ul {
 .figureContent, .modalForm {
 	align-self: center;
 	width: 420px;
-	height: 390px; /* 360*/
+	height: 390px;
 	border-bottom: solid #B3B3B3 2px;
 	background-color: #ffffff;
 	padding-bottom: 50px;
-
-	
-	/* display: none;
-	flex-direction: column;
-    position: fixed;
-    top: 590px;
-    left: 570px;
-    width: 630px;
-    height: 688px;
-    background-color: #ffffff;
-    border: solid #dbdbdb 1px;
-    border-radius: 10px;
-	padding: 30px;
-	gap: 22px;
-	margin: auto; */
 }
 
 .figureContent .gallery {
@@ -447,8 +408,6 @@ footer nav ul {
 
 .deleteBtn i {
 	align-self: center;
-	/* font-size: 10px; */
-
 }
 
 .photoUpload {
@@ -467,7 +426,7 @@ footer nav ul {
 }
 
 .photoInputBtn {
-    display: block; /*inline-block*/ 
+    display: block; 
     padding: 10px 20px;
     background: #B9C5CC;
     color: #306685;
@@ -475,10 +434,6 @@ footer nav ul {
     border-radius: 50px;
 	font-size: 14px;
 }
-
-/* .photoInputBtn:hover {
-	background-color: #c6cacd;
-} */
 
 .photoText {
 	color: #444444;
@@ -489,8 +444,6 @@ footer nav ul {
 .dataInputs {
 	color: #000000;
 	height: 251px;
-	/* display: flex;
-	flex-direction: column; */
 }
 
 .dataInputs .title, .dataInputs .category {
@@ -520,17 +473,11 @@ footer nav ul {
 	margin: unset;
 	align-self: center;
     padding: 0px 15px;
-	/* box-shadow: 0 30px 40px rgba(0,0,0,.1);
-	border:1px solid transparent;
-	border-left:150px solid transparent;
-	border-right:150px solid transparent; */
 }
 
 .errorStyle {
     margin-top: 10px;
 }
-
-
 
 .unavailable {
 	pointer-events: none;
@@ -554,7 +501,7 @@ footer nav ul {
 
 .errorStyleForm {
     display: flex;
-   	margin-top: calc(20% - 55px); /*25px; */
+   	margin-top: calc(20% - 55px);
 	width: 180px;
 }
 
@@ -565,7 +512,3 @@ footer nav ul {
     height: fit-content;
 	padding: 3px;
 }
-
-/* #categoryList option {
-	background-color: #1D6154;
-} */
